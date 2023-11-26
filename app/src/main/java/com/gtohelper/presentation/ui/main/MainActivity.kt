@@ -1,9 +1,8 @@
-package com.gtohelper.presentation
+package com.gtohelper.presentation.ui.main
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.gtohelper.R
-import com.gtohelper.presentation.ui.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
 

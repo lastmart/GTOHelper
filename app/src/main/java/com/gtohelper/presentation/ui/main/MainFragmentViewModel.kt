@@ -2,6 +2,6 @@ package com.gtohelper.presentation.ui.main
 
 import androidx.lifecycle.ViewModel
 
-class MainViewModel : ViewModel() {
+class MainFragmentViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 }
