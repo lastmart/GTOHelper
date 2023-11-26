@@ -7,11 +7,11 @@
     android:layout_height="match_parent"
     tools:context="com.gtohelper.presentation.ui.main.MainFragment">
 
-    <TextView
-        android:id="@+id/message"
+    <Button
+        android:id="@+id/navigation_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="MainFragment"
+        android:text="Go"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

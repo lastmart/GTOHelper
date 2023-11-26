@@ -1,40 +1,35 @@
 package com.gtohelper.presentation.ui.main
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.gtohelper.R
 import com.gtohelper.databinding.ActivityMainBinding
-import com.gtohelper.presentation.ui.app_info.AppInfoFragment
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        replaceFragment(MainFragment.newInstance())
-
-        binding.bottomNavigationView.setOnItemSelectedListener {
-            when (it.itemId) {
-                R.id.home -> replaceFragment(MainFragment.newInstance())
-                R.id.help -> replaceFragment(AppInfoFragment.newInstance())
-                else -> Toast.makeText(this, "Unknown error", Toast.LENGTH_SHORT).show()
-            }
-
-            true
-        }
+        initNavController()
+        initBottomNavigation()
     }
 
-    private fun replaceFragment(fragment: Fragment) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container, fragment)
-            .commit()
+    private fun initNavController() {
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navController = navHostFragment.findNavController()
+    }
+
+    private fun initBottomNavigation() {
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 }
