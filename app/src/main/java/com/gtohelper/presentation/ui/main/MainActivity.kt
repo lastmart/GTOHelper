@@ -1,10 +1,13 @@
 package com.gtohelper.presentation.ui.main
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.gtohelper.R
 import com.gtohelper.databinding.ActivityMainBinding
@@ -19,8 +22,15 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        window.statusBarColor = Color.parseColor("#BCBCBC")
+
         initNavController()
         initBottomNavigation()
+        initToolbar()
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 
     private fun initNavController() {
@@ -31,5 +41,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
+    }
+
+    private fun initToolbar() {
+        setSupportActionBar(binding.mainActivityToolbar)
+        setupActionBarWithNavController(navController)
     }
 }

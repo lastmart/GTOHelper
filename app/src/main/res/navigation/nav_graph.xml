@@ -8,11 +8,11 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.gtohelper.presentation.ui.main.MainFragment"
-        android:label="Home"
+        android:label="Выберите таблицу"
         tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/appInfoFragment"
         android:name="com.gtohelper.presentation.ui.app_info.AppInfoFragment"
-        android:label="fragment_app_info"
+        android:label="Помощь"
         tools:layout="@layout/fragment_app_info" />
 </navigation>
