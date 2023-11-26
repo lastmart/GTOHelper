@@ -3,6 +3,7 @@ package com.gtohelper.presentation.ui.main
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.gtohelper.R
+import com.gtohelper.presentation.ui.app_info.AppInfoFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -12,7 +13,11 @@ class MainActivity : AppCompatActivity() {
 
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MainFragment.newInstance())
+                .replace(
+                    R.id.container,
+                    //MainFragment.newInstance()
+                    AppInfoFragment.newInstance()
+                )
                 .commitNow()
         }
     }
