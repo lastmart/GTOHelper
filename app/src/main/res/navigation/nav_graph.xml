@@ -9,10 +9,18 @@
         android:id="@+id/mainFragment"
         android:name="com.gtohelper.presentation.ui.main.MainFragment"
         android:label="Выберите таблицу"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_tablePreviewDetailsDialogFragment"
+            app:destination="@id/tablePreviewDetailsDialogFragment" />
+    </fragment>
     <fragment
         android:id="@+id/appInfoFragment"
         android:name="com.gtohelper.presentation.ui.app_info.AppInfoFragment"
         android:label="Помощь"
         tools:layout="@layout/fragment_app_info" />
+    <dialog
+        android:id="@+id/tablePreviewDetailsDialogFragment"
+        android:name="com.gtohelper.presentation.ui.main.TablePreviewDetailsDialogFragment"
+        android:label="TablePreviewDetailsDialogFragment" />
 </navigation>

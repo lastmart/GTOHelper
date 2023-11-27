@@ -8,7 +8,9 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.gtohelper.R
 import com.gtohelper.data.FakeTables
 import com.gtohelper.data.models.TablePreview
 import com.gtohelper.databinding.FragmentMainBinding
@@ -61,6 +63,15 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
 
     override fun onItemClicked(item: TablePreview) {
         Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
+        val argsBundle = Bundle().apply {
+            putString(TablePreviewDetailsDialogFragment.TITLE_ARG, item.title)
+            putString(TablePreviewDetailsDialogFragment.DESCRIPTION_ARG, item.description)
+        }
+
+        findNavController().navigate(
+            R.id.action_mainFragment_to_tablePreviewDetailsDialogFragment,
+            argsBundle
+        )
     }
 
     private fun initRecyclerView() {

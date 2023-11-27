@@ -32,7 +32,7 @@ class TablePreviewAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(tablePreview: TablePreview) {
-            binding.textViewClass.text = tablePreview.clazz
+            binding.textViewTitle.text = tablePreview.title
             binding.textViewDescription.text = tablePreview.description
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(tablePreview)
