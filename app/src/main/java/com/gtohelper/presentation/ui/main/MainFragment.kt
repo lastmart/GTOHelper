@@ -8,14 +8,14 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import com.gtohelper.R
-import com.gtohelper.data.FakeTables
 import com.gtohelper.data.models.TablePreview
 import com.gtohelper.databinding.FragmentMainBinding
 import com.gtohelper.presentation.OnItemClickListener
 import com.gtohelper.presentation.ui.main.adapter.TablePreviewAdapter
+import kotlinx.coroutines.launch
 
 class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
 
@@ -27,42 +27,26 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: TablePreviewAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[MainFragmentViewModel::class.java]
-        binding = FragmentMainBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return binding.root
-    }
+        binding = FragmentMainBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        binding.mainFragmentSearchView.setIconifiedByDefault(false)
+        initViewModel()
 
-        initRecyclerView()
+        initSearchView()
+
         binding.mainFragmentAddButton.setOnClickListener {
             Toast.makeText(requireContext(), "Add pressed", Toast.LENGTH_SHORT).show()
         }
 
-        binding.mainFragmentSearchView.setOnQueryTextListener(object : OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(requireContext(), query, Toast.LENGTH_SHORT).show()
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
+        return binding.root
     }
 
     override fun onItemClicked(item: TablePreview) {
         Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
+
         val argsBundle = Bundle().apply {
             putString(TablePreviewDetailsDialogFragment.TITLE_ARG, item.title)
             putString(TablePreviewDetailsDialogFragment.DESCRIPTION_ARG, item.description)
@@ -74,13 +58,48 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
         )
     }
 
-    private fun initRecyclerView() {
-        val layoutManager = GridLayoutManager(requireContext(), 2)
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[MainFragmentViewModel::class.java]
 
-        val fakeList = FakeTables.fakeTables
-        adapter = TablePreviewAdapter(fakeList, this)
+        viewModel.tablesLiveData.observe(viewLifecycleOwner) {
+            showTables(it)
+        }
 
-        binding.recyclerViewTablesPreview.layoutManager = layoutManager
+        lifecycleScope.launch {
+            viewModel.getTables()
+        }
+    }
+
+    private fun initSearchView() {
+        binding.mainFragmentSearchView.setIconifiedByDefault(false)
+
+        binding.mainFragmentSearchView.setOnQueryTextListener(object : OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                Toast.makeText(requireContext(), query, Toast.LENGTH_SHORT).show()
+
+                lifecycleScope.launch {
+                    query?.let {
+                        viewModel.searchTablesByName(it)
+                    }
+                }
+
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                lifecycleScope.launch {
+                    newText?.let {
+                        viewModel.searchTablesByName(it)
+                    } ?: viewModel.getTables()
+                }
+
+                return true
+            }
+        })
+    }
+
+    private fun showTables(tables: List<TablePreview>) {
+        adapter = TablePreviewAdapter(tables, this)
         binding.recyclerViewTablesPreview.adapter = adapter
     }
 }

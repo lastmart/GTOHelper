@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.gtohelper.data.FakeCompetitors
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.gtohelper.data.models.Competitor
 import com.gtohelper.databinding.FragmentCompetitorsListBinding
 import com.gtohelper.presentation.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_list.adapter.CompetitorsAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     companion object {
@@ -21,23 +23,17 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     private lateinit var viewModel: CompetitorsListViewModel
     private lateinit var binding: FragmentCompetitorsListBinding
     private lateinit var adapter: CompetitorsAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentCompetitorsListBinding.inflate(layoutInflater)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return binding.root
-    }
+        binding = FragmentCompetitorsListBinding.inflate(layoutInflater)
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initRecyclerView()
         initSearchView()
+        initViewModel()
+
+        return binding.root
     }
 
     override fun onItemClicked(item: Competitor) {
@@ -45,12 +41,20 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
         //   Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
     }
 
-    private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(requireContext())
-        val data = FakeCompetitors.generateCompetitors(13)
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[CompetitorsListViewModel::class.java]
 
-        adapter = CompetitorsAdapter(data, this)
-        binding.recyclerViewCompetitorsResults.layoutManager = layoutManager
+        viewModel.competitorsLiveData.observe(viewLifecycleOwner) {
+            showCompetitors(it)
+        }
+
+        lifecycleScope.launch {
+            viewModel.getCompetitors(13)
+        }
+    }
+
+    private fun showCompetitors(competitors: List<Competitor>) {
+        adapter = CompetitorsAdapter(competitors, this)
         binding.recyclerViewCompetitorsResults.adapter = adapter
     }
 
@@ -64,6 +68,11 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                lifecycleScope.launch(Dispatchers.Default) {
+                    newText?.let {
+                        viewModel.searchCompetitorsByName(it)
+                    } ?: viewModel.getCompetitors()
+                }
                 return true
             }
         })

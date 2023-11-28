@@ -1,18 +1,19 @@
 package com.gtohelper.presentation.ui.competitors_results
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.gtohelper.data.FakeCompetitors
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.gtohelper.data.models.CompetitorResults
 import com.gtohelper.databinding.FragmentCompetitorsResultsBinding
 import com.gtohelper.presentation.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_results.adapter.CompetitorResultsAdapter
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorResults> {
 
@@ -24,23 +25,33 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
     private lateinit var binding: FragmentCompetitorsResultsBinding
     private lateinit var adapter: CompetitorResultsAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = FragmentCompetitorsResultsBinding.inflate(layoutInflater)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        binding = FragmentCompetitorsResultsBinding.inflate(layoutInflater)
+
+        initSearchView()
+        initViewModel()
+
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onItemClicked(item: CompetitorResults) {
+        println("Id: ${item.id}")
+        //   Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
+    }
 
-        initSearchView()
-        initRecyclerView()
+    private fun initViewModel() {
+        viewModel = ViewModelProvider(this)[CompetitorsResultsViewModel::class.java]
+
+        viewModel.competitorsResultsLiveData.observe(viewLifecycleOwner) {
+            showCompetitorsResults(it)
+        }
+
+        lifecycleScope.launch(Dispatchers.Default) {
+            viewModel.getCompetitorsResults()
+        }
     }
 
     private fun initSearchView() {
@@ -53,23 +64,19 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                lifecycleScope.launch {
+                    newText?.let {
+                        viewModel.searchCompetitorsResultsByName(it)
+                    } ?: viewModel.getCompetitorsResults()
+                }
+
                 return true
             }
         })
     }
 
-    override fun onItemClicked(item: CompetitorResults) {
-        println("Id: ${item.id}")
-        //   Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun initRecyclerView() {
-        val layoutManager = LinearLayoutManager(requireContext())
-        val data = FakeCompetitors.generateCompetitorsWithResults(13)
-
-        adapter = CompetitorResultsAdapter(data, this)
-
-        binding.recyclerViewCompetitorsResults.layoutManager = layoutManager
+    private fun showCompetitorsResults(competitorsResults: List<CompetitorResults>) {
+        adapter = CompetitorResultsAdapter(competitorsResults, this)
         binding.recyclerViewCompetitorsResults.adapter = adapter
     }
 }

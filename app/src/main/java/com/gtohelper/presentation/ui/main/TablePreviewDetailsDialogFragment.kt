@@ -12,6 +12,7 @@ import android.widget.FrameLayout.LayoutParams
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
+import com.gtohelper.R
 import com.gtohelper.databinding.DialogFragmentTablePreviewDetailsBinding
 
 
@@ -36,15 +37,20 @@ class TablePreviewDetailsDialogFragment : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        title = arguments?.getString(TITLE_ARG) ?: "Unknown"
-        description = arguments?.getString(DESCRIPTION_ARG) ?: "Unknown"
+
+        initArgs()
 
         if (dialog != null && dialog?.window != null) {
-            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE);
+            dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog?.window?.requestFeature(Window.FEATURE_NO_TITLE)
         }
 
         return binding.root
+    }
+
+    private fun initArgs() {
+        title = arguments?.getString(TITLE_ARG) ?: "Unknown"
+        description = arguments?.getString(DESCRIPTION_ARG) ?: "Unknown"
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,7 +60,7 @@ class TablePreviewDetailsDialogFragment : DialogFragment() {
 
         binding.buttonView.setOnClickListener {
             Toast.makeText(requireContext(), "View pressed", Toast.LENGTH_SHORT).show()
-            hideDialogFragment()
+            findNavController().navigate(R.id.action_tablePreviewDetailsDialogFragment_to_competitorsResultsFragment)
         }
 
         binding.buttonDelete.setOnClickListener {
@@ -73,6 +79,11 @@ class TablePreviewDetailsDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        dialog!!.window!!.setLayout(800, LayoutParams.WRAP_CONTENT)
+    }
+
     private fun setUpFields() {
         binding.editTextTitle.editText?.setText(title)
         binding.editTextDescription.editText?.setText(description)
@@ -80,14 +91,6 @@ class TablePreviewDetailsDialogFragment : DialogFragment() {
 
     private fun hideDialogFragment() {
         findNavController().navigateUp()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        dialog!!.window!!.apply {
-            setLayout(800, LayoutParams.WRAP_CONTENT)
-            //    setGravity(Gravity.CENTER)
-        }
     }
 }
 

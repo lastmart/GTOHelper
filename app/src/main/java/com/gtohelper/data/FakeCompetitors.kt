@@ -6,14 +6,17 @@ import kotlin.random.Random
 
 class FakeCompetitors {
     companion object {
-        private val firstNames = listOf("Иван", "Егор", "Глеб", "Владимир", "Дмитрий")
-        private val lastNames = listOf("Федоров", "Мартынов", "Москалев", "Бойко", "Хрусталев")
+        private val firstNames = listOf("Иван", "Егор", "Глеб", "Владимир", "Дмитрий", "Александр")
+        private val lastNames = listOf("Федоров", "Мартынов", "Москалев", "Бойко", "Хрусталев", "Шаров")
         private val teams = listOf("ФИИТ", "Кроссфит", "Радиофак", "Психбольница")
         private val degrees = listOf("VI", "VII", "IV", "III", "X")
         private val genders = listOf("M", "F", "F", "H", "M")
         private val points = listOf(300, 223, 12, 98, 15)
 
-        fun generateCompetitors(amount: Int): List<Competitor> {
+        val competitors = generateCompetitors()
+        val competitorsWithResults = generateCompetitorsWithResults()
+
+        fun generateCompetitors(amount: Int = 15): List<Competitor> {
             return (1..amount).map {
                 val firstName = firstNames[Random.nextInt(firstNames.size)]
                 val lastName = lastNames[Random.nextInt(lastNames.size)]
@@ -24,7 +27,7 @@ class FakeCompetitors {
             }
         }
 
-        fun generateCompetitorsWithResults(amount: Int): List<CompetitorResults> {
+        fun generateCompetitorsWithResults(amount: Int = 15): List<CompetitorResults> {
             return generateCompetitors(amount).map { competitor ->
                 with(competitor) {
                     val points = points[Random.nextInt(points.size)]
