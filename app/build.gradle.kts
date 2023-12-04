@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.gtohelper"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -65,5 +65,10 @@ dependencies {
 
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+
+    // JSON
+    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
 
 }
