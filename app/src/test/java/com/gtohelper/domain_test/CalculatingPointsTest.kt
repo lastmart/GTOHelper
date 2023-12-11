@@ -1,13 +1,13 @@
 package com.gtohelper.domain_test
 import JsonParser
-import com.gtohelper.domain.CalculatingPoints
+import com.gtohelper.domain.PointsCalculator
 import com.gtohelper.domain.Competitor
 import com.gtohelper.domain.Gender
 import org.junit.Test
 import org.junit.Assert.*
 
 class CalculatingPointsTest {
-    private val calculatingPoints = CalculatingPoints()
+    private val calculatingPoints = PointsCalculator()
     private val jsonParser = JsonParser()
 
     @Test

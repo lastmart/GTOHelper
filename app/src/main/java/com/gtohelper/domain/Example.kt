@@ -1,9 +1,11 @@
 package com.gtohelper.domain
-import JsonParser
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
+
+import org.apache.poi.xssf.usermodel.XSSFRichTextString
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.FileInputStream
 
 
-fun main(){
-   val listResPoint = mutableListOf(255, 169, 270, 390)
+class Table{
+    // [sport][id competitor] = {res: point}
+    // {id competitor: Competitor}
 }

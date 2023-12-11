@@ -4,7 +4,7 @@ import JsonParser
 import java.time.LocalTime
 import java.util.SortedMap
 
-class CalculatingPoints {
+class PointsCalculator {
 
     fun <T: Comparable<T>> getPoint(competitor: Competitor, sport:String, result:T):Int{
         if (!(result is Double || result is LocalTime)){

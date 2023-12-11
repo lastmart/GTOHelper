@@ -10,8 +10,7 @@ class JsonParser {
     fun getDictionaryWithStandards(): MutableMap<String, MutableMap<Int, MutableMap<String, MutableMap<Any, Int>>>> {
         val dictionaryWithStandards: MutableMap<String, MutableMap<Int, MutableMap<String, MutableMap<Any, Int>>>> =
             HashMap()
-//        val jsonFile = File("src/main/dictionaryWithStandards.json")
-        val jsonFile = File("/Users/glebmoskalev/Downloads/dictionaryWithStandards.json")
+        val jsonFile = File("./app/src/main/java/com/gtohelper/domain/dictionaryWithStandards.json")
         val jsonString = jsonFile.readText()
 
         val type: Type = object : TypeToken<Map<String, Map<Int, Map<String, Map<String, Int>>>>>() {}.type

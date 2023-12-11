@@ -1,8 +1,6 @@
 package com.gtohelper.data
-
 import JsonParser
-import android.icu.lang.UCharacter.NumericType
-import com.gtohelper.domain.CalculatingPoints
+import com.gtohelper.domain.PointsCalculator
 import com.gtohelper.domain.Competitor
 import com.gtohelper.domain.Gender
 import org.apache.poi.ss.usermodel.CellType
@@ -20,23 +18,20 @@ import java.time.format.DateTimeFormatter
 
 
 fun main(){
-    var filePath = "/Users/glebmoskalev/Downloads/пример — копия 2.xlsx"
+    val filePath = "/Users/glebmoskalev/Downloads/example — копия.xlsx"
     val readRegistrationCompetitor = ReadRegistrationCompetitor()
     val listCompetitor = readRegistrationCompetitor.getListCompetitor(filePath)
-    val listColumnStartSport = mutableListOf(5, 7, 9)
+    val listColumnStartSport = mutableListOf(6, 8, 10)
     val listSport = mutableListOf("Плавание 50 м (мин, с)","Бег на 60 м (с)",
         "Наклон вперед из положения стоя на гимнастической скамье (от уровня скамьи - см)")
-    readRegistrationCompetitor.deleteColumn(filePath, 2)
-    readRegistrationCompetitor.ageChangeByStep(filePath, listCompetitor)
-    println("next")
-    readln()
-    var numberColumnForSport = 5
+
+    readRegistrationCompetitor.ageChangeByStep(filePath, listCompetitor, 3)
+
+    var numberColumnForSport = 6
     for (sport in listSport){
         readRegistrationCompetitor.addSport(sport, filePath, numberColumnForSport)
         numberColumnForSport += 2
     }
-    println("next")
-    readln()
     readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:28.01"),
         listCompetitor[0], listSport[0], listColumnStartSport[0])
     readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:29.10"),
@@ -47,6 +42,8 @@ fun main(){
         listCompetitor[3], listSport[0], listColumnStartSport[0])
     readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:34.10"),
         listCompetitor[4], listSport[0], listColumnStartSport[0])
+    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:31.10"),
+        listCompetitor[5], listSport[0], listColumnStartSport[0])
 
     readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("11.1"),
         listCompetitor[0], listSport[1], listColumnStartSport[1])
@@ -58,6 +55,8 @@ fun main(){
         listCompetitor[3], listSport[1], listColumnStartSport[1])
     readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("6.34"),
         listCompetitor[4], listSport[1], listColumnStartSport[1])
+    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("7.54"),
+        listCompetitor[5], listSport[1], listColumnStartSport[1])
 
     readRegistrationCompetitor.addNormativeAndPoint(filePath, 22.0, listCompetitor[0], listSport[2],
         listColumnStartSport[2])
@@ -69,14 +68,46 @@ fun main(){
         listColumnStartSport[2])
     readRegistrationCompetitor.addNormativeAndPoint(filePath, 15.0, listCompetitor[4], listSport[2],
         listColumnStartSport[2])
+    readRegistrationCompetitor.addNormativeAndPoint(filePath, 17.0, listCompetitor[5], listSport[2],
+        listColumnStartSport[2])
 
-    println("next")
-    readln()
-
-    readRegistrationCompetitor.addCompetitionResults(filePath, 11, listColumnStartSport,
-        5)
+    readRegistrationCompetitor.addCompetitionResults(filePath, 12, listColumnStartSport,
+        6)
+    readRegistrationCompetitor.addNameTable(filePath, "1 \"A\" Эстафета по кроссфиту",13)
 }
 class ReadRegistrationCompetitor {
+    fun addNameTable(filePath: String, nameTable:String, lastColumn: Int)
+    {
+        val fileInputStream = FileInputStream(filePath)
+        val workBook = XSSFWorkbook(fileInputStream)
+        val sheet = workBook.getSheetAt(0)
+
+        val numMergedRegions = sheet.numMergedRegions
+        for (i in 0 until numMergedRegions) {
+            val mergedRegion = sheet.getMergedRegion(i) // Получаем объединенную область
+            if (mergedRegion.firstRow == 0 && mergedRegion.lastRow == 0)  {
+                sheet.removeMergedRegion(i)
+                break
+            }
+        }
+        val style = workBook.createCellStyle()
+        style.alignment = HorizontalAlignment.CENTER
+        var nameRow = sheet.getRow(0)
+        if (nameRow == null){
+            nameRow = sheet.createRow(0)
+        }
+        var nameCell = nameRow.getCell(0)
+        if (nameCell == null){
+            nameCell = sheet.getRow(0).createCell(0)
+        }
+        nameCell.setCellValue(nameTable)
+        nameCell.cellStyle = style
+        sheet.addMergedRegion(CellRangeAddress(0, 0, 0,lastColumn))
+        fileInputStream.close()
+        val fileOutputStream = FileOutputStream(filePath)
+        workBook.write(fileOutputStream)
+        fileOutputStream.close()
+    }
     fun addCompetitionResults(filePath: String, columnResult:Int, listColumnStartSport: List<Int>,
                               numbersCompetitor: Int){
         val fileInputStream = FileInputStream(filePath)
@@ -87,22 +118,22 @@ class ReadRegistrationCompetitor {
         style.alignment = HorizontalAlignment.CENTER
         style.verticalAlignment = VerticalAlignment.CENTER
 
-        var sumCell = sheet.getRow(2).getCell(columnResult)
+        var sumCell = sheet.getRow(1).getCell(columnResult)
         if (sumCell == null){
-            sumCell = sheet.getRow(2).createCell(columnResult)
+            sumCell = sheet.getRow(1).createCell(columnResult)
         }
         sumCell.setCellValue("Сумма")
         sumCell.cellStyle = style
-        sheet.addMergedRegion(CellRangeAddress(2, 3,columnResult,columnResult))
+        sheet.addMergedRegion(CellRangeAddress(1, 3, columnResult,columnResult))
 
-        var listResPoint = MutableList(numbersCompetitor) {0.0}
+        val listResPoint = MutableList(numbersCompetitor) {0.0}
         for (columnStartSport in listColumnStartSport){
             var sumPoint = 0.0
             // The results are on the 4th line
             for (rowNumber in 0..sheet.lastRowNum - 4){
                 val row = sheet.getRow(rowNumber + 4) ?: continue
                 val cellPoint = row.getCell(columnStartSport + 1)
-                if (cellPoint.cellType == CellType.NUMERIC){
+                if (cellPoint != null && cellPoint.cellType == CellType.NUMERIC){
                     sumPoint += cellPoint.numericCellValue
                     listResPoint[rowNumber] += cellPoint.numericCellValue
                 }
@@ -112,6 +143,7 @@ class ReadRegistrationCompetitor {
         styleSumPoint.fillForegroundColor = IndexedColors.GREEN.getIndex()
         styleSumPoint.fillPattern = FillPatternType.SOLID_FOREGROUND
         styleSumPoint.alignment = HorizontalAlignment.CENTER
+
         for (rowNumber in 0 until  numbersCompetitor){
             var sumCellRes = sheet.getRow(rowNumber + 4).getCell(columnResult)
             if (sumCellRes == null){
@@ -121,6 +153,60 @@ class ReadRegistrationCompetitor {
             sumCellRes.cellStyle = styleSumPoint
         }
 
+        val sortedScores = listResPoint.sortedDescending().distinct()
+        val ranks = mutableMapOf<Double, Int>()
+        var rank = 1
+        for (score in sortedScores) {
+            ranks[score] = rank++
+        }
+        val dictPlace = listResPoint.mapIndexed { index, score -> index to ranks[score]!! }.toMap()
+
+        var placeCell = sheet.getRow(2).getCell(columnResult + 1)
+        if (placeCell == null){
+            placeCell = sheet.getRow(1).createCell(columnResult + 1)
+        }
+        placeCell.setCellValue("Место")
+        placeCell.cellStyle = style
+        sheet.addMergedRegion(CellRangeAddress(1, 3, columnResult + 1,columnResult + 1))
+
+        val stylePlace = workBook.createCellStyle()
+        stylePlace.alignment = HorizontalAlignment.CENTER
+        val stylePlaceOne = workBook.createCellStyle()
+        stylePlaceOne.alignment = HorizontalAlignment.CENTER
+        stylePlaceOne.fillForegroundColor = IndexedColors.GOLD.getIndex()
+        stylePlaceOne.fillPattern = FillPatternType.SOLID_FOREGROUND
+        val stylePlaceTwo = workBook.createCellStyle()
+        stylePlaceTwo.alignment = HorizontalAlignment.CENTER
+        stylePlaceTwo.fillForegroundColor = IndexedColors.GREY_25_PERCENT.getIndex()
+        stylePlaceTwo.fillPattern = FillPatternType.SOLID_FOREGROUND
+        val stylePlaceThird = workBook.createCellStyle()
+        stylePlaceThird.alignment = HorizontalAlignment.CENTER
+        stylePlaceThird.fillForegroundColor = IndexedColors.BROWN.getIndex()
+        stylePlaceThird.fillPattern = FillPatternType.SOLID_FOREGROUND
+        for (rowNumber in 0 until  numbersCompetitor){
+            var placeCellRes = sheet.getRow(rowNumber + 4).getCell(columnResult + 1)
+            if (placeCellRes  == null){
+                placeCellRes  = sheet.getRow(rowNumber + 4).createCell(columnResult + 1)
+            }
+            when (val place = dictPlace[rowNumber]!!.toDouble()) {
+                1.0 -> {
+                    placeCellRes.setCellValue(place)
+                    placeCellRes.cellStyle = stylePlaceOne
+                }
+                2.0 -> {
+                    placeCellRes.setCellValue(place)
+                    placeCellRes.cellStyle = stylePlaceTwo
+                }
+                3.0 -> {
+                    placeCellRes.setCellValue(place)
+                    placeCellRes.cellStyle = stylePlaceThird
+                }
+                else -> {
+                    placeCellRes.setCellValue(place)
+                    placeCellRes.cellStyle = stylePlace
+                }
+            }
+        }
         fileInputStream.close()
         val fileOutputStream = FileOutputStream(filePath)
         workBook.write(fileOutputStream)
@@ -131,10 +217,12 @@ class ReadRegistrationCompetitor {
         val workBook = XSSFWorkbook(fileInputStream)
         val sheet = workBook.getSheetAt(0)
         val rowNumberCompetitor = findRow(competitor.nameCompetitor, filePath)
+        val styleNormative = workBook.createCellStyle()
+        styleNormative.alignment = HorizontalAlignment.CENTER
         if (rowNumberCompetitor == -1){
             throw Exception("Competitor not find")
         }
-        val point = CalculatingPoints().getPoint(competitor, sport, res as Comparable<Any>)
+        val point = PointsCalculator().getPoint(competitor, sport, res as Comparable<Any>)
         val row = sheet.getRow(rowNumberCompetitor)
         var cellRes = row.getCell(sportColumnStart)
         if (cellRes == null){
@@ -155,18 +243,20 @@ class ReadRegistrationCompetitor {
         else if (res is Double){
             cellRes.setCellValue(res)
         }
+        cellRes.cellStyle = styleNormative
+
         var cellPoint = row.getCell(sportColumnStart + 1)
         if (cellPoint == null){
             cellPoint = sheet.getRow(rowNumberCompetitor).createCell(sportColumnStart + 1)
         }
 
-        val style = workBook.createCellStyle()
-        style.fillForegroundColor = IndexedColors.YELLOW.getIndex()
-        style.fillPattern = FillPatternType.SOLID_FOREGROUND
-        style.alignment = HorizontalAlignment.CENTER
+        val stylePoint = workBook.createCellStyle()
+        stylePoint.fillForegroundColor = IndexedColors.YELLOW.getIndex()
+        stylePoint.fillPattern = FillPatternType.SOLID_FOREGROUND
+        stylePoint.alignment = HorizontalAlignment.CENTER
 
         cellPoint.setCellValue(point.toDouble())
-        cellPoint.cellStyle = style
+        cellPoint.cellStyle = stylePoint
 
         fileInputStream.close()
         val fileOutputStream = FileOutputStream(filePath)
@@ -192,8 +282,10 @@ class ReadRegistrationCompetitor {
         val workBook = XSSFWorkbook(fileInputStream)
         val style = workBook.createCellStyle()
         style.alignment = HorizontalAlignment.CENTER
+        style.verticalAlignment = VerticalAlignment.CENTER
+        style.wrapText = true
         val sheet = workBook.getSheetAt(0)
-        val row = sheet.getRow(2)
+        val row = sheet.getRow(1)
         var cell = row.getCell(numberColumnForSport)
         if (cell == null){
             cell = row.createCell(numberColumnForSport)
@@ -202,7 +294,7 @@ class ReadRegistrationCompetitor {
         cell.setCellValue(sport)
         sheet.autoSizeColumn(numberColumnForSport)
         val widthColumn = (sheet.getColumnWidth(numberColumnForSport) / 2.0).toInt()
-        sheet.addMergedRegion(CellRangeAddress(2,2, numberColumnForSport,
+        sheet.addMergedRegion(CellRangeAddress(1,2, numberColumnForSport,
             numberColumnForSport + 1 ))
         sheet.setColumnWidth(numberColumnForSport, widthColumn)
         sheet.setColumnWidth(numberColumnForSport + 1, widthColumn)
@@ -235,16 +327,16 @@ class ReadRegistrationCompetitor {
         workBook.write(fileOutputStream)
         fileOutputStream.close()
     }
-    fun ageChangeByStep(filePath: String, listCompetitor: List<Competitor>){
+    fun ageChangeByStep(filePath: String, listCompetitor: List<Competitor>, columnAge:Int){
         val fileInputStream = FileInputStream(filePath)
         val workBook = XSSFWorkbook(fileInputStream)
         val sheet = workBook.getSheetAt(0)
-        val row = sheet.getRow(2)
-        val cell = row.getCell(2)
+        val row = sheet.getRow(1)
+        val cell = row.getCell(columnAge)
         cell.setCellValue("Ступень")
         for (i in 0 until listCompetitor.size){
             val r = sheet.getRow(4 + i)
-            val c = r.getCell(2)
+            val c = r.getCell(columnAge)
             c.setCellValue(listCompetitor[i].degree.toDouble())
         }
         fileInputStream.close()
@@ -292,12 +384,14 @@ class ReadRegistrationCompetitor {
         var gender: String = ""
         for (row in 4..workBook.lastRowNum){
             try {
-
                 if (workBook.getRow(row).getCell(0).cellType == CellType.NUMERIC) {
                     numberOfCompetitor = workBook.getRow(row).getCell(0).numericCellValue.toInt()
                 }
                 if (workBook.getRow(row).getCell(1).cellType == CellType.STRING) {
                     name = workBook.getRow(row).getCell(1).stringCellValue.toString()
+                }
+                if (workBook.getRow(row).getCell(1).cellType == CellType.BLANK){
+                    continue
                 }
                 if (workBook.getRow(row).getCell(2).cellType == CellType.STRING) {
                     val genderTable = workBook.getRow(row).getCell(2).stringCellValue.toString()
