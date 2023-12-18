@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.gtohelper.domain.Gender
 
-@Entity
+@Entity(tableName = "competitors_table")
 data class CompetitorEntity(
     @PrimaryKey(autoGenerate = false)
     val id: Int,
