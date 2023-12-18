@@ -1,8 +1,8 @@
 package com.gtohelper.domain_test
 import JsonParser
 import com.gtohelper.domain.PointsCalculator
-import com.gtohelper.domain.Competitor
-import com.gtohelper.domain.Gender
+import com.gtohelper.domain.models.Competitor
+import com.gtohelper.domain.models.Gender
 import org.junit.Test
 import org.junit.Assert.*
 

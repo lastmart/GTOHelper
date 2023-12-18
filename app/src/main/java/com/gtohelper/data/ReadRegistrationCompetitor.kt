@@ -1,8 +1,8 @@
 package com.gtohelper.data
 import JsonParser
 import com.gtohelper.domain.PointsCalculator
-import com.gtohelper.domain.Competitor
-import com.gtohelper.domain.Gender
+import com.gtohelper.domain.models.Competitor
+import com.gtohelper.domain.models.Gender
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment

@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
 
 android {
@@ -15,7 +16,12 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        kapt {
+            arguments { arg("room.schemaLocation", "$projectDir/schemas") }
+        }
     }
+
 
     buildFeatures {
         viewBinding = true
@@ -55,7 +61,6 @@ dependencies {
     // Navigation Component dependencies
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
-    //  implementation("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.5")
 
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
@@ -71,4 +76,7 @@ dependencies {
     implementation("org.apache.poi:poi:5.2.3")
     implementation("org.apache.poi:poi-ooxml:5.2.3")
 
+    implementation("androidx.room:room-runtime:2.6.1") // Библиотека "Room"
+    kapt("androidx.room:room-compiler:2.6.1") // Кодогенератор
+    implementation("androidx.room:room-ktx:2.6.1") // Дополнительно для Kotlin Coroutines, Kotlin Flows
 }
