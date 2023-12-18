@@ -8,10 +8,13 @@ import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.models.CompetitorResults
 import com.gtohelper.databinding.FragmentCompetitorsResultsBinding
+import com.gtohelper.domain.Gender
 import com.gtohelper.presentation.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_results.adapter.CompetitorResultsAdapter
+import com.gtohelper.presentation.ui.util.appDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -30,6 +33,12 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentCompetitorsResultsBinding.inflate(layoutInflater)
+
+        lifecycleScope.launch {
+            appDatabase.getCompetitorDao().upsertCompetitor(
+                CompetitorEntity(2, "Ivan", 43, Gender.MALE, "Crossfit", 5)
+            )
+        }
 
         initSearchView()
         initViewModel()
