@@ -2,6 +2,7 @@ package com.gtohelper.data.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.gtohelper.data.database.competitor.CompetitorDao
 import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.result.ResultDao
@@ -17,6 +18,7 @@ import com.gtohelper.data.database.sport.SportEntity
         SportEntity::class
     ]
 )
+@TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getCompetitorDao(): CompetitorDao
 

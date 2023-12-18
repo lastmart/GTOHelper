@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class SportEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    // TODO
+    val name: String,
+    val competitorIds: List<Int>?
 )

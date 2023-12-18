@@ -1,18 +1,23 @@
 package com.gtohelper.data.repository
 
+import com.gtohelper.data.database.sport.SportDao
 import com.gtohelper.domain.repository.SportRepository
 
-class SportRepositoryImpl : SportRepository {
+class SportRepositoryImpl(
+    private val sportDao: SportDao
+) : SportRepository {
     override suspend fun getCompetitorIds(sport: String): List<Int> {
-        TODO("Not yet implemented")
+        return sportDao
+            .getSportCompetitors(sport)
+            .flatMap { it.competitorIds ?: emptyList() }
     }
 
     override suspend fun getSports(): List<String> {
-        TODO("Not yet implemented")
+        return sportDao.getSports().map { it.name }
     }
 
     override suspend fun removeCompetitor(id: Int) {
-        TODO("Not yet implemented")
+        TODO("???")
     }
 
     override suspend fun addCompetitor(id: Int) {

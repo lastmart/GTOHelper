@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.gtohelper.data.database.competitor.CompetitorEntity
+import com.gtohelper.data.database.sport.SportEntity
 import com.gtohelper.data.models.CompetitorResults
 import com.gtohelper.databinding.FragmentCompetitorsResultsBinding
 import com.gtohelper.domain.models.Gender
@@ -38,6 +39,13 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
             appDatabase.getCompetitorDao().upsertCompetitor(
                 CompetitorEntity(2, "Ivan", 43, Gender.MALE, "Crossfit", 5)
             )
+
+            appDatabase.getSportDao().upsertSport(
+                SportEntity(1, "Run100m", listOf(11, 22, 33, 44))
+            )
+
+            println(appDatabase.getSportDao().getSportCompetitors("Run100m"))
+
         }
 
         initSearchView()

@@ -13,6 +13,15 @@ interface SportDao {
     )
     suspend fun getSports(): List<SportEntity>
 
+
+    @Query(
+        """
+            SELECT * FROM sports_table
+            WHERE name = :sportName
+            """
+    )
+    suspend fun getSportCompetitors(sportName: String): List<SportEntity>
+
     @Upsert
     suspend fun upsertSport(sport: SportEntity)
 
