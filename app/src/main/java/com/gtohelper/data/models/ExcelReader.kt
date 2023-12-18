@@ -1,16 +1,15 @@
 package com.gtohelper.data.models
 
-import com.gtohelper.domain.Gender
-import com.gtohelper.domain.Competitor
+import JsonParser
+import com.gtohelper.domain.models.Gender
+import com.gtohelper.domain.models.Competitor
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.FileInputStream
 
 fun main(){
     val filePath = "/Users/glebmoskalev/Downloads/example — копия 2.xlsx"
-    for (i in ExcelReader().getCompetitorList(filePath,4)){
-        println(i)
-    }
+    println(JsonParser().getDictionaryWithStandards())
 }
 
 class ExcelReader {

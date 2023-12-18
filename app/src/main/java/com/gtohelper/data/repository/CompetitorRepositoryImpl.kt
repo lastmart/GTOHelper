@@ -8,4 +8,12 @@ class CompetitorRepositoryImpl : CompetitorRepository {
     override suspend fun getCompetitors(): List<Competitor> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun upsertCompetitor(competitor: Competitor) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun changeCompetitor(oldCompetitor: Competitor, newCompetitor: Competitor) {
+        TODO("Not yet implemented")
+    }
 }
