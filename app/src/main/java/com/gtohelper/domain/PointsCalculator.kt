@@ -1,6 +1,7 @@
 package com.gtohelper.domain
 
 import JsonParser
+import com.gtohelper.domain.models.Competitor
 import java.time.LocalTime
 import java.util.SortedMap
 

@@ -1,4 +1,4 @@
-package com.gtohelper.domain
+package com.gtohelper.domain.models
 
 data class Competitor(
     val nameCompetitor: String,

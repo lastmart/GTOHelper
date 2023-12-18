@@ -2,7 +2,7 @@ package com.gtohelper.data.database.competitor
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.gtohelper.domain.Gender
+import com.gtohelper.domain.models.Gender
 
 @Entity(tableName = "competitors_table")
 data class CompetitorEntity(

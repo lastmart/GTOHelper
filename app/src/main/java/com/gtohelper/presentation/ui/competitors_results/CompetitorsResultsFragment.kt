@@ -11,7 +11,7 @@ import androidx.lifecycle.lifecycleScope
 import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.models.CompetitorResults
 import com.gtohelper.databinding.FragmentCompetitorsResultsBinding
-import com.gtohelper.domain.Gender
+import com.gtohelper.domain.models.Gender
 import com.gtohelper.presentation.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_results.adapter.CompetitorResultsAdapter
 import com.gtohelper.presentation.ui.util.appDatabase
