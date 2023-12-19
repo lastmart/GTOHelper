@@ -17,64 +17,64 @@ import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
 
-fun main(){
-    val filePath = "/Users/glebmoskalev/Downloads/example — копия.xlsx"
-    val readRegistrationCompetitor = ReadRegistrationCompetitor()
-    val listCompetitor = readRegistrationCompetitor.getListCompetitor(filePath)
-    val listColumnStartSport = mutableListOf(6, 8, 10)
-    val listSport = mutableListOf("Плавание 50 м (мин, с)","Бег на 60 м (с)",
-        "Наклон вперед из положения стоя на гимнастической скамье (от уровня скамьи - см)")
-
-    readRegistrationCompetitor.ageChangeByStep(filePath, listCompetitor, 3)
-
-    var numberColumnForSport = 6
-    for (sport in listSport){
-        readRegistrationCompetitor.addSport(sport, filePath, numberColumnForSport)
-        numberColumnForSport += 2
-    }
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:28.01"),
-        listCompetitor[0], listSport[0], listColumnStartSport[0])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:29.10"),
-        listCompetitor[1], listSport[0], listColumnStartSport[0])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:30.10"),
-        listCompetitor[2], listSport[0], listColumnStartSport[0])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:31.10"),
-        listCompetitor[3], listSport[0], listColumnStartSport[0])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:34.10"),
-        listCompetitor[4], listSport[0], listColumnStartSport[0])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:31.10"),
-        listCompetitor[5], listSport[0], listColumnStartSport[0])
-
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("11.1"),
-        listCompetitor[0], listSport[1], listColumnStartSport[1])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("10.0"),
-        listCompetitor[1], listSport[1], listColumnStartSport[1])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("9.2"),
-        listCompetitor[2], listSport[1], listColumnStartSport[1])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("7.54"),
-        listCompetitor[3], listSport[1], listColumnStartSport[1])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("6.34"),
-        listCompetitor[4], listSport[1], listColumnStartSport[1])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("7.54"),
-        listCompetitor[5], listSport[1], listColumnStartSport[1])
-
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 22.0, listCompetitor[0], listSport[2],
-        listColumnStartSport[2])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 20.0, listCompetitor[1], listSport[2],
-        listColumnStartSport[2])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 25.0, listCompetitor[2], listSport[2],
-        listColumnStartSport[2])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 17.0, listCompetitor[3], listSport[2],
-        listColumnStartSport[2])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 15.0, listCompetitor[4], listSport[2],
-        listColumnStartSport[2])
-    readRegistrationCompetitor.addNormativeAndPoint(filePath, 17.0, listCompetitor[5], listSport[2],
-        listColumnStartSport[2])
-
-    readRegistrationCompetitor.addCompetitionResults(filePath, 12, listColumnStartSport,
-        6)
-    readRegistrationCompetitor.addNameTable(filePath, "1 \"A\" Эстафета по кроссфиту",13)
-}
+//fun main(){
+//    val filePath = "/Users/glebmoskalev/Downloads/example — копия.xlsx"
+//    val readRegistrationCompetitor = ReadRegistrationCompetitor()
+//    val listCompetitor = readRegistrationCompetitor.getListCompetitor(filePath)
+//    val listColumnStartSport = mutableListOf(6, 8, 10)
+//    val listSport = mutableListOf("Плавание 50 м (мин, с)","Бег на 60 м (с)",
+//        "Наклон вперед из положения стоя на гимнастической скамье (от уровня скамьи - см)")
+//
+//    readRegistrationCompetitor.ageChangeByStep(filePath, listCompetitor, 3)
+//
+//    var numberColumnForSport = 6
+//    for (sport in listSport){
+//        readRegistrationCompetitor.addSport(sport, filePath, numberColumnForSport)
+//        numberColumnForSport += 2
+//    }
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:28.01"),
+//        listCompetitor[0], listSport[0], listColumnStartSport[0])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:29.10"),
+//        listCompetitor[1], listSport[0], listColumnStartSport[0])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:30.10"),
+//        listCompetitor[2], listSport[0], listColumnStartSport[0])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:31.10"),
+//        listCompetitor[3], listSport[0], listColumnStartSport[0])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:34.10"),
+//        listCompetitor[4], listSport[0], listColumnStartSport[0])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertTime("00:31.10"),
+//        listCompetitor[5], listSport[0], listColumnStartSport[0])
+//
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("11.1"),
+//        listCompetitor[0], listSport[1], listColumnStartSport[1])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("10.0"),
+//        listCompetitor[1], listSport[1], listColumnStartSport[1])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("9.2"),
+//        listCompetitor[2], listSport[1], listColumnStartSport[1])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("7.54"),
+//        listCompetitor[3], listSport[1], listColumnStartSport[1])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("6.34"),
+//        listCompetitor[4], listSport[1], listColumnStartSport[1])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, JsonParser().convertRunTime("7.54"),
+//        listCompetitor[5], listSport[1], listColumnStartSport[1])
+//
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 22.0, listCompetitor[0], listSport[2],
+//        listColumnStartSport[2])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 20.0, listCompetitor[1], listSport[2],
+//        listColumnStartSport[2])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 25.0, listCompetitor[2], listSport[2],
+//        listColumnStartSport[2])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 17.0, listCompetitor[3], listSport[2],
+//        listColumnStartSport[2])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 15.0, listCompetitor[4], listSport[2],
+//        listColumnStartSport[2])
+//    readRegistrationCompetitor.addNormativeAndPoint(filePath, 17.0, listCompetitor[5], listSport[2],
+//        listColumnStartSport[2])
+//
+//    readRegistrationCompetitor.addCompetitionResults(filePath, 12, listColumnStartSport,
+//        6)
+//    readRegistrationCompetitor.addNameTable(filePath, "1 \"A\" Эстафета по кроссфиту",13)
+//}
 class ReadRegistrationCompetitor {
     fun addNameTable(filePath: String, nameTable:String, lastColumn: Int)
     {
@@ -372,52 +372,52 @@ class ReadRegistrationCompetitor {
         fileOutputStream.close()
     }
 
-    fun getListCompetitor(filePath:String): List<Competitor>{
-        val fileInputStream = FileInputStream(filePath)
-        val workBook = WorkbookFactory.create(fileInputStream).getSheetAt(0)
-        var numberOfCompetitor = 0
-        var name = ""
-        var age = 0
-        var nameTeam = ""
-        var participantNumber = 0
-        var listCompetitor = mutableListOf<Competitor>()
-        var gender: String = ""
-        for (row in 4..workBook.lastRowNum){
-            try {
-                if (workBook.getRow(row).getCell(0).cellType == CellType.NUMERIC) {
-                    numberOfCompetitor = workBook.getRow(row).getCell(0).numericCellValue.toInt()
-                }
-                if (workBook.getRow(row).getCell(1).cellType == CellType.STRING) {
-                    name = workBook.getRow(row).getCell(1).stringCellValue.toString()
-                }
-                if (workBook.getRow(row).getCell(1).cellType == CellType.BLANK){
-                    continue
-                }
-                if (workBook.getRow(row).getCell(2).cellType == CellType.STRING) {
-                    val genderTable = workBook.getRow(row).getCell(2).stringCellValue.toString()
-                    if (genderTable == "М") {
-                        gender = Gender.MALE.string
-                    }
-                    if (genderTable == "Ж") {
-                        gender = Gender.FEMALE.string
-                    }
-                }
-                if (workBook.getRow(row).getCell(3).cellType == CellType.NUMERIC) {
-                    age = workBook.getRow(row).getCell(3).numericCellValue.toInt()
-                }
-                if (workBook.getRow(row).getCell(4).cellType == CellType.STRING) {
-                    nameTeam = workBook.getRow(row).getCell(4).stringCellValue.toString()
-                }
-                if (workBook.getRow(row).getCell(5).cellType == CellType.NUMERIC) {
-                    participantNumber = workBook.getRow(row).getCell(5).numericCellValue.toInt()
-                }
-                listCompetitor.add(Competitor(name, age, gender, nameTeam, participantNumber))
-            }
-            catch (e: NullPointerException){
-                throw Exception("table is filled in incorrectly")
-            }
-        }
-        fileInputStream.close()
-        return listCompetitor
-    }
+//    fun getListCompetitor(filePath:String): List<Competitor>{
+//        val fileInputStream = FileInputStream(filePath)
+//        val workBook = WorkbookFactory.create(fileInputStream).getSheetAt(0)
+//        var numberOfCompetitor = 0
+//        var name = ""
+//        var age = 0
+//        var nameTeam = ""
+//        var participantNumber = 0
+//        var listCompetitor = mutableListOf<Competitor>()
+//        var gender: String = ""
+//        for (row in 4..workBook.lastRowNum){
+//            try {
+//                if (workBook.getRow(row).getCell(0).cellType == CellType.NUMERIC) {
+//                    numberOfCompetitor = workBook.getRow(row).getCell(0).numericCellValue.toInt()
+//                }
+//                if (workBook.getRow(row).getCell(1).cellType == CellType.STRING) {
+//                    name = workBook.getRow(row).getCell(1).stringCellValue.toString()
+//                }
+//                if (workBook.getRow(row).getCell(1).cellType == CellType.BLANK){
+//                    continue
+//                }
+//                if (workBook.getRow(row).getCell(2).cellType == CellType.STRING) {
+//                    val genderTable = workBook.getRow(row).getCell(2).stringCellValue.toString()
+//                    if (genderTable == "М") {
+//                        gender = Gender.MALE.string
+//                    }
+//                    if (genderTable == "Ж") {
+//                        gender = Gender.FEMALE.string
+//                    }
+//                }
+//                if (workBook.getRow(row).getCell(3).cellType == CellType.NUMERIC) {
+//                    age = workBook.getRow(row).getCell(3).numericCellValue.toInt()
+//                }
+//                if (workBook.getRow(row).getCell(4).cellType == CellType.STRING) {
+//                    nameTeam = workBook.getRow(row).getCell(4).stringCellValue.toString()
+//                }
+//                if (workBook.getRow(row).getCell(5).cellType == CellType.NUMERIC) {
+//                    participantNumber = workBook.getRow(row).getCell(5).numericCellValue.toInt()
+//                }
+//                listCompetitor.add(Competitor(name, age, gender, nameTeam, participantNumber))
+//            }
+//            catch (e: NullPointerException){
+//                throw Exception("table is filled in incorrectly")
+//            }
+//        }
+//        fileInputStream.close()
+//        return listCompetitor
+//    }
 }

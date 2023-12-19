@@ -2,11 +2,10 @@ package com.gtohelper.domain.models
 
 data class Competitor(
     val nameCompetitor: String,
-    val age: Int,
     val gender: String,
     val nameTeam: String,
     val participantNumber: Int,
-    val degree: Int = calculateDegree(age)
+    val degree: Int
 )
 enum class Gender(val string: String){
     FEMALE("female"), MALE("male");

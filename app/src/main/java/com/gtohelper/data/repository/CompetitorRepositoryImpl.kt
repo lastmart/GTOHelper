@@ -22,7 +22,6 @@ class CompetitorRepositoryImpl(
         val newCompetitorEntity = competitorEntity.copy(
             id = competitor.participantNumber,
             nameCompetitor = competitor.nameCompetitor,
-            age = competitor.age,
             gender = Gender.valueOf(competitor.gender),
             nameTeam = competitor.nameTeam,
             degree = competitor.degree
@@ -38,7 +37,6 @@ class CompetitorRepositoryImpl(
         val newCompetitorEntity = oldCompetitorEntity.copy(
             id = newCompetitor.participantNumber,
             nameCompetitor = newCompetitor.nameCompetitor,
-            age = newCompetitor.age,
             gender = Gender.valueOf(newCompetitor.gender),
             nameTeam = newCompetitor.nameTeam,
             degree = newCompetitor.degree
