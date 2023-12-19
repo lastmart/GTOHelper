@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/disciplinesListFragment">
 
     <fragment
         android:id="@+id/mainFragment"
@@ -37,4 +37,9 @@
         android:name="com.gtohelper.presentation.ui.competitors_list.CompetitorsListFragment"
         android:label="Список участников"
         tools:layout="@layout/fragment_competitors_list" />
+    <fragment
+        android:id="@+id/disciplinesListFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.DisciplinesListFragment"
+        android:label="Название команды"
+        tools:layout="@layout/fragment_disciplines_list" />
 </navigation>

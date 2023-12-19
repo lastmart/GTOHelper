@@ -33,32 +33,6 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
     ): View {
         binding = FragmentCompetitorsResultsBinding.inflate(layoutInflater)
 
-        println("Before database")
-
-        /*lifecycleScope.launch(Dispatchers.IO) {
-            println(1)
-
-            val dao = appDatabase.getCompetitorDao()
-
-            println(11)
-
-            dao.upsertCompetitor(
-                CompetitorEntity(2, "Ivan", 43, Gender.MALE, "Crossfit", 5)
-            )
-
-            println(2)
-
-            appDatabase.getSportDao().upsertSport(
-                SportEntity("Run100m", listOf(11, 22, 33, 44))
-            )
-
-            println(appDatabase.getSportDao().getSportCompetitors("Run100m"))
-
-        }
-*/
-        println("After database")
-
-
         initSearchView()
         initViewModel()
 
@@ -71,22 +45,13 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
     }
 
     private fun initViewModel() {
-      //  viewModel = ViewModelProvider(this)[CompetitorsResultsViewModel::class.java]
-
-        println("InitViewModel in fragment")
-
         viewModel.competitorsResultsLiveData.observe(viewLifecycleOwner) {
             showCompetitorsResults(it)
         }
 
-        println("Before get comp results")
-
         lifecycleScope.launch(Dispatchers.Default) {
             viewModel.getCompetitorsResults()
         }
-
-        println("After get comp results")
-
     }
 
     private fun initSearchView() {

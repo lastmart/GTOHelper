@@ -15,12 +15,14 @@ import com.gtohelper.data.mappers.CompetitorResultsEntityToCompetitorResultsMapp
 import com.gtohelper.data.mappers.SportEntityToSportMapper
 import com.gtohelper.data.repository.CompetitorRepositoryImpl
 import com.gtohelper.data.repository.CompetitorResultsRepositoryImpl
+import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import com.gtohelper.data.repository.SportRepositoryImpl
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.CompetitorResults
 import com.gtohelper.domain.models.Sport
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.CompetitorResultsRepository
+import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.repository.SportRepository
 import dagger.Module
 import dagger.Provides
@@ -109,5 +111,13 @@ object DataModule {
         dao: SportDao
     ): SportRepository {
         return SportRepositoryImpl(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDisciplineRepository(
+        @ApplicationContext context: Context
+    ): DisciplineRepository {
+        return DisciplineRepositoryImpl(context)
     }
 }
