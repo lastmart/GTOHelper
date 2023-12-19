@@ -13,6 +13,14 @@ interface CompetitorDao {
     )
     suspend fun getCompetitors(): List<CompetitorEntity>
 
+    @Query(
+        """
+            SELECT * FROM competitors_table
+            WHERE id = :id
+        """
+    )
+    suspend fun getCompetitorById(id: Int): CompetitorEntity
+
     @Upsert
     suspend fun upsertCompetitor(competitor: CompetitorEntity)
 
