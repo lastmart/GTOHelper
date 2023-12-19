@@ -7,23 +7,27 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.gtohelper.R
 import com.gtohelper.data.models.TablePreview
 import com.gtohelper.databinding.FragmentMainBinding
-import com.gtohelper.presentation.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.main.adapter.TablePreviewAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+
+@AndroidEntryPoint
 class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
 
     companion object {
         fun newInstance() = MainFragment()
     }
 
-    private lateinit var viewModel: MainFragmentViewModel
+    private val viewModel: MainFragmentViewModel by viewModels()
+
     private lateinit var binding: FragmentMainBinding
     private lateinit var adapter: TablePreviewAdapter
 
@@ -59,8 +63,6 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[MainFragmentViewModel::class.java]
-
         viewModel.tablesLiveData.observe(viewLifecycleOwner) {
             showTables(it)
         }

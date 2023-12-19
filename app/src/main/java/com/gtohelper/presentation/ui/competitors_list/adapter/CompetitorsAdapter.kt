@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.data.models.Competitor
 import com.gtohelper.databinding.ItemCompetitorPreviewBinding
-import com.gtohelper.presentation.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemClickListener
 
 class CompetitorsAdapter(
     val data: List<Competitor>,

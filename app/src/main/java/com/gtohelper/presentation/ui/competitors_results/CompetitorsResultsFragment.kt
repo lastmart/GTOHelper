@@ -6,47 +6,58 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.gtohelper.data.database.competitor.CompetitorEntity
-import com.gtohelper.data.database.sport.SportEntity
 import com.gtohelper.data.models.CompetitorResults
 import com.gtohelper.databinding.FragmentCompetitorsResultsBinding
-import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_results.adapter.CompetitorResultsAdapter
-import com.gtohelper.presentation.ui.util.appDatabase
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorResults> {
 
     companion object {
         fun newInstance() = CompetitorsResultsFragment()
     }
 
-    private lateinit var viewModel: CompetitorsResultsViewModel
+    private val viewModel: CompetitorsResultsViewModel by viewModels()
     private lateinit var binding: FragmentCompetitorsResultsBinding
     private lateinit var adapter: CompetitorResultsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCompetitorsResultsBinding.inflate(layoutInflater)
 
-        lifecycleScope.launch {
-            appDatabase.getCompetitorDao().upsertCompetitor(
+        println("Before database")
+
+        /*lifecycleScope.launch(Dispatchers.IO) {
+            println(1)
+
+            val dao = appDatabase.getCompetitorDao()
+
+            println(11)
+
+            dao.upsertCompetitor(
                 CompetitorEntity(2, "Ivan", 43, Gender.MALE, "Crossfit", 5)
             )
 
+            println(2)
+
             appDatabase.getSportDao().upsertSport(
-                SportEntity(1, "Run100m", listOf(11, 22, 33, 44))
+                SportEntity("Run100m", listOf(11, 22, 33, 44))
             )
 
             println(appDatabase.getSportDao().getSportCompetitors("Run100m"))
 
         }
+*/
+        println("After database")
+
 
         initSearchView()
         initViewModel()
@@ -60,15 +71,22 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[CompetitorsResultsViewModel::class.java]
+      //  viewModel = ViewModelProvider(this)[CompetitorsResultsViewModel::class.java]
+
+        println("InitViewModel in fragment")
 
         viewModel.competitorsResultsLiveData.observe(viewLifecycleOwner) {
             showCompetitorsResults(it)
         }
 
+        println("Before get comp results")
+
         lifecycleScope.launch(Dispatchers.Default) {
             viewModel.getCompetitorsResults()
         }
+
+        println("After get comp results")
+
     }
 
     private fun initSearchView() {

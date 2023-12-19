@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.data.models.TablePreview
 import com.gtohelper.databinding.ItemTablePreviewBinding
-import com.gtohelper.presentation.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemClickListener
 
 class TablePreviewAdapter(
     val data: List<TablePreview>,

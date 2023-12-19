@@ -1,6 +1,7 @@
 package com.gtohelper.data.repository
 
 import com.gtohelper.data.database.sport.SportDao
+import com.gtohelper.data.database.sport.SportEntity
 import com.gtohelper.domain.repository.SportRepository
 
 class SportRepositoryImpl(
@@ -16,11 +17,21 @@ class SportRepositoryImpl(
         return sportDao.getSports().map { it.name }
     }
 
-    override suspend fun removeCompetitor(id: Int) {
-        TODO("???")
+    override suspend fun removeCompetitor(sport: String, id: Int) {
+        val sportCompetitors = getCompetitorIds(sport)
+
+        val newSportCompetitors = sportCompetitors - id
+        val newSportEntity = SportEntity(sport, newSportCompetitors)
+
+        sportDao.upsertSport(newSportEntity)
     }
 
-    override suspend fun addCompetitor(id: Int) {
-        TODO("Not yet implemented")
+    override suspend fun addCompetitor(sport: String, id: Int) {
+        val sportCompetitors = getCompetitorIds(sport)
+
+        val newSportCompetitors = sportCompetitors + id
+        val newSportEntity = SportEntity(sport, newSportCompetitors)
+
+        sportDao.upsertSport(newSportEntity)
     }
 }
