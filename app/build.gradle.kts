@@ -2,6 +2,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
 }
 
 android {
@@ -19,6 +20,7 @@ android {
 
         kapt {
             arguments { arg("room.schemaLocation", "$projectDir/schemas") }
+            correctErrorTypes = true
         }
     }
 
@@ -77,7 +79,13 @@ dependencies {
     implementation("org.apache.poi:poi:5.2.3")
     implementation("org.apache.poi:poi-ooxml:5.2.3")
 
+    // Room
     implementation("androidx.room:room-runtime:2.6.1") // Библиотека "Room"
     kapt("androidx.room:room-compiler:2.6.1") // Кодогенератор
     implementation("androidx.room:room-ktx:2.6.1") // Дополнительно для Kotlin Coroutines, Kotlin Flows
+
+    //Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.48.1")
+    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    kapt("androidx.hilt:hilt-compiler:1.1.0")
 }
