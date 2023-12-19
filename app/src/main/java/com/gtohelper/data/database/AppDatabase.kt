@@ -22,7 +22,7 @@ import com.gtohelper.data.database.sport.SportEntity
 abstract class AppDatabase : RoomDatabase() {
     abstract fun getCompetitorDao(): CompetitorDao
 
-    abstract fun getResultDao(): CompetitorResultsDao
+    abstract fun getCompetitorResultsDao(): CompetitorResultsDao
 
     abstract fun getSportDao(): SportDao
 }

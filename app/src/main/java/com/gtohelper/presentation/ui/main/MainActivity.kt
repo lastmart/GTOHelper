@@ -8,11 +8,12 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.room.Room
 import com.gtohelper.R
 import com.gtohelper.data.database.AppDatabase
 import com.gtohelper.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
@@ -27,16 +28,9 @@ class MainActivity : AppCompatActivity() {
 
         window.statusBarColor = Color.parseColor("#BCBCBC")
 
-        initDatabase()
         initNavController()
         initBottomNavigation()
         initToolbar()
-    }
-
-    private fun initDatabase() {
-        database = Room
-            .databaseBuilder(applicationContext, AppDatabase::class.java, "gto_helper_db")
-            .build()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -51,6 +45,21 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
+        /*binding.bottomNavigationView.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.mainFragment -> {
+                 //   navController.navigate(R.layout.fragment_main)
+                 //   navController.navigate(R.id.action)
+                    true
+                }
+
+                R.id.appInfoFragment -> {
+                    true
+                }
+
+                else -> false
+            }
+        }*/
     }
 
     private fun initToolbar() {

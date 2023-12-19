@@ -6,21 +6,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.gtohelper.data.models.Competitor
 import com.gtohelper.databinding.FragmentCompetitorsListBinding
-import com.gtohelper.presentation.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.competitors_list.adapter.CompetitorsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     companion object {
         fun newInstance() = CompetitorsListFragment()
     }
 
-    private lateinit var viewModel: CompetitorsListViewModel
+    private val viewModel: CompetitorsListViewModel by viewModels()
     private lateinit var binding: FragmentCompetitorsListBinding
     private lateinit var adapter: CompetitorsAdapter
 
@@ -42,8 +44,6 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     }
 
     private fun initViewModel() {
-        viewModel = ViewModelProvider(this)[CompetitorsListViewModel::class.java]
-
         viewModel.competitorsLiveData.observe(viewLifecycleOwner) {
             showCompetitors(it)
         }
