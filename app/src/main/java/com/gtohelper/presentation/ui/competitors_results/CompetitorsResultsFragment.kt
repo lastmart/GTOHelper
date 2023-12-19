@@ -41,7 +41,7 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
             )
 
             appDatabase.getSportDao().upsertSport(
-                SportEntity(1, "Run100m", listOf(11, 22, 33, 44))
+                SportEntity("Run100m", listOf(11, 22, 33, 44))
             )
 
             println(appDatabase.getSportDao().getSportCompetitors("Run100m"))

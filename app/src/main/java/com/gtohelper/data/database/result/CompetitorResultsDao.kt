@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Upsert
 
 @Dao
-interface ResultDao {
+interface CompetitorResultsDao {
 
     @Query(
         "SELECT * FROM competitors_results_table"
