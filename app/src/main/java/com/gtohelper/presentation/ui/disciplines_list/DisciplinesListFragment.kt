@@ -5,18 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.gtohelper.databinding.FragmentDisciplinesListBinding
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.disciplines_list.adapter.DisciplineAdapter
 import com.gtohelper.presentation.ui.util.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class DisciplinesListFragment : Fragment(), OnItemClickListener<Discipline> {
+class DisciplinesListFragment : Fragment(),
+    OnItemClickListener<Discipline>, OnItemLongClickListener<Discipline> {
 
     companion object {
         fun newInstance() = DisciplinesListFragment()
@@ -38,7 +41,7 @@ class DisciplinesListFragment : Fragment(), OnItemClickListener<Discipline> {
     }
 
     private fun initViewModel() {
-        viewModel.disciplinesLiveData.observe(viewLifecycleOwner){
+        viewModel.disciplinesLiveData.observe(viewLifecycleOwner) {
             showDisciplines(it)
         }
 
@@ -47,12 +50,18 @@ class DisciplinesListFragment : Fragment(), OnItemClickListener<Discipline> {
         }
     }
 
-    private fun showDisciplines(disciplines: List<Discipline>){
-        adapter = DisciplineAdapter(disciplines, this)
+    private fun showDisciplines(disciplines: List<Discipline>) {
+        adapter = DisciplineAdapter(disciplines, this, this)
         binding.disciplinesRecyclerView.adapter = adapter
     }
 
     override fun onItemClicked(item: Discipline) {
         println("$item clicked")
+    }
+
+    override fun onItemLongClicked(item: Discipline): Boolean {
+        println("$item long clicked")
+        Toast.makeText(requireContext(), "Remove ${item.name}?", Toast.LENGTH_SHORT).show()
+        return true
     }
 }

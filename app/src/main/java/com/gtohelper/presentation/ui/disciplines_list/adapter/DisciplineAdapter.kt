@@ -6,18 +6,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.databinding.ItemDisciplineBinding
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.util.OnItemClickListener
+import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 
 
 class DisciplineAdapter(
     var disciplines: List<Discipline>,
-    private val onItemClickListener: OnItemClickListener<Discipline>
+    private val onItemClickListener: OnItemClickListener<Discipline>,
+    private val onItemLongClickListener: OnItemLongClickListener<Discipline>
 ) : RecyclerView.Adapter<DisciplineAdapter.DisciplineViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DisciplineViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemDisciplineBinding.inflate(inflater, parent, false)
 
-        return DisciplineViewHolder(binding, onItemClickListener)
+        return DisciplineViewHolder(binding, onItemClickListener, onItemLongClickListener)
     }
 
     override fun onBindViewHolder(holder: DisciplineViewHolder, position: Int) {
@@ -29,7 +31,8 @@ class DisciplineAdapter(
 
     class DisciplineViewHolder(
         private val binding: ItemDisciplineBinding,
-        private val onItemClickListener: OnItemClickListener<Discipline>
+        private val onItemClickListener: OnItemClickListener<Discipline>,
+        private val onItemLongClickListener: OnItemLongClickListener<Discipline>
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(discipline: Discipline) {
@@ -38,6 +41,10 @@ class DisciplineAdapter(
 
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(discipline)
+            }
+
+            binding.root.setOnLongClickListener {
+                onItemLongClickListener.onItemLongClicked(discipline)
             }
         }
     }
