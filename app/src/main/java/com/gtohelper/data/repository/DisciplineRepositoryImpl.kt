@@ -16,8 +16,8 @@ class DisciplineRepositoryImpl(
         return disciplines
     }
 
-    override suspend fun deleteDiscipline(discipline: Discipline) {
-        disciplines.remove(discipline)
+    override suspend fun deleteDisciplineByName(name: String) {
+        disciplines.removeIf { it.name == name }
     }
 
     private fun getDrawable(resId: Int) = AppCompatResources.getDrawable(context, resId)!!

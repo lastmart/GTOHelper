@@ -6,5 +6,5 @@ interface DisciplineRepository {
 
     suspend fun getDisciplines(): List<Discipline>
 
-    suspend fun deleteDiscipline(discipline: Discipline)
+    suspend fun deleteDisciplineByName(name: String)
 }

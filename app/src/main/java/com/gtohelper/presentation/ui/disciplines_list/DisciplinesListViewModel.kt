@@ -21,11 +21,6 @@ class DisciplinesListViewModel @Inject constructor(
         _disciplinesLiveData.postValue(disciplines)
     }
 
-    suspend fun deleteDiscipline(discipline: Discipline) {
-        disciplineRepository.deleteDiscipline(discipline)
-        getDisciplines()
-    }
-
     suspend fun deleteCompetition() {
         // TODO
     }

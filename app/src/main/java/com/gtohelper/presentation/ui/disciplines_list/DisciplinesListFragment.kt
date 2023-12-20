@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -18,6 +19,7 @@ import com.gtohelper.R
 import com.gtohelper.databinding.FragmentDisciplinesListBinding
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.disciplines_list.adapter.DisciplineAdapter
+import com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment
 import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -45,10 +47,16 @@ class DisciplinesListFragment : Fragment(),
     ): View {
         binding = FragmentDisciplinesListBinding.inflate(layoutInflater)
 
+        initRecyclerView()
         initViewModel()
         initToolbarMenu()
 
         return binding.root
+    }
+
+    private fun initRecyclerView() {
+        adapter = DisciplineAdapter(listOf(), this, this)
+        binding.disciplinesRecyclerView.adapter = adapter
     }
 
     private fun initToolbarMenu() {
@@ -93,8 +101,7 @@ class DisciplinesListFragment : Fragment(),
     }
 
     private fun showDisciplines(disciplines: List<Discipline>) {
-        adapter = DisciplineAdapter(disciplines, this, this)
-        binding.disciplinesRecyclerView.adapter = adapter
+        adapter.setData(disciplines)
     }
 
     private fun deleteCompetition() {
@@ -105,13 +112,14 @@ class DisciplinesListFragment : Fragment(),
     }
 
     private fun deleteDiscipline(discipline: Discipline) {
-        Toast.makeText(requireContext(), "Delete ${discipline.name}?", Toast.LENGTH_SHORT).show()
+        val args = Bundle().apply {
+            putString(DeleteDisciplineDialogFragment.DISCIPLINE_ARG, discipline.name)
+        }
 
-        findNavController().navigate(R.id.action_disciplinesListFragment_to_deleteDisciplineDialogFragment)
-
-       // lifecycleScope.launch(Dispatchers.IO) {
-       //     viewModel.deleteDiscipline(discipline)
-       // }
+        findNavController().navigate(
+            R.id.action_disciplinesListFragment_to_deleteDisciplineDialogFragment,
+            args
+        )
     }
 
     override fun onItemClicked(item: Discipline) {
@@ -119,7 +127,18 @@ class DisciplinesListFragment : Fragment(),
     }
 
     override fun onItemLongClicked(item: Discipline): Boolean {
+        setFragmentResultListener(DeleteDisciplineDialogFragment.DELETE_RESULT) { key, bundle ->
+            val isDeleted = bundle.getBoolean(DeleteDisciplineDialogFragment.DELETE_RESULT)
+
+            if (isDeleted) {
+                lifecycleScope.launch {
+                    viewModel.getDisciplines()
+                }
+            }
+        }
+
         deleteDiscipline(item)
+
         return true
     }
 }
