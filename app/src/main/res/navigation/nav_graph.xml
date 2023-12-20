@@ -41,5 +41,13 @@
         android:id="@+id/disciplinesListFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.DisciplinesListFragment"
         android:label="Название команды"
-        tools:layout="@layout/fragment_disciplines_list" />
+        tools:layout="@layout/fragment_disciplines_list" >
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_deleteDisciplineDialogFragment"
+            app:destination="@id/deleteDisciplineDialogFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/deleteDisciplineDialogFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment"
+        android:label="DeleteDisciplineDialogFragment" />
 </navigation>

@@ -5,4 +5,6 @@ import com.gtohelper.domain.models.Discipline
 interface DisciplineRepository {
 
     suspend fun getDisciplines(): List<Discipline>
+
+    suspend fun deleteDiscipline(discipline: Discipline)
 }

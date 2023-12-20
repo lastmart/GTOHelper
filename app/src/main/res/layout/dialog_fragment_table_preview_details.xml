@@ -43,7 +43,7 @@
         android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/delete_icon"
+        android:background="@drawable/icon_delete"
         app:layout_constraintBottom_toBottomOf="@id/editTextTitle"
         app:layout_constraintEnd_toEndOf="@id/guideLineEnd"
         app:layout_constraintTop_toTopOf="@id/editTextTitle" />
