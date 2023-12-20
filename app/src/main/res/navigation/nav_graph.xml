@@ -45,9 +45,16 @@
         <action
             android:id="@+id/action_disciplinesListFragment_to_deleteDisciplineDialogFragment"
             app:destination="@id/deleteDisciplineDialogFragment" />
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_deleteCompetitionDialogFragment"
+            app:destination="@id/deleteCompetitionDialogFragment" />
     </fragment>
     <dialog
         android:id="@+id/deleteDisciplineDialogFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment"
         android:label="DeleteDisciplineDialogFragment" />
+    <dialog
+        android:id="@+id/deleteCompetitionDialogFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment"
+        android:label="DeleteCompetitionDialogFragment" />
 </navigation>

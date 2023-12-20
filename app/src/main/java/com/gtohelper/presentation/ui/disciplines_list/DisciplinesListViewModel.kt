@@ -21,7 +21,7 @@ class DisciplinesListViewModel @Inject constructor(
         _disciplinesLiveData.postValue(disciplines)
     }
 
-    suspend fun deleteCompetition() {
-        // TODO
+    suspend fun deleteCompetitionByName(competitionName: String) {
+        println("Delete competition $competitionName")
     }
 }

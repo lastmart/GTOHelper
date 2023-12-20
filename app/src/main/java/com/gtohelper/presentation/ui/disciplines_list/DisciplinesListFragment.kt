@@ -19,7 +19,9 @@ import com.gtohelper.R
 import com.gtohelper.databinding.FragmentDisciplinesListBinding
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.disciplines_list.adapter.DisciplineAdapter
+import com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment
 import com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment
+import com.gtohelper.presentation.ui.main.MainActivity
 import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,6 +34,8 @@ class DisciplinesListFragment : Fragment(),
 
     companion object {
         fun newInstance() = DisciplinesListFragment()
+
+        const val TEAM_NAME = "TEAM_NAME"
     }
 
     private val viewModel: DisciplinesListViewModel by viewModels()
@@ -41,17 +45,25 @@ class DisciplinesListFragment : Fragment(),
     private lateinit var menuHost: MenuHost
     private lateinit var menuProvider: MenuProvider
 
+    private lateinit var teamName: String
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentDisciplinesListBinding.inflate(layoutInflater)
 
+        initArgs()
         initRecyclerView()
         initViewModel()
         initToolbarMenu()
 
         return binding.root
+    }
+
+    private fun initArgs() {
+        val defaultTeamName = "МГУ"
+        teamName = arguments?.getString(TEAM_NAME, defaultTeamName) ?: defaultTeamName
     }
 
     private fun initRecyclerView() {
@@ -60,8 +72,8 @@ class DisciplinesListFragment : Fragment(),
     }
 
     private fun initToolbarMenu() {
+        (requireActivity() as MainActivity).supportActionBar?.title = teamName
         initMenuProvider()
-
         menuHost = requireActivity()
         menuHost.addMenuProvider(menuProvider)
     }
@@ -105,10 +117,31 @@ class DisciplinesListFragment : Fragment(),
     }
 
     private fun deleteCompetition() {
-        Toast.makeText(requireContext(), "Delete competition", Toast.LENGTH_SHORT).show()
-        lifecycleScope.launch(Dispatchers.IO) {
-            viewModel.deleteCompetition()
+        setFragmentResultListener(DeleteCompetitionDialogFragment.DELETE_RESULT) { key, bundle ->
+            val isDeleted = bundle.getBoolean(DeleteDisciplineDialogFragment.DELETE_RESULT)
+
+            if (isDeleted) {
+                Toast.makeText(requireContext(), "Delete $teamName", Toast.LENGTH_SHORT).show()
+
+                lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.deleteCompetitionByName(teamName)
+                }
+
+                findNavController().navigateUp()
+            }
         }
+
+        navigateToDeleteDialogFragment()
+    }
+
+    private fun navigateToDeleteDialogFragment() {
+        val args = Bundle().apply {
+            putString(DeleteCompetitionDialogFragment.COMPETITION_ARG, teamName)
+        }
+        findNavController().navigate(
+            R.id.action_disciplinesListFragment_to_deleteCompetitionDialogFragment,
+            args
+        )
     }
 
     private fun deleteDiscipline(discipline: Discipline) {
