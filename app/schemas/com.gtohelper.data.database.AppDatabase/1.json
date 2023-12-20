@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "1373b0397e429737ab7407d7dd4889fc",
+    "identityHash": "2bb8f479b4f847fb8e1838932180d649",
     "entities": [
       {
         "tableName": "competitors_table",
@@ -88,7 +88,7 @@
       },
       {
         "tableName": "sports_table",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `competitorIds` TEXT NOT NULL, PRIMARY KEY(`name`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`name` TEXT NOT NULL, `competitorId` INTEGER NOT NULL, `resultTime` TEXT, `resultAmount` REAL, PRIMARY KEY(`name`))",
         "fields": [
           {
             "fieldPath": "name",
@@ -97,10 +97,22 @@
             "notNull": true
           },
           {
-            "fieldPath": "competitorIds",
-            "columnName": "competitorIds",
-            "affinity": "TEXT",
+            "fieldPath": "competitorId",
+            "columnName": "competitorId",
+            "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "resultTime",
+            "columnName": "resultTime",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "resultAmount",
+            "columnName": "resultAmount",
+            "affinity": "REAL",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -116,7 +128,7 @@
     "views": [],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '1373b0397e429737ab7407d7dd4889fc')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '2bb8f479b4f847fb8e1838932180d649')"
     ]
   }
 }

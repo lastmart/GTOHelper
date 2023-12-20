@@ -9,17 +9,17 @@ import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.result.CompetitorResultsDao
 import com.gtohelper.data.database.result.CompetitorResultsEntity
 import com.gtohelper.data.database.sport.SportDao
-import com.gtohelper.data.database.sport.SportEntity
+import com.gtohelper.data.database.sport.SportResultEntity
 import com.gtohelper.data.mappers.CompetitorEntityToCompetitorDomainMapper
 import com.gtohelper.data.mappers.CompetitorResultsEntityToCompetitorResultsMapper
-import com.gtohelper.data.mappers.SportEntityToSportMapper
+import com.gtohelper.data.mappers.SportResultEntityToSportResultMapper
 import com.gtohelper.data.repository.CompetitorRepositoryImpl
 import com.gtohelper.data.repository.CompetitorResultsRepositoryImpl
 import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import com.gtohelper.data.repository.SportRepositoryImpl
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.CompetitorResults
-import com.gtohelper.domain.models.Sport
+import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.CompetitorResultsRepository
 import com.gtohelper.domain.repository.DisciplineRepository
@@ -83,8 +83,8 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideSportEntityToSportMapper(): Mapper<SportEntity, Sport> {
-        return SportEntityToSportMapper()
+    fun provideSportEntityToSportMapper(): Mapper<SportResultEntity, SportResult> {
+        return SportResultEntityToSportResultMapper()
     }
 
     @Provides

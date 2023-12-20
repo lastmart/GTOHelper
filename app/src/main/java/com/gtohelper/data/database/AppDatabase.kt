@@ -8,14 +8,14 @@ import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.result.CompetitorResultsDao
 import com.gtohelper.data.database.result.CompetitorResultsEntity
 import com.gtohelper.data.database.sport.SportDao
-import com.gtohelper.data.database.sport.SportEntity
+import com.gtohelper.data.database.sport.SportResultEntity
 
 @Database(
     version = 1,
     entities = [
         CompetitorEntity::class,
         CompetitorResultsEntity::class,
-        SportEntity::class
+        SportResultEntity::class
     ]
 )
 @TypeConverters(Converters::class)

@@ -1,15 +1,17 @@
 package com.gtohelper.data.mappers
 
 import com.gtohelper.common.Mapper
-import com.gtohelper.data.database.sport.SportEntity
-import com.gtohelper.domain.models.Sport
+import com.gtohelper.data.database.sport.SportResultEntity
+import com.gtohelper.domain.models.SportResult
 
-class SportEntityToSportMapper : Mapper<SportEntity, Sport> {
+class SportResultEntityToSportResultMapper : Mapper<SportResultEntity, SportResult> {
 
-    override fun transform(data: SportEntity): Sport {
-        return Sport(
+    override fun transform(data: SportResultEntity): SportResult {
+        return SportResult(
             name = data.name,
-            competitorIds = data.competitorIds
+            competitorId = data.competitorId,
+            resultTime = data.resultTime,
+            resultAmount = data.resultAmount
         )
     }
 }

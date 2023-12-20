@@ -11,7 +11,7 @@ interface SportDao {
     @Query(
         "SELECT * FROM sports_table"
     )
-    suspend fun getSports(): List<SportEntity>
+    suspend fun getSports(): List<SportResultEntity>
 
 
     @Query(
@@ -20,11 +20,11 @@ interface SportDao {
             WHERE name = :sportName
             """
     )
-    suspend fun getSportCompetitors(sportName: String): List<SportEntity>
+    suspend fun getSportCompetitors(sportName: String): List<SportResultEntity>
 
     @Upsert
-    suspend fun upsertSport(sport: SportEntity)
+    suspend fun upsertSport(sport: SportResultEntity)
 
     @Delete
-    suspend fun deleteSport(sport: SportEntity)
+    suspend fun deleteSport(sport: SportResultEntity)
 }
