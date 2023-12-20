@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.gtohelper.R
@@ -66,6 +67,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         setSupportActionBar(binding.mainActivityToolbar)
-        setupActionBarWithNavController(navController)
+        val topLevelDestinations = setOf(R.id.mainFragment, R.id.appInfoFragment)
+        val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
+        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 }
