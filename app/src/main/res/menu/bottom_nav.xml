@@ -5,7 +5,7 @@
         android:icon="@drawable/home_icon"
         android:title="@string/home" />
     <item
-        android:id="@+id/appInfoFragment"
+        android:id="@+id/helpFragment"
         android:icon="@drawable/help_icon"
         android:title="@string/help" />
 </menu>

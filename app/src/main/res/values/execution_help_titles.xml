@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="how_to_add_competitor_resilt">Как добавить результат участника?</string>
+    <string name="how_to_edit_competitor_result">Как изменить результат участника?</string>
+</resources>

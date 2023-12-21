@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun initToolbar() {
         setSupportActionBar(binding.mainActivityToolbar)
-        val topLevelDestinations = setOf(R.id.mainFragment, R.id.appInfoFragment)
+        val topLevelDestinations = setOf(R.id.mainFragment, R.id.helpFragment)
         val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }

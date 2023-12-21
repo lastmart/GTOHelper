@@ -16,12 +16,10 @@
         <action
             android:id="@+id/action_mainFragment_to_competitionCreationFragment"
             app:destination="@id/competitionCreationFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_helpFragment"
+            app:destination="@id/helpFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/appInfoFragment"
-        android:name="com.gtohelper.presentation.ui.app_info.AppInfoFragment"
-        android:label="Помощь"
-        tools:layout="@layout/fragment_app_info" />
     <dialog
         android:id="@+id/tablePreviewDetailsDialogFragment"
         android:name="com.gtohelper.presentation.ui.main.TablePreviewDetailsDialogFragment"
@@ -65,4 +63,9 @@
         android:name="com.gtohelper.presentation.ui.competition_creation.CompetitionCreationFragment"
         android:label="fragment_competition_creation"
         tools:layout="@layout/fragment_competition_creation" />
+    <fragment
+        android:id="@+id/helpFragment"
+        android:name="com.gtohelper.presentation.ui.help.HelpFragment"
+        android:label="fragment_help"
+        tools:layout="@layout/fragment_help" />
 </navigation>
