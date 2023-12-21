@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_mainFragment_to_tablePreviewDetailsDialogFragment"
             app:destination="@id/tablePreviewDetailsDialogFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_competitionCreationFragment"
+            app:destination="@id/competitionCreationFragment" />
     </fragment>
     <fragment
         android:id="@+id/appInfoFragment"
@@ -57,4 +60,9 @@
         android:id="@+id/deleteCompetitionDialogFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment"
         android:label="DeleteCompetitionDialogFragment" />
+    <fragment
+        android:id="@+id/competitionCreationFragment"
+        android:name="com.gtohelper.presentation.ui.competition_creation.CompetitionCreationFragment"
+        android:label="fragment_competition_creation"
+        tools:layout="@layout/fragment_competition_creation" />
 </navigation>
