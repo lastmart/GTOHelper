@@ -42,7 +42,7 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
         initSearchView()
 
         binding.mainFragmentAddButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Add pressed", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_mainFragment_to_competitionCreationFragment)
         }
 
         return binding.root
