@@ -22,7 +22,7 @@
     </fragment>
     <dialog
         android:id="@+id/tablePreviewDetailsDialogFragment"
-        android:name="com.gtohelper.presentation.ui.main.TablePreviewDetailsDialogFragment"
+        android:name="com.gtohelper.presentation.ui.main.CompetitionPreviewDetailsDialogFragment"
         android:label="TablePreviewDetailsDialogFragment" >
         <action
             android:id="@+id/action_tablePreviewDetailsDialogFragment_to_competitorsResultsFragment"

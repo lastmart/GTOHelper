@@ -52,8 +52,8 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
         Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
 
         val argsBundle = Bundle().apply {
-            putString(TablePreviewDetailsDialogFragment.TITLE_ARG, item.title)
-            putString(TablePreviewDetailsDialogFragment.DESCRIPTION_ARG, item.description)
+            putString(CompetitionPreviewDetailsDialogFragment.TITLE_ARG, item.title)
+            putString(CompetitionPreviewDetailsDialogFragment.DESCRIPTION_ARG, item.description)
         }
 
         findNavController().navigate(
