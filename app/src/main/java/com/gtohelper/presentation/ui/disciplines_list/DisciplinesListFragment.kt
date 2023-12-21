@@ -21,7 +21,7 @@ import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.disciplines_list.adapter.DisciplineAdapter
 import com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment
 import com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment
-import com.gtohelper.presentation.ui.main.MainActivity
+import com.gtohelper.presentation.ui.MainActivity
 import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#F3F3F3"
-    tools:context="com.gtohelper.presentation.ui.main.MainActivity">
+    tools:context="com.gtohelper.presentation.ui.MainActivity">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/mainActivityToolbar"
