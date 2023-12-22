@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/competitionListFragment">
+    app:startDestination="@id/disciplinesListFragment">
 
     <fragment
         android:id="@+id/competitionListFragment"
@@ -34,13 +34,16 @@
         android:id="@+id/disciplinesListFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.DisciplinesListFragment"
         android:label="Название команды"
-        tools:layout="@layout/fragment_disciplines_list" >
+        tools:layout="@layout/fragment_disciplines_list">
         <action
             android:id="@+id/action_disciplinesListFragment_to_deleteDisciplineDialogFragment"
             app:destination="@id/deleteDisciplineDialogFragment" />
         <action
             android:id="@+id/action_disciplinesListFragment_to_deleteCompetitionDialogFragment"
             app:destination="@id/deleteCompetitionDialogFragment" />
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_addDisciplineFragment"
+            app:destination="@id/addDisciplineFragment" />
     </fragment>
     <dialog
         android:id="@+id/deleteDisciplineDialogFragment"
@@ -64,7 +67,7 @@
         android:id="@+id/competitionDetailsFragment"
         android:name="com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment"
         android:label=""
-        tools:layout="@layout/fragment_competition_details" >
+        tools:layout="@layout/fragment_competition_details">
         <action
             android:id="@+id/action_competitionDetailsFragment_to_disciplinesListFragment"
             app:destination="@id/disciplinesListFragment" />
@@ -75,4 +78,9 @@
             android:id="@+id/action_competitionDetailsFragment_to_competitorsListFragment"
             app:destination="@id/competitorsListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addDisciplineFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineFragment"
+        android:label="Добавить дисциплину"
+        tools:layout="@layout/fragment_add_discipline" />
 </navigation>

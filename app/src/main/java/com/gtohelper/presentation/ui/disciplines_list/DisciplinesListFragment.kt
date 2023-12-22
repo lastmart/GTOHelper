@@ -57,8 +57,14 @@ class DisciplinesListFragment : Fragment(),
         initRecyclerView()
         initViewModel()
         initToolbarMenu()
+        initButtonClickListeners()
 
         return binding.root
+    }
+
+    override fun onPause() {
+        super.onPause()
+        menuHost.removeMenuProvider(menuProvider)
     }
 
     private fun initArgs() {
@@ -97,10 +103,12 @@ class DisciplinesListFragment : Fragment(),
         }
     }
 
-    override fun onPause() {
-        super.onPause()
-        menuHost.removeMenuProvider(menuProvider)
+    private fun initButtonClickListeners() {
+        binding.disciplinesListAddButton.setOnClickListener {
+            findNavController().navigate(R.id.action_disciplinesListFragment_to_addDisciplineFragment)
+        }
     }
+
 
     private fun initViewModel() {
         viewModel.disciplinesLiveData.observe(viewLifecycleOwner) {

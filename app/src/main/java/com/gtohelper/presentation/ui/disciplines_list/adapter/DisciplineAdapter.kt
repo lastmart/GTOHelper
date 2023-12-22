@@ -11,7 +11,7 @@ import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 
 
 class DisciplineAdapter(
-    var disciplines: List<Discipline>,
+    private var disciplines: List<Discipline>,
     private val onItemClickListener: OnItemClickListener<Discipline>,
     private val onItemLongClickListener: OnItemLongClickListener<Discipline>
 ) : RecyclerView.Adapter<DisciplineAdapter.DisciplineViewHolder>() {
@@ -45,7 +45,7 @@ class DisciplineAdapter(
 
         fun bind(discipline: Discipline) {
             binding.disciplineName.text = discipline.name
-            binding.disciplineImage.setImageDrawable(discipline.imageDrawable)
+            binding.disciplineImage.setImageResource(discipline.imageResource)
 
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(discipline)
@@ -75,6 +75,6 @@ class DisciplineDiffUtil(
         val newItem = newList[newItemPosition]
 
         return oldItem.name == newItem.name
-                && oldItem.imageDrawable == newItem.imageDrawable
+                && oldItem.imageResource == newItem.imageResource
     }
 }

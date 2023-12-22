@@ -115,10 +115,8 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideDisciplineRepository(
-        @ApplicationContext context: Context
-    ): DisciplineRepository {
-        return DisciplineRepositoryImpl(context)
+    fun provideDisciplineRepository(): DisciplineRepository {
+        return DisciplineRepositoryImpl()
     }
 
 

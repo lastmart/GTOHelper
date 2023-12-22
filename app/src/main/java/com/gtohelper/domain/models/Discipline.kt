@@ -1,8 +1,17 @@
 package com.gtohelper.domain.models
 
-import android.graphics.drawable.Drawable
+open class Discipline(
+    val imageResource: Int,
+    val name: String,
+    val subDisciplines: List<SubDiscipline> = emptyList()
+) {
+    init {
+        subDisciplines.forEach { it.parentDiscipline = name }
+    }
+}
 
-data class Discipline(
-    val imageDrawable: Drawable,
-    val name: String
+data class SubDiscipline(
+    val imageResource: Int,
+    val name: String,
+    var parentDiscipline: String? = null
 )
