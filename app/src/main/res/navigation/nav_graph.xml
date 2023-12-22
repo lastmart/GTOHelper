@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/disciplinesListFragment">
+    app:startDestination="@id/competitionListFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.gtohelper.presentation.ui.main.MainFragment"
-        android:label="Выберите таблицу"
-        tools:layout="@layout/fragment_main">
+        android:id="@+id/competitionListFragment"
+        android:name="com.gtohelper.presentation.ui.competitions.CompetitionListFragment"
+        android:label="@string/competitions"
+        tools:layout="@layout/fragment_competitions_list">
         <action
             android:id="@+id/action_mainFragment_to_tablePreviewDetailsDialogFragment"
             app:destination="@id/tablePreviewDetailsDialogFragment" />
@@ -22,7 +22,7 @@
     </fragment>
     <dialog
         android:id="@+id/tablePreviewDetailsDialogFragment"
-        android:name="com.gtohelper.presentation.ui.main.CompetitionPreviewDetailsDialogFragment"
+        android:name="com.gtohelper.presentation.ui.competitions.components.CompetitionPreviewDetailsDialogFragment"
         android:label="TablePreviewDetailsDialogFragment" >
         <action
             android:id="@+id/action_tablePreviewDetailsDialogFragment_to_competitorsResultsFragment"
@@ -61,11 +61,11 @@
     <fragment
         android:id="@+id/competitionCreationFragment"
         android:name="com.gtohelper.presentation.ui.competition_creation.CompetitionCreationFragment"
-        android:label="fragment_competition_creation"
+        android:label="@string/new_competition"
         tools:layout="@layout/fragment_competition_creation" />
     <fragment
         android:id="@+id/helpFragment"
         android:name="com.gtohelper.presentation.ui.help.HelpFragment"
-        android:label="fragment_help"
+        android:label="@string/help"
         tools:layout="@layout/fragment_help" />
 </navigation>

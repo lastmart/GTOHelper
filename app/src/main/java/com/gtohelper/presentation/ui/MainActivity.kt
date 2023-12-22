@@ -21,8 +21,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
-    lateinit var database: AppDatabase
-
     override fun onCreate(savedInstanceState: Bundle?) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState)
@@ -48,26 +46,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun initBottomNavigation() {
         binding.bottomNavigationView.setupWithNavController(navController)
-        /*binding.bottomNavigationView.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.mainFragment -> {
-                 //   navController.navigate(R.layout.fragment_main)
-                 //   navController.navigate(R.id.action)
-                    true
-                }
-
-                R.id.appInfoFragment -> {
-                    true
-                }
-
-                else -> false
-            }
-        }*/
     }
 
     private fun initToolbar() {
         setSupportActionBar(binding.mainActivityToolbar)
-        val topLevelDestinations = setOf(R.id.mainFragment, R.id.helpFragment)
+        val topLevelDestinations = setOf(R.id.competitionListFragment, R.id.helpFragment)
         val appBarConfiguration = AppBarConfiguration(topLevelDestinations)
         setupActionBarWithNavController(navController, appBarConfiguration)
     }

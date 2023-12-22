@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.main
+package com.gtohelper.presentation.ui.competitions
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,34 +11,33 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.gtohelper.R
-import com.gtohelper.data.models.TablePreview
-import com.gtohelper.databinding.FragmentMainBinding
+import com.gtohelper.databinding.FragmentCompetitionsListBinding
+import com.gtohelper.domain.models.Competition
+import com.gtohelper.presentation.ui.competitions.components.adapter.CompetitionsAdapter
+import com.gtohelper.presentation.ui.competitions.components.CompetitionPreviewDetailsDialogFragment
 import com.gtohelper.presentation.ui.util.OnItemClickListener
-import com.gtohelper.presentation.ui.main.adapter.TablePreviewAdapter
+import com.gtohelper.presentation.ui.util.runOnUiThread
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 
 @AndroidEntryPoint
-class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
+class CompetitionListFragment : Fragment(), OnItemClickListener<Competition> {
+    private val viewModel: CompetitionsListViewModel by viewModels()
 
-    companion object {
-        fun newInstance() = MainFragment()
+    private val binding: FragmentCompetitionsListBinding by lazy {
+        FragmentCompetitionsListBinding.inflate(layoutInflater)
     }
 
-    private val viewModel: MainFragmentViewModel by viewModels()
-
-    private lateinit var binding: FragmentMainBinding
-    private lateinit var adapter: TablePreviewAdapter
+    private lateinit var adapter: CompetitionsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentMainBinding.inflate(layoutInflater)
-
+        adapter = CompetitionsAdapter(listOf(), this)
+        binding.recyclerViewTablesPreview.adapter = adapter
         initViewModel()
-
         initSearchView()
 
         binding.mainFragmentAddButton.setOnClickListener {
@@ -48,11 +47,11 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
         return binding.root
     }
 
-    override fun onItemClicked(item: TablePreview) {
+    override fun onItemClicked(item: Competition) {
         Toast.makeText(requireContext(), item.toString(), Toast.LENGTH_SHORT).show()
 
         val argsBundle = Bundle().apply {
-            putString(CompetitionPreviewDetailsDialogFragment.TITLE_ARG, item.title)
+            putString(CompetitionPreviewDetailsDialogFragment.TITLE_ARG, item.name)
             putString(CompetitionPreviewDetailsDialogFragment.DESCRIPTION_ARG, item.description)
         }
 
@@ -63,12 +62,10 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
     }
 
     private fun initViewModel() {
-        viewModel.tablesLiveData.observe(viewLifecycleOwner) {
-            showTables(it)
-        }
-
-        lifecycleScope.launch {
-            viewModel.getTables()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.competitions.collect {
+                runOnUiThread { adapter.setData(it) }
+            }
         }
     }
 
@@ -77,31 +74,14 @@ class MainFragment : Fragment(), OnItemClickListener<TablePreview> {
 
         binding.mainFragmentSearchView.setOnQueryTextListener(object : OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                Toast.makeText(requireContext(), query, Toast.LENGTH_SHORT).show()
-
-                lifecycleScope.launch {
-                    query?.let {
-                        viewModel.searchTablesByName(it)
-                    }
-                }
-
+                viewModel.searchCompetitions(query.toString())
                 return true
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                lifecycleScope.launch {
-                    newText?.let {
-                        viewModel.searchTablesByName(it)
-                    } ?: viewModel.getTables()
-                }
-
+            override fun onQueryTextChange(query: String?): Boolean {
+                viewModel.searchCompetitions(query.toString())
                 return true
             }
         })
-    }
-
-    private fun showTables(tables: List<TablePreview>) {
-        adapter = TablePreviewAdapter(tables, this)
-        binding.recyclerViewTablesPreview.adapter = adapter
     }
 }

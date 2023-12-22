@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.main
+package com.gtohelper.presentation.ui.competitions.components
 
 import android.content.res.Resources
 import android.graphics.Color
