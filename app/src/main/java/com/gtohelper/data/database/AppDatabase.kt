@@ -3,6 +3,8 @@ package com.gtohelper.data.database
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.gtohelper.data.database.competition.CompetitionDao
+import com.gtohelper.data.database.competition.CompetitionEntity
 import com.gtohelper.data.database.competitor.CompetitorDao
 import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.result.CompetitorResultsDao

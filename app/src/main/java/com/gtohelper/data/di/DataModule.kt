@@ -22,6 +22,7 @@ import com.gtohelper.data.repository.SportRepositoryImpl
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.CompetitorResults
 import com.gtohelper.domain.models.SportResult
+import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.CompetitorResultsRepository
 import com.gtohelper.domain.repository.DisciplineRepository
