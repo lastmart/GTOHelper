@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/competition_nav_graph"
+    app:startDestination="@id/competitionDetailsFragment">
+    <fragment
+        android:id="@+id/competitionDetailsFragment"
+        android:name="com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment"
+        tools:layout="@layout/fragment_competition_details"
+        android:label="">
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_disciplinesListFragment"
+            app:destination="@id/disciplinesListFragment" />
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_competitorsResultsFragment"
+            app:destination="@id/competitorsResultsFragment" />
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_competitorsListFragment"
+            app:destination="@id/competitorsListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/competitorsResultsFragment"
+        android:name="com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsFragment"
+        tools:layout="@layout/fragment_competitors_results"
+        android:label="Результаты" />
+    <dialog
+        android:id="@+id/deleteCompetitionDialogFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment"
+        android:label="DeleteCompetitionDialogFragment" />
+    <fragment
+        android:id="@+id/disciplinesListFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.DisciplinesListFragment"
+        tools:layout="@layout/fragment_disciplines_list"
+        android:label="Название команды">
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_deleteDisciplineDialogFragment"
+            app:destination="@id/deleteDisciplineDialogFragment" />
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_deleteCompetitionDialogFragment"
+            app:destination="@id/deleteCompetitionDialogFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/competitorCreation"
+        android:name="com.gtohelper.presentation.ui.competitor_creation.CompetitorCreationFragment"
+        tools:layout="@layout/fragment_competitor_creation"
+        android:label="@string/new_competitor" />
+    <fragment
+        android:id="@+id/competitorsListFragment"
+        android:name="com.gtohelper.presentation.ui.competitors_list.CompetitorsListFragment"
+        tools:layout="@layout/fragment_competitors_list"
+        android:label="Список участников">
+        <action
+            android:id="@+id/action_competitorsListFragment_to_competitorCreation"
+            app:destination="@id/competitorCreation" />
+    </fragment>
+    <dialog
+        android:id="@+id/deleteDisciplineDialogFragment"
+        android:name="com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment"
+        android:label="DeleteDisciplineDialogFragment" />
+</navigation>

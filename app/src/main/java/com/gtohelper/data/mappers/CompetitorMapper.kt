@@ -7,7 +7,6 @@ fun Competitor.toEntity() : CompetitorEntity {
     return CompetitorEntity(
         id=id,
         name=name,
-        age=age,
         gender=gender,
         teamName=teamName,
         competitionId=competitionId,
@@ -20,7 +19,6 @@ fun CompetitorEntity.toDomainModel() : Competitor {
     return Competitor(
         id=id,
         name=name,
-        age=age,
         gender=gender,
         teamName=teamName,
         competitionId=competitionId,

@@ -10,7 +10,7 @@ import com.gtohelper.databinding.FragmentCompetitorCreationBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CompetitorCreation : Fragment() {
+class CompetitorCreationFragment : Fragment() {
 
     private val viewModel: CompetitorCreationViewModel by viewModels()
     private val binding by lazy { FragmentCompetitorCreationBinding.inflate(layoutInflater) }
@@ -19,7 +19,7 @@ class CompetitorCreation : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
 
-
+        binding.viewModel = viewModel
         return binding.root
     }
 }

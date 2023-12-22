@@ -20,7 +20,6 @@ data class CompetitorEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
     val name: String,
-    val age: Int,
     val gender: Gender,
     val teamName: String,
     val competitionId: Int,

@@ -7,4 +7,10 @@
     <string name="tableDescription">Описание</string>
     <string name="new_competition">Новое соревнование</string>
     <string name="competitions">Соревнования</string>
+    <string name="new_competitor">Новый участник</string>
+    <string name="enter_name">Введите имя...</string>
+    <string name="competitor_name">Имя участника</string>
+    <string name="enter_team_name">Введите название команды...</string>
+    <string name="enter_competitor_number">Введите номер участника...</string>
+    <string name="gender">Пол</string>
 </resources>

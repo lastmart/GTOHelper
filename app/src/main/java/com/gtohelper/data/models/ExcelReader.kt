@@ -3,6 +3,7 @@ package com.gtohelper.data.models
 import JsonParser
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.domain.models.fromAge
 import com.gtohelper.presentation.ui.util.capitalize
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.WorkbookFactory
@@ -47,7 +48,9 @@ class ExcelReader {
                 if (sheet.getRow(row).getCell(5).cellType == CellType.NUMERIC) {
                     participantNumber = sheet.getRow(row).getCell(5).numericCellValue.toInt()
                 }
-                val competitor = Competitor(0, name, age, gender, nameTeam, 0, participantNumber)
+                val competitor = Competitor(0, name, gender, nameTeam,  participantNumber,0,
+                    fromAge(age)
+                )
                 if (competitor !in listCompetitor) {
                     listCompetitor.add(competitor)
                 }

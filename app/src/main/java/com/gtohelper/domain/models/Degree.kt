@@ -1,17 +1,6 @@
 package com.gtohelper.domain.models
 
-data class Competitor(
-    val id : Int,
-    val name: String,
-    val gender: Gender,
-    val teamName: String,
-    val number: Int,
-    val competitionId : Int,
-    val degree: Int,
-)
-
-
-fun calculateDegree(age: Int): Int {
+fun fromAge(age: Int): Int {
     return when (age) {
         in 3..7 -> 1
         in 8..9 -> 2

@@ -37,12 +37,12 @@ class CompetitionsAdapter(
     override fun getItemCount(): Int = data.count()
 
     class CompetitionViewHolder(
-        val binding: ItemTablePreviewBinding,
-        val onItemClickListener: OnItemClickListener<Competition>
+        private val binding: ItemTablePreviewBinding,
+        private val onItemClickListener: OnItemClickListener<Competition>
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(competition: Competition) {
-            binding.textViewTitle.text = competition.id.toString()
+            binding.textViewTitle.text = competition.name + " " + competition.id.toString()
             binding.textViewDescription.text = competition.description
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(competition)

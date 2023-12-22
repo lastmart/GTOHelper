@@ -3,6 +3,7 @@ import JsonParser
 import com.gtohelper.domain.PointsCalculator
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.domain.models.fromAge
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
@@ -411,7 +412,9 @@ class ReadRegistrationCompetitor {
                 if (workBook.getRow(row).getCell(5).cellType == CellType.NUMERIC) {
                     participantNumber = workBook.getRow(row).getCell(5).numericCellValue.toInt()
                 }
-                listCompetitor.add(Competitor(0, name, age, gender, nameTeam, 0, participantNumber))
+                listCompetitor.add(Competitor(0, name, gender, nameTeam,  participantNumber, 0,
+                    fromAge(age)
+                ))
             }
             catch (e: NullPointerException){
                 throw Exception("table is filled in incorrectly")

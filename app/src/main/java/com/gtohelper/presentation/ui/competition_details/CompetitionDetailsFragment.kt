@@ -22,7 +22,6 @@ class CompetitionDetailsFragment : Fragment() {
     private val viewModel: CompetitionDetailsViewModel by viewModels()
     private val binding by lazy { FragmentCompetitionDetailsBinding.inflate(layoutInflater) }
 
-    private var competitionId: Int? = null
 
     companion object {
         const val COMPETITION_ID_ARG = "competition_id"
@@ -33,9 +32,6 @@ class CompetitionDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        competitionId = requireArguments().getInt(COMPETITION_ID_ARG)
-        viewModel.loadCompetition(competitionId ?: 0)
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.uiState.collect {
                 runOnUiThread {
@@ -52,23 +48,22 @@ class CompetitionDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val bundle = bundleOf(COMPETITION_ID_ARG to competitionId)
         binding.disciplines.setOnClickListener {
             findNavController().navigate(
                 R.id.action_competitionDetailsFragment_to_disciplinesListFragment,
-                bundle
+                requireArguments()
             )
         }
         binding.competitors.setOnClickListener {
             findNavController().navigate(
                 R.id.action_competitionDetailsFragment_to_competitorsListFragment,
-                bundle
+                requireArguments()
             )
         }
         binding.results.setOnClickListener {
             findNavController().navigate(
                 R.id.action_competitionDetailsFragment_to_competitorsResultsFragment,
-                bundle
+                requireArguments()
             )
         }
     }

@@ -8,11 +8,13 @@ import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import com.gtohelper.R
 import com.gtohelper.databinding.FragmentCompetitorsListBinding
 import com.gtohelper.domain.models.Competitor
-import com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment
 import com.gtohelper.presentation.ui.competitors_list.adapter.CompetitorsAdapter
 import com.gtohelper.presentation.ui.util.OnItemClickListener
+import com.gtohelper.presentation.ui.util.runOnUiThread
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -20,11 +22,7 @@ import kotlinx.coroutines.launch
 class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
 
     private val viewModel: CompetitorsListViewModel by viewModels()
-    private val binding: FragmentCompetitorsListBinding by lazy {
-        FragmentCompetitorsListBinding.inflate(layoutInflater)
-    }
-
-    private lateinit var adapter: CompetitorsAdapter
+    private val binding by lazy { FragmentCompetitorsListBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,19 +30,23 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     ): View {
 
         initSearchView()
-
-        val id = requireArguments().getInt(CompetitionDetailsFragment.COMPETITION_ID_ARG)
-        viewModel.bindCompetitionId(id)
-
-        adapter = CompetitorsAdapter(listOf(), this)
+        val adapter = CompetitorsAdapter(listOf(), this)
         binding.recyclerViewCompetitorsResults.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.competitors.collect {
-                adapter.setData(it)
+            launch {
+                viewModel.competitors.collect {
+                    runOnUiThread {
+                        adapter.setData(it)
+                    }
+                }
+            }
+            launch {
+                viewModel.searchQuery.collect {
+                    binding.searchViewCompetitorsListFragment.setQuery(it, true)
+                }
             }
         }
-
 
         return binding.root
     }
@@ -53,7 +55,10 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
         super.onViewCreated(view, savedInstanceState)
 
         binding.addCompetitorButton.setOnClickListener {
-            viewModel.create()
+            findNavController().navigate(
+                R.id.action_competitorsListFragment_to_competitorCreation,
+                requireArguments()
+            )
         }
     }
 
