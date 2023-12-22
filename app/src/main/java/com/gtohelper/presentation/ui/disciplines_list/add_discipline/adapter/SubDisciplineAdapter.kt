@@ -2,6 +2,7 @@ package com.gtohelper.presentation.ui.disciplines_list.add_discipline.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.databinding.ItemSubDisciplineBinding
 import com.gtohelper.domain.models.SubDiscipline
@@ -11,6 +12,13 @@ class SubDisciplineAdapter(
     private var subDisciplines: List<SubDiscipline>,
     private val onItemClickListener: OnItemClickListener<SubDiscipline>
 ) : RecyclerView.Adapter<SubDisciplineAdapter.SubDisciplineViewHolder>() {
+
+    fun setData(newSubDisciplines: List<SubDiscipline>) {
+        val diffUtil = SubDisciplineDiffUtil(subDisciplines, newSubDisciplines)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        subDisciplines = newSubDisciplines.toList()
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SubDisciplineViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -41,5 +49,28 @@ class SubDisciplineAdapter(
                 onItemClickListener.onItemClicked(subDiscipline)
             }
         }
+    }
+}
+
+class SubDisciplineDiffUtil(
+    private val oldList: List<SubDiscipline>,
+    private val newList: List<SubDiscipline>
+) : DiffUtil.Callback() {
+    override fun getOldListSize(): Int = oldList.size
+
+    override fun getNewListSize(): Int = newList.size
+
+    override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return oldItem.name == newItem.name
+    }
+
+    override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
+        val oldItem = oldList[oldItemPosition]
+        val newItem = newList[newItemPosition]
+
+        return oldItem == newItem
     }
 }

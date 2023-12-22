@@ -40,16 +40,18 @@ class DisciplineWithSubDisciplinesAdapter(
     override fun onBindViewHolder(holder: DisciplineWithSubDisciplinesViewHolder, position: Int) {
         val discipline = disciplines[position]
         holder.bind(discipline)
+        holder.binding.subDisciplinesRecyclerView.isVisible = discipline.isExpanded
     }
 
     override fun getItemCount(): Int = disciplines.size
 
     class DisciplineWithSubDisciplinesViewHolder(
-        private val binding: ItemDisciplineWithSubdisciplinesBinding,
+        val binding: ItemDisciplineWithSubdisciplinesBinding,
         private val onSubDisciplineClickListener: OnItemClickListener<SubDiscipline>
     ) : RecyclerView.ViewHolder(binding.root) {
 
         init {
+            binding.subDisciplinesRecyclerView.setHasFixedSize(true)
             binding.subDisciplinesRecyclerView.layoutManager =
                 LinearLayoutManager(binding.root.context)
         }
@@ -71,7 +73,7 @@ class DisciplineWithSubDisciplinesAdapter(
         }
 
         private fun expandOrHide(discipline: DisciplinePresentation) {
-            binding.subDisciplinesRecyclerView.isVisible = !discipline.isExpanded
+            bindingAdapter?.notifyItemChanged(bindingAdapterPosition)
             discipline.isExpanded = !discipline.isExpanded
         }
     }
