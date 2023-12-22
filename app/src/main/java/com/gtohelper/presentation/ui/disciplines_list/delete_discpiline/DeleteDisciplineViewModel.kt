@@ -10,7 +10,4 @@ class DeleteDisciplineViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository
 ) : ViewModel() {
 
-    suspend fun deleteDisciplineByName(name: String) {
-        disciplineRepository.deleteDisciplineByName(name)
-    }
 }

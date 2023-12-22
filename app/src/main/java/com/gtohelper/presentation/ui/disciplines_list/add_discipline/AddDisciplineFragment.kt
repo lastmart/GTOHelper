@@ -8,8 +8,8 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.gtohelper.databinding.FragmentAddDisciplineBinding
-import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.adapter.DisciplineWithSubDisciplinesAdapter
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.util.OnItemClickListener
@@ -18,7 +18,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class AddDisciplineFragment : Fragment(), OnItemClickListener<SubDiscipline> {
+class AddDisciplineFragment : Fragment(), OnItemClickListener<DisciplinePresentation> {
 
     companion object {
         fun newInstance() = AddDisciplineFragment()
@@ -54,8 +54,14 @@ class AddDisciplineFragment : Fragment(), OnItemClickListener<SubDiscipline> {
         adapter.setData(disciplines)
     }
 
-    override fun onItemClicked(item: SubDiscipline) {
-        Toast.makeText(requireContext(), "SubDiscipline: ${item.name}", Toast.LENGTH_SHORT).show()
+    override fun onItemClicked(item: DisciplinePresentation) {
+        Toast.makeText(requireContext(), "Дисциплина ${item.name} добавлена", Toast.LENGTH_SHORT)
+            .show()
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.addDiscipline(item)
+            viewModel.getDisciplines()
+        }
+        findNavController().navigateUp()
     }
 
     private fun initRecyclerView() {

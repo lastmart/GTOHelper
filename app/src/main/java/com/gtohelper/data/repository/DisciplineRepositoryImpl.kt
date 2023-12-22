@@ -2,7 +2,6 @@ package com.gtohelper.data.repository
 
 import com.gtohelper.R
 import com.gtohelper.domain.models.Discipline
-import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.DisciplineRepository
 
 class DisciplineRepositoryImpl : DisciplineRepository {
@@ -13,9 +12,43 @@ class DisciplineRepositoryImpl : DisciplineRepository {
         return disciplines
     }
 
-    override suspend fun deleteDisciplineByName(name: String) {
-        disciplines.removeIf { it.name == name }
+    override suspend fun getSelectedDisciplines(): List<Discipline> {
+        return disciplines.flatMap { it -> it.subDisciplines.filter { it.isSelected } }
     }
+
+    override suspend fun getNotSelectedDisciplines(): List<Discipline> {
+        return disciplines.map {
+            Discipline(
+                imageResource = it.imageResource,
+                name = it.name,
+                subDisciplines = it.subDisciplines.filter { !it.isSelected },
+                isSelected = it.isSelected
+            )
+        }.filter { it.subDisciplines.isNotEmpty() }
+    }
+
+    override suspend fun addDisciplineToSelected(discipline: Discipline) {
+        disciplines.forEach { disciplineFromList ->
+            disciplineFromList.subDisciplines.firstOrNull { it.name == discipline.name }?.let {
+                it.isSelected = true
+                return@forEach
+            }
+        }
+    }
+
+    override suspend fun deleteDisciplineFromSelectedByName(name: String) {
+        disciplines.firstOrNull { it.name == name }?.let {
+            it.isSelected = false
+            return
+        }
+
+        disciplines.forEach { discipline ->
+            discipline.subDisciplines.firstOrNull { it.name == name }?.let {
+                it.isSelected = false
+            }
+        }
+    }
+
 
     private fun initDisciplines(): MutableList<Discipline> {
         val list = mutableListOf<Discipline>()
@@ -25,18 +58,22 @@ class DisciplineRepositoryImpl : DisciplineRepository {
                 R.drawable.discipline_long_distance_running,
                 "Бег на длинные дистанции",
                 subDisciplines = listOf(
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_sprinting_30m,
-                        name = "Бег на 30 м"
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_long_distance_running_1km,
+                        name = "Бег на 1 км"
                     ),
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_sprinting_60m,
-                        name = "Бег на 60 м"
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
+                        name = "Бег на 1.5 км",
                     ),
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_sprinting_100m,
-                        name = "Бег на 100 м"
-                    )
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_long_distance_running_2km,
+                        name = "Бег на 2 км"
+                    ),
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_long_distance_running_3km,
+                        name = "Бег на 3 км"
+                    ),
                 )
             )
         )
@@ -45,22 +82,18 @@ class DisciplineRepositoryImpl : DisciplineRepository {
                 R.drawable.discipline_sprinting,
                 "Бег на короткие дистанции",
                 subDisciplines = listOf(
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_long_distance_running_1km,
-                        name = "Бег на 1 км"
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_sprinting_30m,
+                        name = "Бег на 30 м"
                     ),
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
-                        name = "Бег на 1.5 км",
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_sprinting_60m,
+                        name = "Бег на 60 м"
                     ),
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_long_distance_running_2km,
-                        name = "Бег на 2 км"
-                    ),
-                    SubDiscipline(
-                        imageResource = R.drawable.sub_discipline_long_distance_running_3km,
-                        name = "Бег на 3 км"
-                    ),
+                    Discipline(
+                        imageResource = R.drawable.sub_discipline_sprinting_100m,
+                        name = "Бег на 100 м"
+                    )
                 )
             )
         )

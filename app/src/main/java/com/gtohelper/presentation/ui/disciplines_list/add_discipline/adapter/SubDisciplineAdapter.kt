@@ -5,15 +5,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.databinding.ItemSubDisciplineBinding
-import com.gtohelper.domain.models.SubDiscipline
+import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.util.OnItemClickListener
 
 class SubDisciplineAdapter(
-    private var subDisciplines: List<SubDiscipline>,
-    private val onItemClickListener: OnItemClickListener<SubDiscipline>
+    private var subDisciplines: List<DisciplinePresentation>,
+    private val onItemClickListener: OnItemClickListener<DisciplinePresentation>
 ) : RecyclerView.Adapter<SubDisciplineAdapter.SubDisciplineViewHolder>() {
 
-    fun setData(newSubDisciplines: List<SubDiscipline>) {
+    fun setData(newSubDisciplines: List<DisciplinePresentation>) {
         val diffUtil = SubDisciplineDiffUtil(subDisciplines, newSubDisciplines)
         val diffResult = DiffUtil.calculateDiff(diffUtil)
         subDisciplines = newSubDisciplines.toList()
@@ -39,10 +39,10 @@ class SubDisciplineAdapter(
 
     class SubDisciplineViewHolder(
         private val binding: ItemSubDisciplineBinding,
-        private val onItemClickListener: OnItemClickListener<SubDiscipline>
+        private val onItemClickListener: OnItemClickListener<DisciplinePresentation>
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(subDiscipline: SubDiscipline) {
+        fun bind(subDiscipline: DisciplinePresentation) {
             binding.disciplineName.text = subDiscipline.name
             binding.disciplineImage.setImageResource(subDiscipline.imageResource)
             binding.root.setOnClickListener {
@@ -53,8 +53,8 @@ class SubDisciplineAdapter(
 }
 
 class SubDisciplineDiffUtil(
-    private val oldList: List<SubDiscipline>,
-    private val newList: List<SubDiscipline>
+    private val oldList: List<DisciplinePresentation>,
+    private val newList: List<DisciplinePresentation>
 ) : DiffUtil.Callback() {
     override fun getOldListSize(): Int = oldList.size
 

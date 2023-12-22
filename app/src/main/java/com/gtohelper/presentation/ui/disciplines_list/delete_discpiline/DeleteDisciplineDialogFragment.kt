@@ -9,12 +9,9 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.gtohelper.databinding.DialogFragmentDeleteDisciplineBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class DeleteDisciplineDialogFragment() : DialogFragment() {
@@ -60,10 +57,6 @@ class DeleteDisciplineDialogFragment() : DialogFragment() {
         }
 
         binding.buttonDelete.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                viewModel.deleteDisciplineByName(disciplineName)
-            }
-
             val bundle = Bundle().apply {
                 putBoolean(DELETE_RESULT, true)
             }
