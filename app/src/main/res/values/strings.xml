@@ -3,4 +3,8 @@
     <string name="home">Главная</string>
     <string name="help">Помощь</string>
     <string name="delete">Удалить</string>
+    <string name="tableName">Название</string>
+    <string name="tableDescription">Описание</string>
+    <string name="new_competition">Новое соревнование</string>
+    <string name="competitions">Соревнования</string>
 </resources>

@@ -15,7 +15,8 @@ import com.gtohelper.data.database.sport.SportResultEntity
     entities = [
         CompetitorEntity::class,
         CompetitorResultsEntity::class,
-        SportResultEntity::class
+        SportResultEntity::class,
+        CompetitionEntity::class
     ]
 )
 @TypeConverters(Converters::class)
@@ -25,4 +26,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getCompetitorResultsDao(): CompetitorResultsDao
 
     abstract fun getSportDao(): SportDao
+
+    abstract fun getCompetitionDao(): CompetitionDao
 }

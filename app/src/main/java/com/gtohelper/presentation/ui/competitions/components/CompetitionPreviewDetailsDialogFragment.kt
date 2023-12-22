@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.main
+package com.gtohelper.presentation.ui.competitions.components
 
 import android.content.res.Resources
 import android.graphics.Color
@@ -16,7 +16,7 @@ import com.gtohelper.R
 import com.gtohelper.databinding.DialogFragmentTablePreviewDetailsBinding
 
 
-class TablePreviewDetailsDialogFragment : DialogFragment() {
+class CompetitionPreviewDetailsDialogFragment : DialogFragment() {
 
     private lateinit var binding: DialogFragmentTablePreviewDetailsBinding
     private lateinit var title: String
@@ -36,7 +36,7 @@ class TablePreviewDetailsDialogFragment : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         initArgs()
 
