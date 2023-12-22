@@ -31,4 +31,20 @@
         tools:itemCount="10"
         tools:listitem="@layout/item_competitor_preview" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/add_competitor_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:outlineProvider="none"
+        android:src="@drawable/icon_add_72dp"
+        app:backgroundTint="@android:color/transparent"
+        app:borderWidth="0dp"
+        app:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="64dp"
+        app:rippleColor="@android:color/transparent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

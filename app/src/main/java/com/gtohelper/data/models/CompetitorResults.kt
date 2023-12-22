@@ -1,5 +1,7 @@
 package com.gtohelper.data.models
 
+import com.gtohelper.domain.models.Competitor
+
 class CompetitorResults(
     id: Int,
     name: String, // to class
@@ -7,4 +9,4 @@ class CompetitorResults(
     degree: String, // to enum
     gender: String, // to enum
     val points: Int
-) : Competitor(id, name, team, degree, gender)
+)

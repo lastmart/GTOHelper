@@ -1,21 +1,30 @@
 package com.gtohelper.data.mappers
 
-import com.gtohelper.data.database.competition.CompetitionEntity
-import com.gtohelper.domain.models.Competition
+import com.gtohelper.data.database.competitor.CompetitorEntity
+import com.gtohelper.domain.models.Competitor
 
-
-fun Competition.toEntity(): CompetitionEntity {
-    return CompetitionEntity(
-        id = id,
-        name = name,
-        description = description,
+fun Competitor.toEntity() : CompetitorEntity {
+    return CompetitorEntity(
+        id=id,
+        name=name,
+        age=age,
+        gender=gender,
+        teamName=teamName,
+        competitionId=competitionId,
+        number=number,
+        degree=degree,
     )
 }
 
-fun CompetitionEntity.toDomainModel(): Competition {
-    return Competition(
-        id = id,
-        name = name,
-        description = description,
+fun CompetitorEntity.toDomainModel() : Competitor {
+    return Competitor(
+        id=id,
+        name=name,
+        age=age,
+        gender=gender,
+        teamName=teamName,
+        competitionId=competitionId,
+        number=number,
+        degree=degree,
     )
 }

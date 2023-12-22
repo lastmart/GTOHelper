@@ -15,7 +15,7 @@ class PointsCalculator {
         if (sport !in dictionaryWithStandards){
             throw Exception("Sport is incorrectly specified")
         }
-        val sortedNormative = dictionaryWithStandards[sport]!![competitor.degree]!![competitor.gender]!!.toSortedMap(compareBy { key -> (key as Comparable<*>?)})
+        val sortedNormative = dictionaryWithStandards[sport]!![competitor.degree]!![competitor.gender.string]!!.toSortedMap(compareBy { key -> (key as Comparable<*>?)})
         val maxNormative = sortedNormative.keys.toList().last() as T
         val minNormative = sortedNormative.keys.toList()[0] as T
         val valuesToCompare = listOf(when{

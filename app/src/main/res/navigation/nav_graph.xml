@@ -11,23 +11,15 @@
         android:label="@string/competitions"
         tools:layout="@layout/fragment_competitions_list">
         <action
-            android:id="@+id/action_mainFragment_to_tablePreviewDetailsDialogFragment"
-            app:destination="@id/tablePreviewDetailsDialogFragment" />
-        <action
             android:id="@+id/action_mainFragment_to_competitionCreationFragment"
             app:destination="@id/competitionCreationFragment" />
         <action
             android:id="@+id/action_mainFragment_to_helpFragment"
             app:destination="@id/helpFragment" />
-    </fragment>
-    <dialog
-        android:id="@+id/tablePreviewDetailsDialogFragment"
-        android:name="com.gtohelper.presentation.ui.competitions.components.CompetitionPreviewDetailsDialogFragment"
-        android:label="TablePreviewDetailsDialogFragment" >
         <action
-            android:id="@+id/action_tablePreviewDetailsDialogFragment_to_competitorsResultsFragment"
-            app:destination="@id/competitorsResultsFragment" />
-    </dialog>
+            android:id="@+id/action_competitionListFragment_to_competitionDetailsFragment"
+            app:destination="@id/competitionDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/competitorsResultsFragment"
         android:name="com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsFragment"
@@ -68,4 +60,19 @@
         android:name="com.gtohelper.presentation.ui.help.HelpFragment"
         android:label="@string/help"
         tools:layout="@layout/fragment_help" />
+    <fragment
+        android:id="@+id/competitionDetailsFragment"
+        android:name="com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment"
+        android:label=""
+        tools:layout="@layout/fragment_competition_details" >
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_disciplinesListFragment"
+            app:destination="@id/disciplinesListFragment" />
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_competitorsResultsFragment"
+            app:destination="@id/competitorsResultsFragment" />
+        <action
+            android:id="@+id/action_competitionDetailsFragment_to_competitorsListFragment"
+            app:destination="@id/competitorsListFragment" />
+    </fragment>
 </navigation>

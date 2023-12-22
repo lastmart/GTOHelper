@@ -42,7 +42,7 @@ class CompetitionsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(competition: Competition) {
-            binding.textViewTitle.text = competition.name
+            binding.textViewTitle.text = competition.id.toString()
             binding.textViewDescription.text = competition.description
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(competition)

@@ -14,6 +14,9 @@ interface CompetitionDao {
     @Query("SELECT * FROM competitions_table")
     fun getAll(): Flow<List<CompetitionEntity>>
 
+    @Query("SELECT * FROM competitions_table WHERE id=:id")
+    suspend fun getById(id: Int) : CompetitionEntity?
+
     @Insert
     suspend fun create(competition: CompetitionEntity)
 

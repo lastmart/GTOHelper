@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.Window
 import android.widget.FrameLayout.LayoutParams
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.gtohelper.R
@@ -19,12 +20,15 @@ import com.gtohelper.databinding.DialogFragmentTablePreviewDetailsBinding
 class CompetitionPreviewDetailsDialogFragment : DialogFragment() {
 
     private lateinit var binding: DialogFragmentTablePreviewDetailsBinding
+
     private lateinit var title: String
     private lateinit var description: String
+    private var competitionId: Int? = null
 
     companion object {
         const val TITLE_ARG = "title"
         const val DESCRIPTION_ARG = "description"
+        const val COMPETITION_ID_ARG = "competition_id"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,6 +55,7 @@ class CompetitionPreviewDetailsDialogFragment : DialogFragment() {
     private fun initArgs() {
         title = arguments?.getString(TITLE_ARG) ?: "Unknown"
         description = arguments?.getString(DESCRIPTION_ARG) ?: "Unknown"
+        competitionId = arguments?.getInt(COMPETITION_ID_ARG) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +65,9 @@ class CompetitionPreviewDetailsDialogFragment : DialogFragment() {
 
         binding.buttonView.setOnClickListener {
             Toast.makeText(requireContext(), "View pressed", Toast.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_tablePreviewDetailsDialogFragment_to_competitorsResultsFragment)
+//            findNavController().navigate(R.id.action_tablePreviewDetailsDialogFragment_to_competitorsListFragment,
+//                bundleOf(ID_ARG to competitionId)
+//            )
         }
 
         binding.buttonDelete.setOnClickListener {

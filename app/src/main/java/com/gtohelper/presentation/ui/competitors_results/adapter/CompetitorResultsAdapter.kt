@@ -33,11 +33,11 @@ class CompetitorResultsAdapter(
     ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CompetitorResults) {
-            binding.textViewCompetitorId.text = item.id.toString()
-            binding.textViewCompetitorName.text = item.name
-            binding.textViewCompetitorTeam.text = item.team
-            binding.textViewCompetitorDegree.text = item.degree
-            binding.textViewCompetitorGender.text = item.gender
+//            binding.textViewCompetitorId.text = item.id.toString()
+//            binding.textViewCompetitorName.text = item.name
+//            binding.textViewCompetitorTeam.text = item.team
+//            binding.textViewCompetitorDegree.text = item.degree
+//            binding.textViewCompetitorGender.text = item.gender
             binding.textViewCompetitorPoints.text = item.points.toString()
 
             binding.root.setOnClickListener {

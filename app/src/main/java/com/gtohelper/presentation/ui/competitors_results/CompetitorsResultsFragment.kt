@@ -40,7 +40,7 @@ class CompetitorsResultsFragment : Fragment(), OnItemClickListener<CompetitorRes
     }
 
     override fun onItemClicked(item: CompetitorResults) {
-        println("Id: ${item.id}")
+//        println("Id: ${item.id}")
         //   Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
     }
 

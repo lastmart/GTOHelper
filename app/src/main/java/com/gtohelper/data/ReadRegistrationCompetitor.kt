@@ -216,7 +216,7 @@ class ReadRegistrationCompetitor {
         val fileInputStream = FileInputStream(filePath)
         val workBook = XSSFWorkbook(fileInputStream)
         val sheet = workBook.getSheetAt(0)
-        val rowNumberCompetitor = findRow(competitor.nameCompetitor, filePath)
+        val rowNumberCompetitor = findRow(competitor.name, filePath)
         val styleNormative = workBook.createCellStyle()
         styleNormative.alignment = HorizontalAlignment.CENTER
         if (rowNumberCompetitor == -1){
@@ -381,7 +381,7 @@ class ReadRegistrationCompetitor {
         var nameTeam = ""
         var participantNumber = 0
         var listCompetitor = mutableListOf<Competitor>()
-        var gender: String = ""
+        var gender: Gender = Gender.MALE
         for (row in 4..workBook.lastRowNum){
             try {
                 if (workBook.getRow(row).getCell(0).cellType == CellType.NUMERIC) {
@@ -396,10 +396,10 @@ class ReadRegistrationCompetitor {
                 if (workBook.getRow(row).getCell(2).cellType == CellType.STRING) {
                     val genderTable = workBook.getRow(row).getCell(2).stringCellValue.toString()
                     if (genderTable == "М") {
-                        gender = Gender.MALE.string
+                        gender = Gender.MALE
                     }
                     if (genderTable == "Ж") {
-                        gender = Gender.FEMALE.string
+                        gender = Gender.FEMALE
                     }
                 }
                 if (workBook.getRow(row).getCell(3).cellType == CellType.NUMERIC) {
@@ -411,7 +411,7 @@ class ReadRegistrationCompetitor {
                 if (workBook.getRow(row).getCell(5).cellType == CellType.NUMERIC) {
                     participantNumber = workBook.getRow(row).getCell(5).numericCellValue.toInt()
                 }
-                listCompetitor.add(Competitor(name, age, gender, nameTeam, participantNumber))
+                listCompetitor.add(Competitor(0, name, age, gender, nameTeam, 0, participantNumber))
             }
             catch (e: NullPointerException){
                 throw Exception("table is filled in incorrectly")

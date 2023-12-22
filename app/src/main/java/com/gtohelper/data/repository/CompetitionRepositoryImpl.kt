@@ -17,6 +17,12 @@ class CompetitionRepositoryImpl(
         return dao.getAll().map { it.map { list -> list.toDomainModel() } }
     }
 
+    override suspend fun getById(id: Int): Competition? {
+        return withContext(Dispatchers.IO) {
+            dao.getById(id)?.toDomainModel()
+        }
+    }
+
     override suspend fun create(competition: Competition) {
         withContext(Dispatchers.IO) {
             dao.create(competition.toEntity())

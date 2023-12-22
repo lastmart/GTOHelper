@@ -1,10 +1,11 @@
 package com.gtohelper.domain.repository
 
 import com.gtohelper.domain.models.Competitor
+import kotlinx.coroutines.flow.Flow
 
 interface CompetitorRepository {
-
-    suspend fun getCompetitors(): List<Competitor>
-    suspend fun upsertCompetitor(competitor: Competitor)
-    suspend fun changeCompetitor(oldCompetitor: Competitor, newCompetitor: Competitor)
+    fun getCompetitionCompetitors(competitionId: Int): Flow<List<Competitor>>
+    suspend fun create(competitor: Competitor)
+    suspend fun update(competitor: Competitor)
+    suspend fun delete(competitor: Competitor)
 }
