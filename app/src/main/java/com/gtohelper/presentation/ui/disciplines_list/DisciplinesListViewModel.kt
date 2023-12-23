@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
@@ -13,6 +14,7 @@ import dagger.assisted.AssistedInject
 
 class DisciplinesListViewModel @AssistedInject constructor(
     private val disciplineRepository: DisciplineRepository,
+    private val competitionRepository: CompetitionRepository,
     @Assisted
     private val competitionId: Int
 ) : ViewModel() {
@@ -20,13 +22,23 @@ class DisciplinesListViewModel @AssistedInject constructor(
     private var _disciplinesLiveData = MutableLiveData<List<DisciplinePresentation>>()
     val disciplinesLiveData: LiveData<List<DisciplinePresentation>> = _disciplinesLiveData
 
+    private var _teamNameLiveData = MutableLiveData<String>()
+    val teamNameLiveData: LiveData<String> = _teamNameLiveData
+
     suspend fun getDisciplines() {
-        val disciplines = disciplineRepository.getSelectedDisciplines()
+        val disciplines = disciplineRepository.getSelectedDisciplines(competitionId)
         _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
     }
 
+    suspend fun getTeamName() {
+        val teamName = competitionRepository.getById(competitionId)?.name
+        teamName?.let {
+            _teamNameLiveData.postValue(it)
+        }
+    }
+
     suspend fun deleteDiscipline(discipline: DisciplinePresentation) {
-        disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name)
+        disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name, competitionId)
     }
 
     suspend fun deleteCompetitionByName(competitionName: String) {

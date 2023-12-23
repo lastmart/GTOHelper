@@ -3,10 +3,10 @@ package com.gtohelper.data.database.discipline
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "disciplines_table")
+@Entity(tableName = "disciplines_table", primaryKeys = ["competitionId", "name"])
 data class DisciplineEntity(
     val competitionId: Int,
-    @PrimaryKey(autoGenerate = false)
+    //@PrimaryKey(autoGenerate = false)
     val name: String,
     val parentName: String? = null,
     val imageResource: Int,

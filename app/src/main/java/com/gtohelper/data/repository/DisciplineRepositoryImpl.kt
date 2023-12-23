@@ -12,11 +12,68 @@ import kotlinx.coroutines.launch
 
 class DisciplineRepositoryImpl(
     private val dao: DisciplineDao,
-    private val competitionId: Int = 1
 ) : DisciplineRepository {
 
+    override suspend fun getDisciplines(competitionId: Int): List<Discipline> {
+        var disciplines = dao.getDisciplines(competitionId)
 
-    init {
+        if (disciplines.isEmpty()) {
+            initDisciplines(competitionId)
+            disciplines = dao.getDisciplines(competitionId)
+        }
+
+        val parentImageResources = disciplines
+            .filter { it.parentName.isNullOrBlank() }
+            .associateBy({ it.name }, { it.imageResource })
+
+        return disciplines
+            .groupBy { it.parentName }
+            .map { (parentName, subDisciplines) ->
+                val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
+
+                Discipline(
+                    imageResource = parentImageResources[parentName] ?: return@map null,
+                    name = parentName ?: return@map null,
+                    subDisciplines = domainSubDisciplines.sortedBy { it.name },
+                    isSelected = false
+                )
+            }
+            .filterNotNull()
+    }
+
+    override suspend fun getSelectedDisciplines(competitionId: Int): List<Discipline> {
+        return getDisciplines(competitionId)
+            .flatMap {
+                it.subDisciplines.filter { subDiscipline -> subDiscipline.isSelected }
+            }
+    }
+
+    override suspend fun getNotSelectedDisciplines(competitionId: Int): List<Discipline> {
+        return getDisciplines(competitionId).map {
+            Discipline(
+                imageResource = it.imageResource,
+                name = it.name,
+                subDisciplines = it.subDisciplines.filter { subDiscipline -> !subDiscipline.isSelected },
+                isSelected = it.isSelected
+            )
+        }.filter { it.subDisciplines.isNotEmpty() }
+    }
+
+    override suspend fun addDisciplineToSelected(discipline: Discipline, competitionId: Int) {
+        val disciplineEntity = dao.getDisciplineByName(discipline.name, competitionId) ?: return
+        val newDiscipline = disciplineEntity.copy(isSelected = true)
+
+        dao.upsertDiscipline(newDiscipline)
+    }
+
+    override suspend fun deleteDisciplineFromSelectedByName(name: String, competitionId: Int) {
+        val disciplineEntity = dao.getDisciplineByName(name, competitionId) ?: return
+        val newDiscipline = disciplineEntity.copy(isSelected = false)
+
+        dao.upsertDiscipline(newDiscipline)
+    }
+
+    private fun initDisciplines(competitionId: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             if (dao.getDisciplines(competitionId).isNotEmpty()) return@launch
 
@@ -78,61 +135,6 @@ class DisciplineRepositoryImpl(
             )
         }
     }
-
-    override suspend fun getDisciplines(): List<Discipline> {
-        val disciplines = dao.getDisciplines(competitionId)
-
-        val parentImageResources = disciplines
-            .filter { it.parentName.isNullOrBlank() }
-            .associateBy({ it.name }, { it.imageResource })
-
-        return disciplines
-            .groupBy { it.parentName }
-            .map { (parentName, subDisciplines) ->
-                val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
-
-                Discipline(
-                    imageResource = parentImageResources[parentName] ?: return@map null,
-                    name = parentName ?: return@map null,
-                    subDisciplines = domainSubDisciplines,
-                    isSelected = false
-                )
-            }
-            .filterNotNull()
-    }
-
-    override suspend fun getSelectedDisciplines(): List<Discipline> {
-        return getDisciplines()
-            .flatMap {
-                it.subDisciplines.filter { subDiscipline -> subDiscipline.isSelected }
-            }
-    }
-
-    override suspend fun getNotSelectedDisciplines(): List<Discipline> {
-        return getDisciplines().map {
-            Discipline(
-                imageResource = it.imageResource,
-                name = it.name,
-                subDisciplines = it.subDisciplines.filter { subDiscipline -> !subDiscipline.isSelected },
-                isSelected = it.isSelected
-            )
-        }.filter { it.subDisciplines.isNotEmpty() }
-    }
-
-    override suspend fun addDisciplineToSelected(discipline: Discipline) {
-        val disciplineEntity = dao.getDisciplineByName(discipline.name, competitionId) ?: return
-        val newDiscipline = disciplineEntity.copy(isSelected = true)
-
-        dao.upsertDiscipline(newDiscipline)
-    }
-
-    override suspend fun deleteDisciplineFromSelectedByName(name: String) {
-        val disciplineEntity = dao.getDisciplineByName(name, competitionId) ?: return
-        val newDiscipline = disciplineEntity.copy(isSelected = false)
-
-        dao.upsertDiscipline(newDiscipline)
-    }
-
 
     /* private fun initDisciplines(): MutableList<Discipline> {
          val list = mutableListOf<Discipline>()

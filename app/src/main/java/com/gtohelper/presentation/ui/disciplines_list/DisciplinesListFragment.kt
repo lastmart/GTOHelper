@@ -8,6 +8,7 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
@@ -19,7 +20,9 @@ import com.gtohelper.R
 import com.gtohelper.databinding.FragmentDisciplinesListBinding
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.presentation.ui.MainActivity
+import com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment
 import com.gtohelper.presentation.ui.disciplines_list.adapter.DisciplineAdapter
+import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineFragment
 import com.gtohelper.presentation.ui.disciplines_list.delete_competition.DeleteCompetitionDialogFragment
 import com.gtohelper.presentation.ui.disciplines_list.delete_discpiline.DeleteDisciplineDialogFragment
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
@@ -38,14 +41,17 @@ class DisciplinesListFragment : Fragment(),
     companion object {
         fun newInstance() = DisciplinesListFragment()
 
-        const val TEAM_NAME = "TEAM_NAME"
-        const val COMPETITION_ID = "COMPETITION_ID"
+        const val TEAM_NAME_ARG = "TEAM_NAME"
+        const val COMPETITION_ID_ARG = "COMPETITION_ID"
     }
 
     @Inject
     lateinit var viewModelFactory: DisciplinesListViewModel.Factory
     private val viewModel: DisciplinesListViewModel by viewModels {
-        DisciplinesListViewModel.provideDisciplinesListViewModelFactory(viewModelFactory, 1)
+        DisciplinesListViewModel.provideDisciplinesListViewModelFactory(
+            viewModelFactory,
+            competitionId
+        )
     }
 
     private lateinit var binding: FragmentDisciplinesListBinding
@@ -54,7 +60,7 @@ class DisciplinesListFragment : Fragment(),
     private lateinit var menuHost: MenuHost
     private lateinit var menuProvider: MenuProvider
 
-    private lateinit var teamName: String
+    private var teamName: String? = null
     private var competitionId by Delegates.notNull<Int>()
 
     override fun onCreateView(
@@ -78,14 +84,14 @@ class DisciplinesListFragment : Fragment(),
     }
 
     override fun onResume() {
-        (requireActivity() as MainActivity).supportActionBar?.title = teamName
+        lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getTeamName()
+        }
         super.onResume()
     }
 
     private fun initArgs() {
-        val defaultTeamName = "МГУ"
-        teamName = arguments?.getString(TEAM_NAME, defaultTeamName) ?: defaultTeamName
-        competitionId = arguments?.getInt(COMPETITION_ID) ?: -1
+        competitionId = requireArguments().getInt(CompetitionDetailsFragment.COMPETITION_ID_ARG)
     }
 
     private fun initRecyclerView() {
@@ -120,7 +126,11 @@ class DisciplinesListFragment : Fragment(),
 
     private fun initButtonClickListeners() {
         binding.disciplinesListAddButton.setOnClickListener {
-            findNavController().navigate(R.id.action_disciplinesListFragment_to_addDisciplineFragment)
+            val args = bundleOf(AddDisciplineFragment.COMPETITION_ID_ARG to competitionId)
+            findNavController().navigate(
+                R.id.action_disciplinesListFragment_to_addDisciplineFragment,
+                args
+            )
         }
     }
 
@@ -130,13 +140,18 @@ class DisciplinesListFragment : Fragment(),
             showDisciplines(it)
         }
 
+        viewModel.teamNameLiveData.observe(viewLifecycleOwner) {
+            teamName = it
+            (requireActivity() as MainActivity).supportActionBar?.title = it
+        }
+
         lifecycleScope.launch(Dispatchers.IO) {
+            viewModel.getTeamName()
             viewModel.getDisciplines()
         }
     }
 
     private fun showDisciplines(disciplines: List<DisciplinePresentation>) {
-        (requireActivity() as MainActivity).supportActionBar?.title = teamName
         adapter.setData(disciplines)
     }
 
@@ -148,7 +163,9 @@ class DisciplinesListFragment : Fragment(),
                 Toast.makeText(requireContext(), "Delete $teamName", Toast.LENGTH_SHORT).show()
 
                 lifecycleScope.launch(Dispatchers.IO) {
-                    viewModel.deleteCompetitionByName(teamName)
+                    teamName?.let {
+                        viewModel.deleteCompetitionByName(it)
+                    }
                 }
 
                 findNavController().navigateUp()
@@ -189,6 +206,7 @@ class DisciplinesListFragment : Fragment(),
 
             if (isDeleted) {
                 lifecycleScope.launch(Dispatchers.IO) {
+                    viewModel.getTeamName()
                     viewModel.deleteDiscipline(item)
                     viewModel.getDisciplines()
                 }
