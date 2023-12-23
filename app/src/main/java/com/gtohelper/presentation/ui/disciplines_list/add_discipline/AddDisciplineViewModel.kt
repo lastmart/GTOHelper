@@ -22,7 +22,7 @@ class AddDisciplineViewModel @Inject constructor(
         _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
     }
 
-    suspend fun addDiscipline(disciplinePresentation: DisciplinePresentation){
+    suspend fun addDiscipline(disciplinePresentation: DisciplinePresentation) {
         disciplineRepository.addDisciplineToSelected(disciplinePresentation)
     }
 }

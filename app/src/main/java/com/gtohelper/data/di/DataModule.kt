@@ -6,6 +6,7 @@ import com.gtohelper.common.Mapper
 import com.gtohelper.data.database.AppDatabase
 import com.gtohelper.data.database.competition.CompetitionDao
 import com.gtohelper.data.database.competitor.CompetitorDao
+import com.gtohelper.data.database.discipline.DisciplineDao
 import com.gtohelper.data.database.result.CompetitorResultsDao
 import com.gtohelper.data.database.result.CompetitorResultsEntity
 import com.gtohelper.data.database.sport.SportDao
@@ -78,6 +79,12 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun provideDisciplineDao(database: AppDatabase): DisciplineDao {
+        return database.getDisciplineDao()
+    }
+
+    @Provides
+    @Singleton
     fun provideCompetitorResultsEntityToCompetitorResultsMapper(): Mapper<CompetitorResultsEntity, CompetitorResults> {
         return CompetitorResultsEntityToCompetitorResultsMapper()
     }
@@ -115,8 +122,10 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideDisciplineRepository(): DisciplineRepository {
-        return DisciplineRepositoryImpl()
+    fun provideDisciplineRepository(
+        dao: DisciplineDao
+    ): DisciplineRepository {
+        return DisciplineRepositoryImpl(dao)
     }
 
 

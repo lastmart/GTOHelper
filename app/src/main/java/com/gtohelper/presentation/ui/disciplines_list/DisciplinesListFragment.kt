@@ -28,6 +28,8 @@ import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class DisciplinesListFragment : Fragment(),
@@ -37,9 +39,15 @@ class DisciplinesListFragment : Fragment(),
         fun newInstance() = DisciplinesListFragment()
 
         const val TEAM_NAME = "TEAM_NAME"
+        const val COMPETITION_ID = "COMPETITION_ID"
     }
 
-    private val viewModel: DisciplinesListViewModel by viewModels()
+    @Inject
+    lateinit var viewModelFactory: DisciplinesListViewModel.Factory
+    private val viewModel: DisciplinesListViewModel by viewModels {
+        DisciplinesListViewModel.provideDisciplinesListViewModelFactory(viewModelFactory, 1)
+    }
+
     private lateinit var binding: FragmentDisciplinesListBinding
     private lateinit var adapter: DisciplineAdapter
 
@@ -47,6 +55,7 @@ class DisciplinesListFragment : Fragment(),
     private lateinit var menuProvider: MenuProvider
 
     private lateinit var teamName: String
+    private var competitionId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,6 +85,7 @@ class DisciplinesListFragment : Fragment(),
     private fun initArgs() {
         val defaultTeamName = "МГУ"
         teamName = arguments?.getString(TEAM_NAME, defaultTeamName) ?: defaultTeamName
+        competitionId = arguments?.getInt(COMPETITION_ID) ?: -1
     }
 
     private fun initRecyclerView() {
