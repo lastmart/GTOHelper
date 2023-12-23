@@ -24,10 +24,14 @@ android {
         }
     }
 
+    composeOptions {
+        kotlinCompilerExtensionVersion = "1.5.2"
+    }
 
     buildFeatures {
         viewBinding = true
         dataBinding = true
+        compose = true
     }
 
     buildTypes {
@@ -49,6 +53,16 @@ android {
 }
 
 dependencies {
+
+    implementation("androidx.compose.ui:ui-android:1.5.4")
+    // Compose
+    val composeBom = platform("androidx.compose:compose-bom:2023.10.01")
+    implementation(composeBom)
+    androidTestImplementation(composeBom)
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")

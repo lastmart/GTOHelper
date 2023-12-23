@@ -1,15 +1,15 @@
 package com.gtohelper.presentation.ui.competitor_creation
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.repository.CompetitorRepository
+import com.gtohelper.presentation.components.forms.FormEditingState
+import com.gtohelper.presentation.components.forms.FormViewModel
+import com.gtohelper.presentation.components.forms.InputState
 import com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -18,41 +18,58 @@ import javax.inject.Inject
 class CompetitorCreationViewModel @Inject constructor(
     private val competitorRepository: CompetitorRepository,
     savedStateHandle: SavedStateHandle,
-) : ViewModel() {
+) : FormViewModel<CompetitorCreationForm>(CompetitorCreationForm()) {
 
     private val competitionId = savedStateHandle[CompetitionDetailsFragment.COMPETITION_ID_ARG] ?: 0
 
-    private val _uiState = MutableStateFlow(CompetitorCreationUiState(CompetitorForm()))
-
-    val uiState = _uiState.asStateFlow()
-
-    fun updateForm(form: CompetitorForm) {
-        _uiState.update { it.copy(form = form) }
-    }
-
-    fun updateGender(index: Int) {
-        _uiState.update { it.copy(form = it.form.copy(gender = Gender.entries[index])) }
-    }
-
-    fun submit() {
-        with(_uiState.value.form) {
-            val competitor = Competitor(
-                0,
-                name = this.name,
-                gender = this.gender,
-                degree = this.degree,
-                teamName = this.teamName,
-                competitionId = competitionId,
-                number = this.number
-            )
-
-            viewModelScope.launch {
-                competitorRepository.create(competitor)
-            }
+    fun updateGender(gender: Gender) {
+        val formState = mutableState.value
+        if (formState is FormEditingState<CompetitorCreationForm>) {
+            mutableState.update { formState.copy(form.copy(gender = gender)) }
         }
     }
 
-    data class CompetitorCreationUiState(
-        val form: CompetitorForm,
-    )
+    fun updateName(name: String) {
+        val formState = mutableState.value
+        if (formState is FormEditingState<CompetitorCreationForm>) {
+            mutableState.update { formState.copy(form.copy(name = name)) }
+        }
+    }
+
+    fun updateTeamName(teamName: String) {
+        val formState = mutableState.value
+        if (formState is FormEditingState<CompetitorCreationForm>) {
+            mutableState.update { formState.copy(form.copy(teamName = teamName)) }
+        }
+    }
+
+    fun updateDegree(degree: Int) {
+        val formState = mutableState.value
+        if (formState is FormEditingState) {
+            mutableState.update { formState.copy(form.copy(degree = degree)) }
+        }
+    }
+
+    fun updateNumber(number: Int) {
+        val formState = mutableState.value
+        if (formState is FormEditingState) {
+            mutableState.update { formState.copy(form.copy(number = number)) }
+        }
+    }
+
+    override suspend fun sendData() {
+        val competitor = Competitor(
+            0,
+            name = form.name,
+            gender = form.gender,
+            degree = form.degree,
+            teamName = form.teamName,
+            competitionId = competitionId,
+            number = form.number,
+        )
+        viewModelScope.launch {
+            competitorRepository.create(competitor)
+        }
+    }
 }
+
