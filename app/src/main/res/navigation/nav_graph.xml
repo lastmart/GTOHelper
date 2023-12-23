@@ -29,7 +29,11 @@
         android:id="@+id/competitorsListFragment"
         android:name="com.gtohelper.presentation.ui.competitors_list.CompetitorsListFragment"
         android:label="Список участников"
-        tools:layout="@layout/fragment_competitors_list" />
+        tools:layout="@layout/fragment_competitors_list">
+        <action
+            android:id="@+id/action_competitorsListFragment_to_competitorCreation"
+            app:destination="@id/competitorCreationFragment" />
+    </fragment>
     <fragment
         android:id="@+id/disciplinesListFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.DisciplinesListFragment"
@@ -83,4 +87,8 @@
         android:name="com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineFragment"
         android:label="Добавить дисциплину"
         tools:layout="@layout/fragment_add_discipline" />
+    <fragment
+        android:id="@+id/competitorCreationFragment"
+        android:name="com.gtohelper.presentation.ui.competitor_creation.CompetitorCreationFragment"
+        android:label="CompetitorCreationFragment" />
 </navigation>
