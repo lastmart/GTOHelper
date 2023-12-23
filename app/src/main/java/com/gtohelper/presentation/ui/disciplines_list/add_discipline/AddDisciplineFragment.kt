@@ -16,17 +16,30 @@ import com.gtohelper.presentation.ui.util.OnItemClickListener
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+import kotlin.properties.Delegates
 
 @AndroidEntryPoint
 class AddDisciplineFragment : Fragment(), OnItemClickListener<DisciplinePresentation> {
 
     companion object {
         fun newInstance() = AddDisciplineFragment()
+        const val COMPETITION_ID_ARG = "COMPETITION_ID"
     }
 
     private lateinit var binding: FragmentAddDisciplineBinding
     private lateinit var adapter: DisciplineWithSubDisciplinesAdapter
-    private val viewModel: AddDisciplineViewModel by viewModels()
+
+    @Inject
+    lateinit var viewModelFactory: AddDisciplineViewModel.Factory
+    private val viewModel: AddDisciplineViewModel by viewModels {
+        AddDisciplineViewModel.provideDisciplinesListViewModelFactory(
+            viewModelFactory,
+            competitionId
+        )
+    }
+
+    private var competitionId by Delegates.notNull<Int>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,10 +47,15 @@ class AddDisciplineFragment : Fragment(), OnItemClickListener<DisciplinePresenta
     ): View? {
         binding = FragmentAddDisciplineBinding.inflate(layoutInflater)
 
+        initArgs()
         initRecyclerView()
         initViewModel()
 
         return binding.root
+    }
+
+    private fun initArgs() {
+        competitionId = requireArguments().getInt(COMPETITION_ID_ARG)
     }
 
     private fun initViewModel() {
