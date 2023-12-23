@@ -1,8 +1,8 @@
 package com.gtohelper.domain.models
 
-import android.graphics.drawable.Drawable
-
-data class Discipline(
-    val imageDrawable: Drawable,
-    val name: String
+open class Discipline(
+    val imageResource: Int,
+    val name: String,
+    val subDisciplines: List<Discipline> = emptyList(),
+    var isSelected: Boolean = false
 )

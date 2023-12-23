@@ -6,17 +6,18 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gtohelper.databinding.ItemDisciplineBinding
 import com.gtohelper.domain.models.Discipline
+import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.util.OnItemClickListener
 import com.gtohelper.presentation.ui.util.OnItemLongClickListener
 
 
 class DisciplineAdapter(
-    var disciplines: List<Discipline>,
-    private val onItemClickListener: OnItemClickListener<Discipline>,
-    private val onItemLongClickListener: OnItemLongClickListener<Discipline>
+    private var disciplines: List<DisciplinePresentation>,
+    private val onItemClickListener: OnItemClickListener<DisciplinePresentation>,
+    private val onItemLongClickListener: OnItemLongClickListener<DisciplinePresentation>
 ) : RecyclerView.Adapter<DisciplineAdapter.DisciplineViewHolder>() {
 
-    fun setData(newDisciplines: List<Discipline>) {
+    fun setData(newDisciplines: List<DisciplinePresentation>) {
         val diffUtil = DisciplineDiffUtil(disciplines, newDisciplines)
         val diffResults = DiffUtil.calculateDiff(diffUtil)
         disciplines = newDisciplines.toList()
@@ -39,13 +40,13 @@ class DisciplineAdapter(
 
     class DisciplineViewHolder(
         private val binding: ItemDisciplineBinding,
-        private val onItemClickListener: OnItemClickListener<Discipline>,
-        private val onItemLongClickListener: OnItemLongClickListener<Discipline>
+        private val onItemClickListener: OnItemClickListener<DisciplinePresentation>,
+        private val onItemLongClickListener: OnItemLongClickListener<DisciplinePresentation>
     ) : RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(discipline: Discipline) {
+        fun bind(discipline: DisciplinePresentation) {
             binding.disciplineName.text = discipline.name
-            binding.disciplineImage.setImageDrawable(discipline.imageDrawable)
+            binding.disciplineImage.setImageResource(discipline.imageResource)
 
             binding.root.setOnClickListener {
                 onItemClickListener.onItemClicked(discipline)
@@ -75,6 +76,6 @@ class DisciplineDiffUtil(
         val newItem = newList[newItemPosition]
 
         return oldItem.name == newItem.name
-                && oldItem.imageDrawable == newItem.imageDrawable
+                && oldItem.imageResource == newItem.imageResource
     }
 }

@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.disciplines_list
+package com.gtohelper.presentation.ui.disciplines_list.add_discipline
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class DisciplinesListViewModel @Inject constructor(
+class AddDisciplineViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository
 ) : ViewModel() {
 
@@ -18,15 +18,11 @@ class DisciplinesListViewModel @Inject constructor(
     val disciplinesLiveData: LiveData<List<DisciplinePresentation>> = _disciplinesLiveData
 
     suspend fun getDisciplines() {
-        val disciplines = disciplineRepository.getSelectedDisciplines()
+        val disciplines = disciplineRepository.getNotSelectedDisciplines()
         _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
     }
 
-    suspend fun deleteDiscipline(discipline: DisciplinePresentation) {
-        disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name)
-    }
-
-    suspend fun deleteCompetitionByName(competitionName: String) {
-        println("Delete competition $competitionName")
+    suspend fun addDiscipline(disciplinePresentation: DisciplinePresentation){
+        disciplineRepository.addDisciplineToSelected(disciplinePresentation)
     }
 }
