@@ -3,13 +3,14 @@ package com.gtohelper.data.database.competitor
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.gtohelper.data.database.competition.CompetitionEntity
 import com.gtohelper.domain.models.Gender
 
 @Entity(
     tableName = "competitors_table",
     foreignKeys = [
         ForeignKey(
-            entity = CompetitorEntity::class,
+            entity = CompetitionEntity::class,
             parentColumns = ["id"],
             childColumns = ["competitionId"],
             onDelete = ForeignKey.CASCADE,

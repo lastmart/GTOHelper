@@ -1,13 +1,10 @@
 package com.gtohelper.presentation.components.forms
 
-sealed class FormState<T : AppForm>(open val form: T)
+sealed class FormState<T>(open val form: T)
 
 interface EditableState
-
-data class FormPreparationState<T : AppForm>(override val form: T) : FormState<T>(form)
-data class FormPreparationFailedState<T : AppForm>(override val form: T) : FormState<T>(form)
-data class FormEditingState<T : AppForm>(override val form: T) : FormState<T>(form), EditableState
-data class FormSubmittingState<T : AppForm>(override val form: T) : FormState<T>(form)
-data class FormSubmittedState<T : AppForm>(override val form: T) : FormState<T>(form), EditableState
-data class FormSubmissionFailedState<T : AppForm>(override val form: T, val error: String) :
+data class FormEditingState<T>(override val form: T) : FormState<T>(form), EditableState
+data class FormSubmittingState<T>(override val form: T) : FormState<T>(form)
+data class FormSubmittedState<T>(override val form: T) : FormState<T>(form), EditableState
+data class FormSubmissionFailedState<T>(override val form: T, val error: String) :
     FormState<T>(form), EditableState

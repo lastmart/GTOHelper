@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components
+package com.gtohelper.presentation.components.composables
 
 
 import androidx.compose.foundation.layout.Box
