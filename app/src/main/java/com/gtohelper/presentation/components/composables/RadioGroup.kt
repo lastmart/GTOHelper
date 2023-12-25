@@ -14,13 +14,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.ui.util.capitalize
 
 @Preview
 @Composable
 fun PreviewRadioGroup() {
     RadioGroup(
-        initialValue = Gender.FEMALE,
+        selectedValue = Gender.FEMALE,
         onChanged = {},
         values = Gender.entries,
         nameTransform = { value -> value.name }
@@ -29,12 +28,12 @@ fun PreviewRadioGroup() {
 
 @Composable
 fun <T : Enum<T>> RadioGroup(
-    initialValue: T,
+    selectedValue: T,
     onChanged: (T) -> Unit,
     values: List<T>,
     nameTransform: (T) -> String,
 ) {
-    val state = remember { mutableStateOf(initialValue) }
+    val state = remember { mutableStateOf(selectedValue) }
 
     Column {
         values.forEach { value ->

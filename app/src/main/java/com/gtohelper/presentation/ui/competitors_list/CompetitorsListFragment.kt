@@ -34,16 +34,9 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
         binding.recyclerViewCompetitorsResults.adapter = adapter
 
         viewLifecycleOwner.lifecycleScope.launch {
-            launch {
-                viewModel.competitors.collect {
-                    runOnUiThread {
-                        adapter.setData(it)
-                    }
-                }
-            }
-            launch {
-                viewModel.searchQuery.collect {
-                    binding.searchViewCompetitorsListFragment.setQuery(it, true)
+            viewModel.competitors.collect {
+                runOnUiThread {
+                    adapter.setData(it)
                 }
             }
         }
@@ -63,8 +56,8 @@ class CompetitorsListFragment : Fragment(), OnItemClickListener<Competitor> {
     }
 
     override fun onItemClicked(item: Competitor) {
-//        println("Id: ${item.id}")
-//        Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
+        //        println("Id: ${item.id}")
+        //        Toast.makeText(requireContext(), item.id, Toast.LENGTH_SHORT).show()
     }
 
 

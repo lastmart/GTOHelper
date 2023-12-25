@@ -17,9 +17,10 @@ class HelpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-
-
-        return binding.root
+        return binding.composeView.apply {
+            setContent {
+                HelpScreen()
+            }
+        }
     }
 }

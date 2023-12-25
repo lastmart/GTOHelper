@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.competitor_creation
+package com.gtohelper.presentation.ui.competitors_list.add_competitor
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,9 +13,9 @@ import com.gtohelper.databinding.FragmentCompetitorCreationBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class CompetitorCreationFragment : Fragment() {
+class AddCompetitorFragment : Fragment() {
 
-    private val viewModel: CompetitorCreationViewModel by viewModels()
+    private val viewModel: AddCompetitorViewModel by viewModels()
     private val binding by lazy { FragmentCompetitorCreationBinding.inflate(layoutInflater) }
 
     override fun onCreateView(
@@ -25,7 +25,7 @@ class CompetitorCreationFragment : Fragment() {
 
         return binding.composeView.apply {
             setContent {
-                CompetitorCreationScreen(
+                AddCompetitorScreen(
                     findNavController(),
                     viewModel,
                 )

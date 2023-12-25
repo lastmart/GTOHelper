@@ -28,10 +28,10 @@ fun TransparentAddFab(
     onClick: () -> Unit,
     contentDescription: String?,
 ) {
-
     IconButton(
         colors = IconButtonDefaults.iconButtonColors(
             disabledContainerColor = Color.Transparent,
+            disabledContentColor = Color.Transparent,
         ),
         modifier = Modifier
             .background(Color.Transparent)

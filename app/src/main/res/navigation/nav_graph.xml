@@ -89,6 +89,6 @@
         tools:layout="@layout/fragment_add_discipline" />
     <fragment
         android:id="@+id/competitorCreationFragment"
-        android:name="com.gtohelper.presentation.ui.competitor_creation.CompetitorCreationFragment"
+        android:name="com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorFragment"
         android:label="CompetitorCreationFragment" />
 </navigation>
