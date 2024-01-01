@@ -15,15 +15,14 @@ import com.gtohelper.domain.models.Gender
             childColumns = ["competitionId"],
             onDelete = ForeignKey.CASCADE,
         )
-    ]
+    ],
 )
 data class CompetitorEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    @PrimaryKey(autoGenerate = true) val id: Int,
+    val number: Int,
     val name: String,
     val gender: Gender,
     val teamName: String,
     val competitionId: Int,
-    val number: Int,
     val degree: Int
 )

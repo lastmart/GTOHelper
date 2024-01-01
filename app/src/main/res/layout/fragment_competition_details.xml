@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".presentation.ui.competition_details.CompetitionDetailsFragment">
+    tools:context=".presentation.ui.competition_detail.CompetitionDetailsFragment">
 
 
     <TextView
+        tools:text="Название соревнования"
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,6 +17,7 @@
 
 
     <TextView
+        tools:text="Описание соревнования"
         android:id="@+id/descpription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -38,4 +38,9 @@ class CompetitorRepositoryImpl(
         }
     }
 
+    override suspend fun getById(competitorNumber: Int, competitionId: Int): Competitor? {
+       return withContext(Dispatchers.IO){
+           competitorDao.getCompetitorById(competitorNumber, competitionId)?.toDomainModel()
+       }
+    }
 }

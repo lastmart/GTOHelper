@@ -72,7 +72,7 @@ class DisciplineWithSubDisciplinesAdapter(
         }
 
         private fun expandOrHide(discipline: DisciplinePresentation) {
-            bindingAdapter?.notifyItemChanged(bindingAdapterPosition)
+//            bindingAdapter?.notifyItemChanged(bindingAdapterPosition)
             discipline.isExpanded = !discipline.isExpanded
         }
     }

@@ -6,7 +6,8 @@ import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.presentation.components.forms.FormState
-import com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment
+import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
+import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,34 +19,39 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AddCompetitorViewModel @Inject constructor(
-    private val competitorRepository: CompetitorRepository,
+    private val repository: CompetitorRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val competitionId = savedStateHandle[CompetitionDetailsFragment.COMPETITION_ID_ARG] ?: 0
+    private val competitionId = savedStateHandle["competition_id"] ?: 0
 
     private val formStateChannel = Channel<FormState>()
     val formState = formStateChannel.receiveAsFlow()
 
-    private val mutableForm = MutableStateFlow(AddCompetitorFormState())
+    private val mutableForm = MutableStateFlow(CompetitorFormState())
     val form = mutableForm.asStateFlow()
 
-    fun onEvent(event: AddCompetitorEvent) = when (event) {
-        AddCompetitorEvent.Submit -> submit()
-        is AddCompetitorEvent.UpdateDegree -> mutableForm.update { it.copy(degree = event.value) }
-        is AddCompetitorEvent.UpdateGender -> mutableForm.update { it.copy(gender = event.value) }
-        is AddCompetitorEvent.UpdateName -> mutableForm.update { it.copy(name = event.value) }
-        is AddCompetitorEvent.UpdateNumber -> mutableForm.update { it.copy(number = event.value) }
-        is AddCompetitorEvent.UpdateTeamName -> mutableForm.update { it.copy(teamName = event.value) }
+    fun onEvent(event: CompetitorFormEvent) = when (event) {
+        CompetitorFormEvent.Submit -> submit()
+        is CompetitorFormEvent.UpdateDegree -> mutableForm.update { it.copy(degree = event.value) }
+        is CompetitorFormEvent.UpdateGender -> mutableForm.update { it.copy(gender = event.value) }
+        is CompetitorFormEvent.UpdateName -> mutableForm.update { it.copy(name = event.value) }
+        is CompetitorFormEvent.UpdateNumber -> mutableForm.update { it.copy(number = event.value) }
+        is CompetitorFormEvent.UpdateTeamName -> mutableForm.update { it.copy(teamName = event.value) }
     }
 
-    private fun validate(): String? {
+    private suspend fun validateInput(): String? {
+        // TODO: Create UseCases For Validation
         if (mutableForm.value.name.isEmpty()) {
             return "Имя участника не может быть пустым"
         }
 
         if (mutableForm.value.teamName.isEmpty()) {
             return "Название команды не может быть пустым"
+        }
+
+        if (repository.getById(mutableForm.value.number, competitionId) != null){
+            return "Участник с таким номером уже существует"
         }
 
         return null
@@ -58,21 +64,20 @@ class AddCompetitorViewModel @Inject constructor(
         }
 
         val competitor = Competitor(
-            0,
+            id = 0,
+            number = form.value.number,
             name = form.value.name,
             gender = form.value.gender,
             degree = form.value.degree,
             teamName = form.value.teamName,
             competitionId = competitionId,
-            number = form.value.number,
         )
 
-        val error = validate()
-
         viewModelScope.launch {
+            val error = validateInput()
             if (error == null) {
                 try {
-                    competitorRepository.create(competitor)
+                    repository.create(competitor)
                     formStateChannel.send(FormState.FormSubmittedState)
                 } catch (e: Exception) {
                     formStateChannel.send(FormState.FormSubmissionFailedState(e.message.toString()))

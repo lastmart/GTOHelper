@@ -18,7 +18,7 @@ import com.gtohelper.domain.models.Gender
 @Preview
 @Composable
 fun PreviewRadioGroup() {
-    RadioGroup(
+    AppRadioGroup(
         selectedValue = Gender.FEMALE,
         onChanged = {},
         values = Gender.entries,
@@ -27,7 +27,7 @@ fun PreviewRadioGroup() {
 }
 
 @Composable
-fun <T : Enum<T>> RadioGroup(
+fun <T> AppRadioGroup(
     selectedValue: T,
     onChanged: (T) -> Unit,
     values: List<T>,

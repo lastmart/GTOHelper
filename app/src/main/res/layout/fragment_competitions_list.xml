@@ -5,8 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingHorizontal="10dp"
-    tools:context="com.gtohelper.presentation.ui.competitions.CompetitionListFragment">
+    android:paddingHorizontal="10dp">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/mainFragmentSearchView"

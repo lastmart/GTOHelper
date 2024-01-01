@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingHorizontal="10dp"
-    tools:context=".presentation.ui.competition_creation.CompetitionCreationFragment">
+    tools:context=".presentation.ui.add_competition.CompetitionCreationFragment">
 
 
     <com.google.android.material.textfield.TextInputLayout

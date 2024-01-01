@@ -3,6 +3,8 @@ package com.gtohelper.presentation.components.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -37,6 +39,8 @@ fun AppSearchField(
             focusedBorderColor = AppBorderColor,
             unfocusedBorderColor = AppBorderColor,
         ),
+        singleLine = true,
+        maxLines = 1,
         modifier = Modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,

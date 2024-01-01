@@ -17,8 +17,8 @@
             android:id="@+id/action_mainFragment_to_helpFragment"
             app:destination="@id/helpFragment" />
         <action
-            android:id="@+id/action_competitionListFragment_to_competitionDetailsFragment"
-            app:destination="@id/competitionDetailsFragment" />
+            android:id="@+id/action_competitionListFragment_to_disciplinesListFragment"
+            app:destination="@id/disciplinesListFragment" />
     </fragment>
     <fragment
         android:id="@+id/competitorsResultsFragment"
@@ -28,11 +28,14 @@
     <fragment
         android:id="@+id/competitorsListFragment"
         android:name="com.gtohelper.presentation.ui.competitors_list.CompetitorsListFragment"
-        android:label="Список участников"
+        android:label="@string/competitors_list"
         tools:layout="@layout/fragment_competitors_list">
         <action
             android:id="@+id/action_competitorsListFragment_to_competitorCreation"
             app:destination="@id/competitorCreationFragment" />
+        <action
+            android:id="@+id/action_competitorsListFragment_to_editCompetitorFragment"
+            app:destination="@id/editCompetitorFragment" />
     </fragment>
     <fragment
         android:id="@+id/disciplinesListFragment"
@@ -48,6 +51,12 @@
         <action
             android:id="@+id/action_disciplinesListFragment_to_addDisciplineFragment"
             app:destination="@id/addDisciplineFragment" />
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_competitorsListFragment"
+            app:destination="@id/competitorsListFragment" />
+        <action
+            android:id="@+id/action_disciplinesListFragment_to_competitorsResultsFragment"
+            app:destination="@id/competitorsResultsFragment" />
     </fragment>
     <dialog
         android:id="@+id/deleteDisciplineDialogFragment"
@@ -59,7 +68,7 @@
         android:label="DeleteCompetitionDialogFragment" />
     <fragment
         android:id="@+id/competitionCreationFragment"
-        android:name="com.gtohelper.presentation.ui.competition_creation.CompetitionCreationFragment"
+        android:name="com.gtohelper.presentation.ui.add_competition.CompetitionCreationFragment"
         android:label="@string/new_competition"
         tools:layout="@layout/fragment_competition_creation" />
     <fragment
@@ -69,19 +78,9 @@
         tools:layout="@layout/fragment_help" />
     <fragment
         android:id="@+id/competitionDetailsFragment"
-        android:name="com.gtohelper.presentation.ui.competition_details.CompetitionDetailsFragment"
+        android:name="com.gtohelper.presentation.ui.competition_detail.CompetitionDetailsFragment"
         android:label=""
-        tools:layout="@layout/fragment_competition_details">
-        <action
-            android:id="@+id/action_competitionDetailsFragment_to_disciplinesListFragment"
-            app:destination="@id/disciplinesListFragment" />
-        <action
-            android:id="@+id/action_competitionDetailsFragment_to_competitorsResultsFragment"
-            app:destination="@id/competitorsResultsFragment" />
-        <action
-            android:id="@+id/action_competitionDetailsFragment_to_competitorsListFragment"
-            app:destination="@id/competitorsListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_competition_details"/>
     <fragment
         android:id="@+id/addDisciplineFragment"
         android:name="com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineFragment"
@@ -90,5 +89,9 @@
     <fragment
         android:id="@+id/competitorCreationFragment"
         android:name="com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorFragment"
-        android:label="CompetitorCreationFragment" />
+        android:label="@string/new_competitor" />
+    <fragment
+        android:id="@+id/editCompetitorFragment"
+        android:name="com.gtohelper.presentation.ui.competitors_list.edit_competitor.EditCompetitorFragment"
+        android:label="EditCompetitorFragment" />
 </navigation>

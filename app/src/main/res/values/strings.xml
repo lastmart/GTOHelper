@@ -14,4 +14,8 @@
     <string name="competitor_gender">Пол участника</string>
     <string name="competitor_degree">Ступень участника</string>
     <string name="save_new_competitor">Сохранить нового участника</string>
+    <string name="competitors_list">Список участников</string>
+    <string name="competitors">Участники</string>
+    <string name="disciplines">Дисциплины</string>
+    <string name="results">Результаты</string>
 </resources>

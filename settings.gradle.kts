@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "GTO Helper"
 include(":app")
+include(":app")
  

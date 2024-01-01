@@ -2,19 +2,17 @@ package com.gtohelper.presentation.ui.competitors_list.add_competitor
 
 
 import android.util.Log
-import android.widget.Toast
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -24,32 +22,18 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.components.composables.AppTextField
-import com.gtohelper.presentation.components.composables.RadioGroup
 import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.components.forms.FormState
-import kotlinx.coroutines.flow.collectLatest
+import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
+import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState
+import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorUiForm
 import kotlinx.coroutines.launch
 
-@Preview
-@Composable
-fun PreviewAddCompetitor() {
-    AddCompetitorContent(
-        modifier = Modifier.fillMaxWidth(),
-        form = AddCompetitorFormState(),
-        onEvent = {}
-    )
-}
-
 
 @Composable
-fun AddCompetitorScreen(
+fun AddCompetitorRoute(
     navController: NavController,
     viewModel: AddCompetitorViewModel,
 ) {
@@ -57,7 +41,7 @@ fun AddCompetitorScreen(
     val coroutineScope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    LaunchedEffect(key1 = context) {
+    LaunchedEffect(context) {
         viewModel.formState.collect { event ->
             Log.i("ADD_COMPETITION_SCREEN", "Event happened: $event")
             if (event is FormState.FormSubmissionFailedState) {
@@ -74,25 +58,52 @@ fun AddCompetitorScreen(
 
     val form by viewModel.form.collectAsState()
 
+    AddCompetitorScreen(
+        form = form,
+        snackbarHostState = snackbarHostState,
+        onBackClicked = navController::navigateUp,
+        onEvent = viewModel::onEvent,
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddCompetitorScreen(
+    form: CompetitorFormState,
+    snackbarHostState: SnackbarHostState,
+    onBackClicked: () -> Unit = {},
+    onEvent: (CompetitorFormEvent) -> Unit = {},
+) {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(20.dp),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(stringResource(R.string.new_competitor))
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClicked) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+            )
+        },
         floatingActionButton = {
             TransparentAddFab(
                 contentDescription = stringResource(R.string.save_new_competitor),
-                onClick = { viewModel.onEvent(AddCompetitorEvent.Submit) },
+                onClick = { onEvent(CompetitorFormEvent.Submit) },
             )
         }) {
 
-        AddCompetitorContent(
+        CompetitorUiForm(
             form = form,
-            onEvent = viewModel::onEvent,
+            onEvent = onEvent,
             modifier = Modifier.padding(it),
         )
     }
-
 }
 
 // TODO: Make it work?
@@ -107,73 +118,3 @@ fun AddCompetitorScreen(
 //        }
 //    }
 //}
-
-@Composable
-fun AddCompetitorContent(
-    modifier: Modifier,
-    form: AddCompetitorFormState,
-    onEvent: (AddCompetitorEvent) -> Unit,
-) {
-    Column(
-        modifier = modifier,
-    ) {
-
-        AppTextField(
-            value = form.name,
-            onValueChange = { onEvent(AddCompetitorEvent.UpdateName(it)) },
-            label = stringResource(R.string.competitor_name),
-            maxLength = 10,
-        )
-
-        Spacer(Modifier.height(18.dp))
-
-        AppTextField(
-            value = form.teamName,
-            onValueChange = { onEvent(AddCompetitorEvent.UpdateTeamName(it)) },
-            label = stringResource(R.string.team_name),
-            maxLength = 10,
-        )
-
-        Spacer(Modifier.height(18.dp))
-
-        Text(stringResource(R.string.competitor_gender))
-
-        RadioGroup(selectedValue = form.gender,
-            onChanged = { onEvent(AddCompetitorEvent.UpdateGender(it)) },
-            values = Gender.entries,
-            nameTransform = { value -> if (value == Gender.MALE) "Мужской" else "Женский" })
-
-        Spacer(modifier = Modifier.height(18.dp))
-
-        AppTextField(
-            label = stringResource(R.string.competitor_degree),
-            value = form.degree.toString(),
-            onValueChange = { value ->
-                onEvent(
-                    AddCompetitorEvent.UpdateDegree(
-                        (value.toIntOrNull() ?: 0)
-                    )
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            maxLength = 10,
-        )
-
-        Spacer(Modifier.height(18.dp))
-
-        AppTextField(
-            label = stringResource(R.string.competitor_number),
-            value = form.number.toString(),
-            onValueChange = { value ->
-                onEvent(
-                    AddCompetitorEvent.UpdateNumber(
-                        (value.toIntOrNull() ?: 0)
-                    )
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            maxLength = 10,
-        )
-    }
-}
-
