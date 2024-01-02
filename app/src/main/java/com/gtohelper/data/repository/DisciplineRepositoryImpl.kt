@@ -6,9 +6,6 @@ import com.gtohelper.data.database.discipline.DisciplineEntity
 import com.gtohelper.data.mappers.toSubDiscipline
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.repository.DisciplineRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 class DisciplineRepositoryImpl(
     private val dao: DisciplineDao,
@@ -73,67 +70,65 @@ class DisciplineRepositoryImpl(
         dao.upsertDiscipline(newDiscipline)
     }
 
-    private fun initDisciplines(competitionId: Int) {
-        GlobalScope.launch(Dispatchers.IO) {
-            if (dao.getDisciplines(competitionId).isNotEmpty()) return@launch
+    private suspend fun initDisciplines(competitionId: Int) {
+        if (dao.getDisciplines(competitionId).isNotEmpty()) return
 
-            dao.upsertDisciplines(
-                listOf(
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на короткие дистанции",
-                        imageResource = R.drawable.discipline_sprinting
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 30 м",
-                        parentName = "Бег на короткие дистанции",
-                        imageResource = R.drawable.sub_discipline_sprinting_30m
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 60 м",
-                        parentName = "Бег на короткие дистанции",
-                        imageResource = R.drawable.sub_discipline_sprinting_60m
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 100 м",
-                        parentName = "Бег на короткие дистанции",
-                        imageResource = R.drawable.sub_discipline_sprinting_100m
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на длинные дистанции",
-                        imageResource = R.drawable.discipline_long_distance_running
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 1 км",
-                        parentName = "Бег на длинные дистанции",
-                        imageResource = R.drawable.sub_discipline_long_distance_running_1km
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 1.5 км",
-                        parentName = "Бег на длинные дистанции",
-                        imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 2 км",
-                        parentName = "Бег на длинные дистанции",
-                        imageResource = R.drawable.sub_discipline_long_distance_running_2km
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
-                        name = "Бег на 3 км",
-                        parentName = "Бег на длинные дистанции",
-                        imageResource = R.drawable.sub_discipline_long_distance_running_3km
-                    ),
-                )
+        dao.upsertDisciplines(
+            listOf(
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на короткие дистанции",
+                    imageResource = R.drawable.discipline_sprinting
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 30 м",
+                    parentName = "Бег на короткие дистанции",
+                    imageResource = R.drawable.sub_discipline_sprinting_30m
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 60 м",
+                    parentName = "Бег на короткие дистанции",
+                    imageResource = R.drawable.sub_discipline_sprinting_60m
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 100 м",
+                    parentName = "Бег на короткие дистанции",
+                    imageResource = R.drawable.sub_discipline_sprinting_100m
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на длинные дистанции",
+                    imageResource = R.drawable.discipline_long_distance_running
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 1 км",
+                    parentName = "Бег на длинные дистанции",
+                    imageResource = R.drawable.sub_discipline_long_distance_running_1km
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 1.5 км",
+                    parentName = "Бег на длинные дистанции",
+                    imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 2 км",
+                    parentName = "Бег на длинные дистанции",
+                    imageResource = R.drawable.sub_discipline_long_distance_running_2km
+                ),
+                DisciplineEntity(
+                    competitionId = competitionId,
+                    name = "Бег на 3 км",
+                    parentName = "Бег на длинные дистанции",
+                    imageResource = R.drawable.sub_discipline_long_distance_running_3km
+                ),
             )
-        }
+        )
     }
 
     /* private fun initDisciplines(): MutableList<Discipline> {
