@@ -10,7 +10,6 @@ class CompetitorEntityToCompetitorDomainMapper : Mapper<CompetitorEntity, Compet
         return Competitor(
             nameCompetitor = data.nameCompetitor,
             participantNumber = data.id,
-            age = data.age,
             gender = data.gender.string,
             nameTeam = data.nameTeam,
             degree = data.degree,

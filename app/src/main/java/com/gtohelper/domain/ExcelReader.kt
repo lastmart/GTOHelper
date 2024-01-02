@@ -1,20 +1,20 @@
-package com.gtohelper.data.models
+package com.gtohelper.domain
 
-import JsonParser
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.Competitor
+import com.gtohelper.domain.repository.CompetitorRepository
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.FileInputStream
 
 fun main(){
     val filePath = "/Users/glebmoskalev/Downloads/пример импортируемой таблицы.xlsx"
-    for (e in ExcelReader().getCompetitorList2(filePath)){
+    for (e in ExcelReader(null).getCompetitorList2(filePath)){
         println(e)
     }
 }
 
-class ExcelReader {
+class ExcelReader(private val competitorRepository: CompetitorRepository?) {
     fun getCompetitorList2(filePath:String): List<Competitor>{
         val fileInputStream = FileInputStream(filePath)
         val workBook = WorkbookFactory.create(fileInputStream)
