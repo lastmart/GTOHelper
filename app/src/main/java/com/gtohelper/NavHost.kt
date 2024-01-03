@@ -22,6 +22,7 @@ import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableViewModel
 import com.gtohelper.presentation.ui.disciplines_list.DisciplineListRoute
 import com.gtohelper.presentation.ui.disciplines_list.DisciplinesListViewModel
+import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineRoute
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineViewModel
 
 
@@ -94,6 +95,12 @@ fun AppHavHost(navController: NavHostController) {
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
+            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            AddDisciplineRoute(
+                navController = navController,
+                viewModel = viewModel,
+                competitionId = competitionId
+            )
         }
 
         composable(

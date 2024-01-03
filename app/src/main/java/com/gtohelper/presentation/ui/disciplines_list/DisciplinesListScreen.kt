@@ -1,13 +1,10 @@
 package com.gtohelper.presentation.ui.disciplines_list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -23,15 +20,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.AppSearchField
 import com.gtohelper.presentation.components.composables.TransparentAddFab
-import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineItem
+import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.theme.spacing
 
@@ -46,7 +40,12 @@ fun DisciplineListRoute(
         navController = navController,
         uiState = uiState,
         onItemClicked = {},
-        onAddButtonClicked = { navController.navigate("add_discipline/$competitionId") })
+        onAddButtonClicked = { navController.navigate("add_discipline/$competitionId") },
+        onItemLongClicked = {
+            viewModel.deleteDiscipline(it)
+            true
+        }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -55,9 +54,9 @@ fun DisciplinesListScreen(
     navController: NavController,
     uiState: DisciplinesListUIState,
     onItemClicked: (DisciplinePresentation) -> Unit,
+    onItemLongClicked: (DisciplinePresentation) -> Boolean,
     onAddButtonClicked: () -> Unit
 ) {
-
     Scaffold(
         topBar = {
             TopAppBar(
@@ -81,21 +80,17 @@ fun DisciplinesListScreen(
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding)) {
-            //        AppSearchField(
-            //            value = "123",
-            //            hint = "Поиск участников...",
-            //            onValueChange = {},
-            //        )
-
             Spacer(Modifier.height(MaterialTheme.spacing.small))
 
             LazyColumn(verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small)) {
                 items(uiState.disciplines) {
-                    DisciplineItem(discipline = it, onClick = {}, onLongClick = { false })
+                    DisciplineCardItem(
+                        discipline = it,
+                        onClick = onItemClicked,
+                        onLongClick = onItemLongClicked
+                    )
                 }
             }
-
-
         }
     }
 }
@@ -121,7 +116,8 @@ fun DisciplinesListScreenPreview() {
         ),
         onItemClicked = {},
         onAddButtonClicked = {},
-        navController = NavController(LocalContext.current)
+        navController = NavController(LocalContext.current),
+        onItemLongClicked = { true }
     )
 }
 

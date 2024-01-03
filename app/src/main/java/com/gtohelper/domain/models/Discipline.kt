@@ -1,8 +1,13 @@
 package com.gtohelper.domain.models
 
 open class Discipline(
-    val imageResource: Int,
     val name: String,
+    val imageResource: Int,
     val subDisciplines: List<Discipline> = emptyList(),
     var isSelected: Boolean = false
-)
+) {
+
+    override fun toString(): String {
+        return "name: [$name], imageResource: [$imageResource], subDisciplines: [${subDisciplines.map { it.toString() }}], isSelected: [$isSelected]"
+    }
+}

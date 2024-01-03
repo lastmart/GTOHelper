@@ -1,7 +1,5 @@
 package com.gtohelper.presentation.ui.disciplines_list
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,10 +10,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,7 +25,6 @@ class DisciplinesListViewModel @Inject constructor(
 
     val uiState: StateFlow<DisciplinesListUIState> =
         disciplineRepository
-         //   .getSelectedDisciplines()
             .getSelectedDisciplines(competitionId)
             .map { disciplines ->
                 DisciplinesListUIState(
@@ -41,7 +37,7 @@ class DisciplinesListViewModel @Inject constructor(
                 initialValue = DisciplinesListUIState()
             )
 
-//    private var _disciplinesLiveData = MutableLiveData<List<DisciplinePresentation>>()
+    //    private var _disciplinesLiveData = MutableLiveData<List<DisciplinePresentation>>()
 //    val disciplinesLiveData: LiveData<List<DisciplinePresentation>> = _disciplinesLiveData
 //
 //    suspend fun getDisciplines() {
@@ -49,9 +45,11 @@ class DisciplinesListViewModel @Inject constructor(
 //        _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
 //    }
 //
-//    suspend fun deleteDiscipline(discipline: DisciplinePresentation) {
-//        disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name)
-//    }
+    fun deleteDiscipline(discipline: DisciplinePresentation) {
+        viewModelScope.launch(Dispatchers.IO) {
+            disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name, competitionId)
+        }
+    }
 //
 //    suspend fun deleteCompetitionByName(competitionName: String) {
 //        println("Delete competition $competitionName")

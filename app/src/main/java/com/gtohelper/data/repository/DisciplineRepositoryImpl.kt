@@ -6,54 +6,81 @@ import com.gtohelper.data.database.discipline.DisciplineEntity
 import com.gtohelper.data.mappers.toSubDiscipline
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.repository.DisciplineRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 class DisciplineRepositoryImpl(
     private val dao: DisciplineDao,
 ) : DisciplineRepository {
 
-    override suspend fun getDisciplines(competitionId: Int): List<Discipline> {
-        var disciplines = dao.getDisciplines(competitionId)
+    override fun getDisciplines(competitionId: Int): Flow<List<Discipline>> {
 
-        if (disciplines.isEmpty()) {
+        GlobalScope.launch(Dispatchers.IO) {
             initDisciplines(competitionId)
-            disciplines = dao.getDisciplines(competitionId)
         }
 
-        val parentImageResources = disciplines
-            .filter { it.parentName.isNullOrBlank() }
-            .associateBy({ it.name }, { it.imageResource })
+        return dao.getDisciplines(competitionId).map { disciplines ->
+            val parentImageResources = disciplines
+                .filter { it.parentName.isNullOrBlank() }
+                .associateBy({ it.name }, { it.imageResource })
 
-        return disciplines
-            .groupBy { it.parentName }
-            .map { (parentName, subDisciplines) ->
-                val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
 
-                Discipline(
-                    imageResource = parentImageResources[parentName] ?: return@map null,
-                    name = parentName ?: return@map null,
-                    subDisciplines = domainSubDisciplines.sortedBy { it.name },
-                    isSelected = false
-                )
-            }
-            .filterNotNull()
+            return@map disciplines
+                .groupBy { it.parentName }
+                .map { (parentName, subDisciplines) ->
+                    val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
+
+                    Discipline(
+                        imageResource = parentImageResources[parentName] ?: return@map null,
+                        name = parentName ?: return@map null,
+                        subDisciplines = domainSubDisciplines.sortedBy { it.name },
+                        isSelected = false
+                    )
+                }
+                .filterNotNull()
+        }
+
+        /*if (disciplines.isEmpty()) {
+            initDisciplines(competitionId)
+            disciplines = dao.getDisciplines(competitionId)
+        }*/
+
+
     }
 
-    override suspend fun getSelectedDisciplines(competitionId: Int): List<Discipline> {
+    @OptIn(ExperimentalCoroutinesApi::class)
+    override fun getSelectedDisciplines(competitionId: Int): Flow<List<Discipline>> {
         return getDisciplines(competitionId)
-            .flatMap {
-                it.subDisciplines.filter { subDiscipline -> subDiscipline.isSelected }
+            .flatMapConcat { disciplines ->
+                flowOf(
+                    disciplines.flatMap { discipline ->
+                        discipline.subDisciplines.filter { subDiscipline ->
+                            subDiscipline.isSelected
+                        }
+                    }
+                )
+
+                //    it.subDisciplines.filter { subDiscipline -> subDiscipline.isSelected }
             }
     }
 
-    override suspend fun getNotSelectedDisciplines(competitionId: Int): List<Discipline> {
-        return getDisciplines(competitionId).map {
-            Discipline(
-                imageResource = it.imageResource,
-                name = it.name,
-                subDisciplines = it.subDisciplines.filter { subDiscipline -> !subDiscipline.isSelected },
-                isSelected = it.isSelected
-            )
-        }.filter { it.subDisciplines.isNotEmpty() }
+    override fun getNotSelectedDisciplines(competitionId: Int): Flow<List<Discipline>> {
+        return getDisciplines(competitionId).map { disciplines ->
+            disciplines.map { discipline ->
+                Discipline(
+                    imageResource = discipline.imageResource,
+                    name = discipline.name,
+                    subDisciplines = discipline.subDisciplines.filter { subDiscipline -> !subDiscipline.isSelected },
+                    isSelected = discipline.isSelected
+                )
+            }.filter { it.subDisciplines.isNotEmpty() }
+        }
     }
 
     override suspend fun addDisciplineToSelected(discipline: Discipline, competitionId: Int) {
@@ -71,64 +98,68 @@ class DisciplineRepositoryImpl(
     }
 
     private suspend fun initDisciplines(competitionId: Int) {
-        if (dao.getDisciplines(competitionId).isNotEmpty()) return
+        //   if (dao.getDisciplines(competitionId).isNotEmpty()) return
 
-        dao.upsertDisciplines(
-            listOf(
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на короткие дистанции",
-                    imageResource = R.drawable.discipline_sprinting
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 30 м",
-                    parentName = "Бег на короткие дистанции",
-                    imageResource = R.drawable.sub_discipline_sprinting_30m
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 60 м",
-                    parentName = "Бег на короткие дистанции",
-                    imageResource = R.drawable.sub_discipline_sprinting_60m
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 100 м",
-                    parentName = "Бег на короткие дистанции",
-                    imageResource = R.drawable.sub_discipline_sprinting_100m
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на длинные дистанции",
-                    imageResource = R.drawable.discipline_long_distance_running
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 1 км",
-                    parentName = "Бег на длинные дистанции",
-                    imageResource = R.drawable.sub_discipline_long_distance_running_1km
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 1.5 км",
-                    parentName = "Бег на длинные дистанции",
-                    imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 2 км",
-                    parentName = "Бег на длинные дистанции",
-                    imageResource = R.drawable.sub_discipline_long_distance_running_2km
-                ),
-                DisciplineEntity(
-                    competitionId = competitionId,
-                    name = "Бег на 3 км",
-                    parentName = "Бег на длинные дистанции",
-                    imageResource = R.drawable.sub_discipline_long_distance_running_3km
-                ),
+        dao.getDisciplines(competitionId).collect() {
+            if (it.isNotEmpty()) return@collect
+
+            dao.upsertDisciplines(
+                listOf(
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на короткие дистанции",
+                        imageResource = R.drawable.discipline_sprinting
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 30 м",
+                        parentName = "Бег на короткие дистанции",
+                        imageResource = R.drawable.sub_discipline_sprinting_30m
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 60 м",
+                        parentName = "Бег на короткие дистанции",
+                        imageResource = R.drawable.sub_discipline_sprinting_60m
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 100 м",
+                        parentName = "Бег на короткие дистанции",
+                        imageResource = R.drawable.sub_discipline_sprinting_100m
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на длинные дистанции",
+                        imageResource = R.drawable.discipline_long_distance_running
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 1 км",
+                        parentName = "Бег на длинные дистанции",
+                        imageResource = R.drawable.sub_discipline_long_distance_running_1km
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 1.5 км",
+                        parentName = "Бег на длинные дистанции",
+                        imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 2 км",
+                        parentName = "Бег на длинные дистанции",
+                        imageResource = R.drawable.sub_discipline_long_distance_running_2km
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на 3 км",
+                        parentName = "Бег на длинные дистанции",
+                        imageResource = R.drawable.sub_discipline_long_distance_running_3km
+                    ),
+                )
             )
-        )
+        }
     }
 
     /* private fun initDisciplines(): MutableList<Discipline> {
