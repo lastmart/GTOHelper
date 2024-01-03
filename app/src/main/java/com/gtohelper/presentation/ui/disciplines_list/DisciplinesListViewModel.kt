@@ -29,7 +29,7 @@ class DisciplinesListViewModel @Inject constructor(
     val uiState: StateFlow<DisciplinesListUIState> =
         disciplineRepository
          //   .getSelectedDisciplines()
-            .getSelectedDisciplines()
+            .getSelectedDisciplines(competitionId)
             .map { disciplines ->
                 DisciplinesListUIState(
                     disciplines.map { it.toDisciplinePresentation() }
