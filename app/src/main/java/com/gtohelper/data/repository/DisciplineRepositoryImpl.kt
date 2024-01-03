@@ -3,6 +3,8 @@ package com.gtohelper.data.repository
 import com.gtohelper.R
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.repository.DisciplineRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
 
 class DisciplineRepositoryImpl : DisciplineRepository {
 
@@ -12,8 +14,8 @@ class DisciplineRepositoryImpl : DisciplineRepository {
         return disciplines
     }
 
-    override suspend fun getSelectedDisciplines(): List<Discipline> {
-        return disciplines.flatMap { it -> it.subDisciplines.filter { it.isSelected } }
+    override fun getSelectedDisciplines(): Flow<List<Discipline>> {
+        return listOf(disciplines.flatMap { it -> it.subDisciplines.filter { it.isSelected } }).asFlow() // TODO
     }
 
     override suspend fun getNotSelectedDisciplines(): List<Discipline> {

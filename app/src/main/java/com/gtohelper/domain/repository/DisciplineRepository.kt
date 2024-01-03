@@ -1,12 +1,13 @@
 package com.gtohelper.domain.repository
 
 import com.gtohelper.domain.models.Discipline
+import kotlinx.coroutines.flow.Flow
 
 interface DisciplineRepository {
 
     suspend fun getDisciplines(): List<Discipline>
 
-    suspend fun getSelectedDisciplines(): List<Discipline>
+    fun getSelectedDisciplines(): Flow<List<Discipline>>
 
     suspend fun getNotSelectedDisciplines(): List<Discipline>
 
