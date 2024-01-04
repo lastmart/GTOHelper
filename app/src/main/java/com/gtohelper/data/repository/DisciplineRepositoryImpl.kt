@@ -27,14 +27,19 @@ class DisciplineRepositoryImpl(
 
         return dao.getDisciplines(competitionId).map { disciplines ->
             val parentImageResources = disciplines
-                .filter { it.parentName.isNullOrBlank() }
+                .filter { it.parentName.isNullOrBlank() || it.parentName == it.name }
                 .associateBy({ it.name }, { it.imageResource })
+
+            println("parentImageResources = $parentImageResources")
+            println()
 
 
             return@map disciplines
                 .groupBy { it.parentName }
                 .map { (parentName, subDisciplines) ->
                     val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
+
+                    println("parent name <$parentName> -> subDisciplines <${subDisciplines.map { d -> (d.parentName to d.name) }}>")
 
                     Discipline(
                         imageResource = parentImageResources[parentName] ?: return@map null,
@@ -76,10 +81,17 @@ class DisciplineRepositoryImpl(
                 Discipline(
                     imageResource = discipline.imageResource,
                     name = discipline.name,
-                    subDisciplines = discipline.subDisciplines.filter { subDiscipline -> !subDiscipline.isSelected },
+                    subDisciplines = discipline.subDisciplines.filter { subDiscipline ->
+                        !subDiscipline.isSelected
+                    },
                     isSelected = discipline.isSelected
                 )
-            }.filter { it.subDisciplines.isNotEmpty() }
+            }
+                //.filter { it.subDisciplines.isNotEmpty() }
+
+                .also {
+                    println("Not selected: ${it.map { d -> d.name }}")
+                }
         }
     }
 
@@ -98,8 +110,6 @@ class DisciplineRepositoryImpl(
     }
 
     private suspend fun initDisciplines(competitionId: Int) {
-        //   if (dao.getDisciplines(competitionId).isNotEmpty()) return
-
         dao.getDisciplines(competitionId).collect() {
             if (it.isNotEmpty()) return@collect
 
@@ -157,127 +167,117 @@ class DisciplineRepositoryImpl(
                         parentName = "Бег на длинные дистанции",
                         imageResource = R.drawable.sub_discipline_long_distance_running_3km
                     ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Кросс по пересечённой местности",
+                        parentName = "Кросс по пересечённой местности",
+                        imageResource = R.drawable.discipline_cross_country,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Смешанное передвижение",
+                        parentName = "Смешанное передвижение",
+                        imageResource = R.drawable.discipline_mixed_movement,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Челночный бег",
+                        parentName = "Челночный бег",
+                        imageResource = R.drawable.discipline_shuttle_run,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Скандинавская ходьба",
+                        parentName = "Скандинавская ходьба",
+                        imageResource = R.drawable.discipline_nordic_walking,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Передвижение на лыжах",
+                        parentName = "Передвижение на лыжах",
+                        imageResource = R.drawable.discipline_movement_on_skis,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Бег на лыжах",
+                        parentName = "Бег на лыжах",
+                        imageResource = R.drawable.discipline_skiing,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Подтягивание из виса на высокой перекладине",
+                        parentName = "Подтягивание из виса на высокой перекладине",
+                        imageResource = R.drawable.discipline_human_pull_up_top,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Подтягивание из виса лежа на низкой перекладине",
+                        parentName = "Подтягивание из виса лежа на низкой перекладине",
+                        imageResource = R.drawable.discipline_human_pull_up_bottom,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Сгибание и разгибание рук",
+                        parentName = "Сгибание и разгибание рук",
+                        imageResource = R.drawable.discipline_flexion_extension_arms,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Наклон вперед",
+                        parentName = "Наклон вперед",
+                        imageResource = R.drawable.discipline_lean_forward,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Прыжок в длину с места",
+                        parentName = "Прыжок в длину с места",
+                        imageResource = R.drawable.discipline_standing_long_jump,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Прыжок в длину с разбега",
+                        parentName = "Прыжок в длину с разбега",
+                        imageResource = R.drawable.discipline_running_long_jump,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Поднимание туловища",
+                        parentName = "Поднимание туловища",
+                        imageResource = R.drawable.discipline_lifting_body,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Плавание",
+                        parentName = "Плавание",
+                        imageResource = R.drawable.discipline_swimming,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Стрельба",
+                        parentName = "Стрельба",
+                        imageResource = R.drawable.discipline_shooting,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Рывок гири",
+                        parentName = "Рывок гири",
+                        imageResource = R.drawable.discipline_kettlebell_snatch,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Метание",
+                        parentName = "Метание",
+                        imageResource = R.drawable.discipline_throwing,
+                    ),
+                    DisciplineEntity(
+                        competitionId = competitionId,
+                        name = "Метание мяча в цель",
+                        parentName = "Метание мяча в цель",
+                        imageResource = R.drawable.discipline_ball_throwing_at_target,
+                    ),
                 )
             )
         }
     }
 
-    /* private fun initDisciplines(): MutableList<Discipline> {
-         val list = mutableListOf<Discipline>()
-
-         list.add(
-             Discipline(
-                 R.drawable.discipline_long_distance_running,
-                 "Бег на длинные дистанции",
-                 subDisciplines = listOf(
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_long_distance_running_1km,
-                         name = "Бег на 1 км"
-                     ),
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
-                         name = "Бег на 1.5 км",
-                     ),
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_long_distance_running_2km,
-                         name = "Бег на 2 км"
-                     ),
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_long_distance_running_3km,
-                         name = "Бег на 3 км"
-                     ),
-                 )
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_sprinting,
-                 "Бег на короткие дистанции",
-                 subDisciplines = listOf(
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_sprinting_30m,
-                         name = "Бег на 30 м"
-                     ),
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_sprinting_60m,
-                         name = "Бег на 60 м"
-                     ),
-                     Discipline(
-                         imageResource = R.drawable.sub_discipline_sprinting_100m,
-                         name = "Бег на 100 м"
-                     )
-                 )
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_cross_country,
-                 "Кросс по пересечённой местности"
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_mixed_movement,
-                 "Смешанное передвижение"
-             )
-         )
-         list.add(Discipline(R.drawable.discipline_shuttle_run, "Челночный бег"))
-         list.add(
-             Discipline(
-                 R.drawable.discipline_nordic_walking,
-                 "Скандинавская ходьба"
-             )
-         )
-         list.add(Discipline(R.drawable.discipline_skiing, "Бег на лыжах"))
-         list.add(
-             Discipline(
-                 R.drawable.discipline_movement_on_skis,
-                 "Передвижение на лыжах"
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_human_pull_up_top,
-                 "Подтягивание из виса на высокой перекладине"
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_human_pull_up_bottom,
-                 "Подтягивание из виса лежа на низкой перекладине"
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_flexion_extension_arms,
-                 "Сгибание и разгибание рук"
-             )
-         )
-         list.add(Discipline(R.drawable.discipline_lean_forward, "Наклон вперед"))
-         list.add(
-             Discipline(
-                 R.drawable.discipline_standing_long_jump,
-                 "Прыжок в длину с места"
-             )
-         )
-         list.add(
-             Discipline(
-                 R.drawable.discipline_running_long_jump,
-                 "Прыжок в длину с разбега"
-             )
-         )
-         list.add(Discipline(R.drawable.discipline_lifting_body, "Поднимание туловища"))
-         list.add(Discipline(R.drawable.discipline_swimming, "Плавание"))
-         list.add(Discipline(R.drawable.discipline_shooting, "Стрельба"))
-         list.add(Discipline(R.drawable.discipline_kettlebell_snatch, "Рывок гири"))
-         list.add(Discipline(R.drawable.discipline_throwing, "Метание"))
-         list.add(
-             Discipline(
-                 R.drawable.discipline_ball_throwing_at_target,
-                 "Метание мяча в цель"
-             )
-         )
-
-         return list
-     }*/
 }

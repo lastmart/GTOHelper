@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.gtohelper.R
+import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineWithSubDisciplinesItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 
@@ -109,15 +110,32 @@ fun CollapsableLazyColumn(
             val isExpanded = expandedState[index]
 
             item {
+                if (discipline.subDisciplines.isEmpty()) {
+                    return@item
+                }
+
+                if (discipline.subDisciplines.size == 1
+                    && discipline.subDisciplines[0].name == discipline.name
+                ) {
+                    DisciplineCardItem(
+                        discipline = discipline,
+                        onClick = onSubDisciplineClicked,
+                        onLongClick = { false }
+                    )
+
+                    Spacer(modifier = Modifier.height(5.dp))
+
+                    return@item
+                }
+
                 DisciplineWithSubDisciplinesItem(
                     discipline = discipline,
                     onClick = {
-                        println("OnClick discipline")
                         expandedState[index] = !isExpanded
                         discipline.isExpanded = !isExpanded
                     },
                     onLongClick = { false },
-                    onSubDisciplineClicked = onSubDisciplineClicked.also { println("OnSubDisciplineClicked") }
+                    onSubDisciplineClicked = onSubDisciplineClicked
                 )
 
                 Spacer(modifier = Modifier.height(5.dp))
