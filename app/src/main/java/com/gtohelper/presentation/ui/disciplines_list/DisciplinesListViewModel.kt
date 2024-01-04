@@ -1,5 +1,8 @@
 package com.gtohelper.presentation.ui.disciplines_list
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,6 +25,9 @@ class DisciplinesListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val competitionId = savedStateHandle["competition_id"] ?: 0
+    private var disciplineToDelete: DisciplinePresentation? = null
+    var isDialogShown by mutableStateOf(false)
+        private set
 
     val uiState: StateFlow<DisciplinesListUIState> =
         disciplineRepository
@@ -37,17 +43,20 @@ class DisciplinesListViewModel @Inject constructor(
                 initialValue = DisciplinesListUIState()
             )
 
-    //    private var _disciplinesLiveData = MutableLiveData<List<DisciplinePresentation>>()
-//    val disciplinesLiveData: LiveData<List<DisciplinePresentation>> = _disciplinesLiveData
-//
-//    suspend fun getDisciplines() {
-//        val disciplines = disciplineRepository.getSelectedDisciplines()
-//        _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
-//    }
-//
-    fun deleteDiscipline(discipline: DisciplinePresentation) {
+    fun onDisciplineLongPressed(discipline: DisciplinePresentation) {
+        disciplineToDelete = discipline
+        isDialogShown = true
+    }
+
+    fun onDismissDialog() {
+        isDialogShown = false
+    }
+
+    fun deleteDiscipline() {
         viewModelScope.launch(Dispatchers.IO) {
-            disciplineRepository.deleteDisciplineFromSelectedByName(discipline.name, competitionId)
+            disciplineToDelete?.let {
+                disciplineRepository.deleteDisciplineFromSelectedByName(it.name, competitionId)
+            }
         }
     }
 //
