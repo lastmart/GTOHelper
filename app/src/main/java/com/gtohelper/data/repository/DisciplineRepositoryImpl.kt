@@ -26,37 +26,28 @@ class DisciplineRepositoryImpl(
         }
 
         return dao.getDisciplines(competitionId).map { disciplines ->
-            val parentImageResources = disciplines
+            val parentData = disciplines
                 .filter { it.parentName.isNullOrBlank() || it.parentName == it.name }
-                .associateBy({ it.name }, { it.imageResource })
-
-            println("parentImageResources = $parentImageResources")
-            println()
-
+                .associateBy({ it.name }, { it })
 
             return@map disciplines
                 .groupBy { it.parentName }
                 .map { (parentName, subDisciplines) ->
                     val domainSubDisciplines = subDisciplines.map { it.toSubDiscipline() }
 
-                    println("parent name <$parentName> -> subDisciplines <${subDisciplines.map { d -> (d.parentName to d.name) }}>")
+                    parentName ?: return@map null
+                    val parent = parentData[parentName] ?: return@map null
 
                     Discipline(
-                        imageResource = parentImageResources[parentName] ?: return@map null,
-                        name = parentName ?: return@map null,
+                        imageResource = parent.imageResource,
+                        name = parentName,
                         subDisciplines = domainSubDisciplines.sortedBy { it.name },
-                        isSelected = false
+                        isSelected = false,
+                        type = parent.type
                     )
                 }
                 .filterNotNull()
         }
-
-        /*if (disciplines.isEmpty()) {
-            initDisciplines(competitionId)
-            disciplines = dao.getDisciplines(competitionId)
-        }*/
-
-
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -70,8 +61,6 @@ class DisciplineRepositoryImpl(
                         }
                     }
                 )
-
-                //    it.subDisciplines.filter { subDiscipline -> subDiscipline.isSelected }
             }
     }
 
@@ -84,14 +73,10 @@ class DisciplineRepositoryImpl(
                     subDisciplines = discipline.subDisciplines.filter { subDiscipline ->
                         !subDiscipline.isSelected
                     },
-                    isSelected = discipline.isSelected
+                    isSelected = discipline.isSelected,
+                    type = discipline.type
                 )
             }
-                //.filter { it.subDisciplines.isNotEmpty() }
-
-                .also {
-                    println("Not selected: ${it.map { d -> d.name }}")
-                }
         }
     }
 

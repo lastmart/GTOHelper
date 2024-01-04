@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
+import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
 import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
@@ -117,14 +118,16 @@ fun DisciplinesListScreenPreview() {
         uiState = DisciplinesListUIState(
             listOf(
                 DisciplinePresentation(
-                    R.drawable.sub_discipline_long_distance_running_1km,
-                    "Бег на 1 км",
-                    listOf()
+                    imageResource = R.drawable.sub_discipline_long_distance_running_1km,
+                    name = "Бег на 1 км",
+                    subDisciplines = listOf(),
+                    type = DisciplinePointType.TIME,
                 ),
                 DisciplinePresentation(
-                    R.drawable.sub_discipline_long_distance_running_2km,
-                    "Бег на 2 км",
-                    listOf()
+                    imageResource = R.drawable.sub_discipline_long_distance_running_2km,
+                    name = "Бег на 2 км",
+                    subDisciplines = listOf(),
+                    type = DisciplinePointType.TIME,
                 ),
             )
         ),

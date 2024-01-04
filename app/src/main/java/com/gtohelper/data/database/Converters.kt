@@ -3,6 +3,7 @@ package com.gtohelper.data.database
 import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import com.gtohelper.domain.models.DisciplinePointType
 import java.time.LocalTime
 
 class Converters {
@@ -30,5 +31,15 @@ class Converters {
     @TypeConverter
     fun fromLocalTime(localTime: LocalTime): String? {
         return localTime.toString()
+    }
+
+    @TypeConverter
+    fun toDisciplinePointType(value: String): DisciplinePointType{
+        return DisciplinePointType.valueOf(value)
+    }
+
+    @TypeConverter
+    fun fromDisciplinePointType(type: DisciplinePointType): String{
+        return type.name
     }
 }

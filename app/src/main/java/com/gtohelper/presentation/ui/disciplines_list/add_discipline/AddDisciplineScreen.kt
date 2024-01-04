@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.gtohelper.R
+import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineWithSubDisciplinesItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
@@ -157,47 +158,56 @@ val previewDisciplines = listOf(
         name = "Бег на короткие дистанции",
         subDisciplines = listOf(
             DisciplinePresentation(
-                R.drawable.sub_discipline_sprinting_30m,
-                "Бег на 30 м",
-                listOf()
+                imageResource = R.drawable.sub_discipline_sprinting_30m,
+                name = "Бег на 30 м",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME,
             ),
             DisciplinePresentation(
-                R.drawable.sub_discipline_sprinting_30m,
-                "Бег на 60 м",
-                listOf()
+                imageResource = R.drawable.sub_discipline_sprinting_30m,
+                name = "Бег на 60 м",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
             DisciplinePresentation(
-                R.drawable.sub_discipline_sprinting_30m,
-                "Бег на 100 м",
-                listOf()
+                imageResource = R.drawable.sub_discipline_sprinting_30m,
+                name = "Бег на 100 м",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
         ),
-        isExpanded = true
+        isExpanded = true,
+        type = DisciplinePointType.TIME
     ),
     DisciplinePresentation(
         imageResource = R.drawable.discipline_long_distance_running,
         name = "Бег на длинные дистанции",
         subDisciplines = listOf(
             DisciplinePresentation(
-                R.drawable.sub_discipline_long_distance_running_1km,
-                "Бег на 1 км",
-                listOf()
+                imageResource = R.drawable.sub_discipline_long_distance_running_1km,
+                name = "Бег на 1 км",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
             DisciplinePresentation(
-                R.drawable.sub_discipline_long_distance_running_1dot5km,
-                "Бег на 1.5 км",
-                listOf()
+                imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
+                name = "Бег на 1.5 км",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
             DisciplinePresentation(
-                R.drawable.sub_discipline_long_distance_running_2km,
-                "Бег на 2 км",
-                listOf()
+                imageResource = R.drawable.sub_discipline_long_distance_running_2km,
+                name = "Бег на 2 км",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
             DisciplinePresentation(
-                R.drawable.sub_discipline_long_distance_running_3km,
-                "Бег на 3 км",
-                listOf()
+                imageResource = R.drawable.sub_discipline_long_distance_running_3km,
+                name = "Бег на 3 км",
+                subDisciplines = listOf(),
+                type = DisciplinePointType.TIME
             ),
-        )
+        ),
+        type = DisciplinePointType.TIME
     )
 )
