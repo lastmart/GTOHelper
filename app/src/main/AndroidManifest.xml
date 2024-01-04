@@ -16,7 +16,7 @@
         android:theme="@style/Theme.GTOHelper"
         tools:targetApi="31">
         <activity
-            android:name="com.gtohelper.MainActivity"
+            android:name="com.gtohelper.presentation.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.GTOHelper">
             <intent-filter>

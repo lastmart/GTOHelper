@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -27,14 +29,15 @@ fun CompetitorUiForm(
     onEvent: (CompetitorFormEvent) -> Unit,
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
     ) {
 
         AppTextField(
             value = form.name,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateName(it)) },
-            label = stringResource(R.string.competitor_name),
-            maxLength = 50,
+            label = stringResource(R.string.competitor_name_title),
+            maxLength = 20,
         )
 
         Spacer(Modifier.height(18.dp))
@@ -42,13 +45,13 @@ fun CompetitorUiForm(
         AppTextField(
             value = form.teamName,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateTeamName(it)) },
-            label = stringResource(R.string.team_name),
-            maxLength = 50,
+            label = stringResource(R.string.team_name_title),
+            maxLength = 20,
         )
 
         Spacer(Modifier.height(18.dp))
 
-        Text(stringResource(R.string.competitor_gender))
+        Text(stringResource(R.string.competitor_gender_title))
 
         AppRadioGroup(selectedValue = form.gender,
             onChanged = { onEvent(CompetitorFormEvent.UpdateGender(it)) },
@@ -70,7 +73,7 @@ fun CompetitorUiForm(
         Spacer(Modifier.height(18.dp))
 
         AppDropdownMenu(
-            label = stringResource(R.string.competitor_degree),
+            label = stringResource(R.string.competitor_degree_title),
             selected = form.degree,
             values = (1..11).toList(),
             onValueChanged = { onEvent(CompetitorFormEvent.UpdateDegree(it)) },

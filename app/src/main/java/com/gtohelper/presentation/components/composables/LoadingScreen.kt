@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun LoadingScreen(
-    modifier: Modifier,
+    modifier: Modifier = Modifier,
 ){
     Box(
         contentAlignment = Alignment.Center,

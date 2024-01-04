@@ -27,11 +27,11 @@ class CompetitionListViewModel @Inject constructor(
             .combine(_searchQuery) { data, query ->
                 data.filter { it.name.lowercase().contains(query.lowercase()) }
             }.map {
-                CompetitionListUiState(it)
+                CompetitionListUiState.Loaded(it)
             }.stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = CompetitionListUiState(),
+                initialValue = CompetitionListUiState.Loading,
             )
 
 

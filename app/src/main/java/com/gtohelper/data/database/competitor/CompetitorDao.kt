@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
-import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -13,6 +12,9 @@ interface CompetitorDao {
 
     @Query("SELECT * FROM competitors_table WHERE competitionId=:competitionIid")
     fun getCompetitionCompetitors(competitionIid: Int): Flow<List<CompetitorEntity>>
+
+    @Query("SELECT COUNT(*) FROM competitors_table WHERE competitionId=:competitionId")
+    fun getCompetitionCompetitorCount(competitionId: Int): Flow<Int>
 
     @Query("SELECT * FROM competitors_table WHERE number=:competitorNumber AND competitionId=:competitionId")
     suspend fun getCompetitorById(competitorNumber: Int, competitionId: Int): CompetitorEntity?

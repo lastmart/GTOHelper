@@ -28,7 +28,7 @@ import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
 import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
-import com.gtohelper.theme.spacing
+import com.gtohelper.presentation.ui.theme.spacing
 
 @Composable
 fun DisciplineListRoute(

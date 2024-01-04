@@ -2,6 +2,8 @@ package com.gtohelper.presentation.ui.competitions
 
 import com.gtohelper.domain.models.Competition
 
-data class CompetitionListUiState(
-    val competitions: List<Competition> = listOf(),
-)
+
+sealed class CompetitionListUiState {
+    data object Loading : CompetitionListUiState()
+    data class Loaded(val competitions: List<Competition>) : CompetitionListUiState()
+}

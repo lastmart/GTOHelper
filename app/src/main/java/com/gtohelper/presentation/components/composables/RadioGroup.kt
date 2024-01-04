@@ -1,9 +1,9 @@
 package com.gtohelper.presentation.components.composables
 
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -35,23 +35,26 @@ fun <T> AppRadioGroup(
 ) {
     val state = remember { mutableStateOf(selectedValue) }
 
-    Column {
+
+
+
+    Row(
+
+    ){
         values.forEach { value ->
-            Row(Modifier.fillMaxWidth()) {
-                RadioButton(
-                    selected = state.value == value,
-                    onClick = {
-                        state.value = value
-                        onChanged(value)
-                    },
-                )
-                Text(
-                    modifier = Modifier
-                        .padding(start = 16.dp)
-                        .align(Alignment.CenterVertically),
-                    text = nameTransform(value),
-                )
-            }
+            RadioButton(
+                selected = state.value == value,
+                onClick = {
+                    state.value = value
+                    onChanged(value)
+                },
+            )
+            Text(
+                modifier = Modifier
+                    .padding(start = 4.dp)
+                    .align(Alignment.CenterVertically),
+                text = nameTransform(value),
+            )
         }
     }
 }

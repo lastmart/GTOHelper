@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.domain.models.Competition
-import com.gtohelper.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.AppBorderColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

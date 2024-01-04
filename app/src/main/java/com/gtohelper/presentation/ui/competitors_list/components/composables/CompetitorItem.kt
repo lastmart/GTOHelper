@@ -5,20 +5,25 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -40,10 +45,19 @@ fun CompetitorItem(
                     contentDescription = null
                 )
                 Column {
-                    Text(competitor.number.toString() + ' ' + competitor.name)
-                    Text(competitor.teamName)
-                    Text(competitor.degree.toString())
-                    Text(if (competitor.gender == Gender.MALE) "М" else "Ж")
+                    Row {
+                        Text(competitor.number.toString())
+                        Spacer(Modifier.width(MaterialTheme.spacing.extraSmall))
+                        Text(competitor.name)
+                    }
+                    Text(stringResource(R.string.team_name, competitor.teamName))
+                    Text(stringResource(R.string.competitor_degree, competitor.degree))
+                    Text(
+                        stringResource(
+                            R.string.competitor_gender,
+                            if (competitor.gender == Gender.MALE) "М" else "Ж"
+                        )
+                    )
                 }
             }
 
