@@ -11,6 +11,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
+import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.theme.AppBorderColor
@@ -61,22 +62,26 @@ fun DisciplineWithSubDisciplinesItemPreview() {
             imageResource = R.drawable.discipline_sprinting,
             name = "Бег на короткие дистанции", subDisciplines = listOf(
                 DisciplinePresentation(
-                    R.drawable.sub_discipline_sprinting_30m,
-                    "Бег на 30 м",
-                    listOf()
+                    imageResource = R.drawable.sub_discipline_sprinting_30m,
+                    name = "Бег на 30 м",
+                    subDisciplines = listOf(),
+                    type = DisciplinePointType.TIME
                 ),
                 DisciplinePresentation(
-                    R.drawable.sub_discipline_sprinting_60m,
-                    "Бег на 60 м",
-                    listOf()
+                    imageResource = R.drawable.sub_discipline_sprinting_60m,
+                    name = "Бег на 60 м",
+                    subDisciplines = listOf(),
+                    type = DisciplinePointType.TIME
                 ),
                 DisciplinePresentation(
-                    R.drawable.sub_discipline_sprinting_100m,
-                    "Бег на 100 м",
-                    listOf()
+                    imageResource = R.drawable.sub_discipline_sprinting_100m,
+                    name = "Бег на 100 м",
+                    subDisciplines = listOf(),
+                    type = DisciplinePointType.TIME
                 ),
             ),
-            isExpanded = true
+            isExpanded = true,
+            type = DisciplinePointType.TIME
         ),
         onClick = {},
         onLongClick = { false },

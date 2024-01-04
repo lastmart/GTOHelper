@@ -26,11 +26,11 @@ class DisciplineRepositoryImpl(
         }
 
         return dao.getDisciplines(competitionId).map { disciplines ->
-            val parentImageResources = disciplines
+            val parentData = disciplines
                 .filter { it.parentName.isNullOrBlank() || it.parentName == it.name }
-                .associateBy({ it.name }, { it.imageResource })
+                .associateBy({ it.name }, { it })
 
-            println("parentImageResources = $parentImageResources")
+            println("parentImageResources = $parentData")
             println()
 
 
@@ -41,11 +41,15 @@ class DisciplineRepositoryImpl(
 
                     println("parent name <$parentName> -> subDisciplines <${subDisciplines.map { d -> (d.parentName to d.name) }}>")
 
+                    parentName ?: return@map null
+                    val parent = parentData[parentName] ?: return@map null
+
                     Discipline(
-                        imageResource = parentImageResources[parentName] ?: return@map null,
-                        name = parentName ?: return@map null,
+                        imageResource = parent.imageResource,
+                        name = parentName,
                         subDisciplines = domainSubDisciplines.sortedBy { it.name },
-                        isSelected = false
+                        isSelected = false,
+                        type = parent.type
                     )
                 }
                 .filterNotNull()
@@ -84,7 +88,8 @@ class DisciplineRepositoryImpl(
                     subDisciplines = discipline.subDisciplines.filter { subDiscipline ->
                         !subDiscipline.isSelected
                     },
-                    isSelected = discipline.isSelected
+                    isSelected = discipline.isSelected,
+                    type = discipline.type
                 )
             }
                 //.filter { it.subDisciplines.isNotEmpty() }

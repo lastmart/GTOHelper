@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
+import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.theme.AppBorderColor
 
@@ -50,9 +51,10 @@ fun DisciplineCardItem(
 fun DisciplineCardItemPreview() {
     DisciplineCardItem(
         discipline = DisciplinePresentation(
-            R.drawable.sub_discipline_long_distance_running_1km,
-            "Бег на 1 км",
-            listOf()
+            imageResource = R.drawable.sub_discipline_long_distance_running_1km,
+            name = "Бег на 1 км",
+            subDisciplines = listOf(),
+            type = DisciplinePointType.TIME
         ),
         onClick = {},
         onLongClick = { true }

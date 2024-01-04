@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
+import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -64,7 +65,8 @@ fun DisciplineItemPreview() {
         discipline = DisciplinePresentation(
             imageResource = R.drawable.sub_discipline_sprinting_30m,
             name = "Бег на 30 м",
-            subDisciplines = listOf()
+            subDisciplines = listOf(),
+            type = DisciplinePointType.TIME
         ),
         onClick = {},
         onLongClick = { false },
