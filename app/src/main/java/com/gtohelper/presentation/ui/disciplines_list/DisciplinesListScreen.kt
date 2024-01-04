@@ -41,6 +41,7 @@ import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
 import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import com.gtohelper.presentation.ui.theme.spacing
@@ -54,20 +55,32 @@ fun DisciplineListRoute(
 ) {
     val uiState by viewModel.uiState.collectAsState()
     DisciplinesListScreen(
-        navController = navController,
         uiState = uiState,
         competitionName = competitionName,
+        onBackClicked = { navController.navigateUp() },
         onItemClicked = {},
-        onAddButtonClicked = { navController.navigate("add_discipline/$competitionId") },
+        onAddButtonClicked = {
+            navController.navigate(
+                Screen.AddDisciplineScreen.withArgs(competitionId.toString())
+            )
+        },
         onItemLongClicked = {
             viewModel.onDisciplineLongPressed(it)
             true
         },
         onDownloadClicked = {},
-        onResultsClicked = {},
+        onResultsClicked = {
+            navController.navigate(
+                Screen.CompetitorsResultsListScreen.withArgs(competitionId.toString())
+            )
+        },
         onDescriptionClicked = {},
         onDeleteClicked = {},
-        onCompetitorsClicked = {}
+        onCompetitorsClicked = {
+            navController.navigate(
+                Screen.CompetitorsListScreen.withArgs(competitionId.toString())
+            )
+        }
     )
 
     if (viewModel.isDialogShown) {
@@ -87,9 +100,9 @@ fun DisciplineListRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DisciplinesListScreen(
-    navController: NavController,
     competitionName: String,
     uiState: DisciplinesListUIState,
+    onBackClicked: () -> Unit,
     onItemClicked: (DisciplinePresentation) -> Unit,
     onItemLongClicked: (DisciplinePresentation) -> Boolean,
     onAddButtonClicked: () -> Unit,
@@ -107,7 +120,7 @@ fun DisciplinesListScreen(
                 //    title = { Text(text = competitionName) },
                 title = {},
                 navigationIcon = {
-                    IconButton(onClick = { navController.navigateUp() }) {
+                    IconButton(onClick = onBackClicked) {
                         Icon(
                             imageVector = Icons.Filled.ArrowBack,
                             contentDescription = "Назад"
@@ -221,8 +234,8 @@ fun DisciplinesListScreenPreview() {
         ),
         competitionName = "МГУ",
         onItemClicked = {},
+        onBackClicked = {},
         onAddButtonClicked = {},
-        navController = NavController(LocalContext.current),
         onItemLongClicked = { true },
         onCompetitorsClicked = {},
         onDeleteClicked = {},

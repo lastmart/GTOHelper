@@ -18,6 +18,8 @@ import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetit
 import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorViewModel
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableRoute
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableViewModel
+import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsRoute
+import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsViewModel
 import com.gtohelper.presentation.ui.disciplines_list.DisciplineListRoute
 import com.gtohelper.presentation.ui.disciplines_list.DisciplinesListViewModel
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineRoute
@@ -64,7 +66,7 @@ fun AppNavHost(navController: NavHostController) {
 //        }
 
         composable(
-            route = Screen.CompetitorsListScreen.withArgs(competitionIdArg),
+            route = Screen.CompetitorsListScreen.route + "/{$competitionIdArg}",
             //" competitors/{competition_id}",
             arguments = competitionIdArgument
         ) {
@@ -74,7 +76,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorScreen.route + "/{$competitionIdArg}",
 //            "add_competitor/{competition_id}",
             arguments = competitionIdArgument
         ) {
@@ -83,7 +85,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorFromTableScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorFromTableScreen.route + "/{$competitionIdArg}",
 //            "add_competitor_from_table/{competition_id}",
             arguments = competitionIdArgument
         ) {
@@ -92,7 +94,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.DisciplinesListScreen.withArgs(competitionIdArg, competitionNameArg),
+            route = Screen.DisciplinesListScreen.route + "/{$competitionIdArg}" + "/{$competitionNameArg}",
             arguments = competitionIdArgument + competitionNameArgument
         ) {
             val viewModel = hiltViewModel<DisciplinesListViewModel>()
@@ -108,7 +110,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddDisciplineScreen.withArgs(competitionIdArg),
+            route = Screen.AddDisciplineScreen.route + "/{$competitionIdArg}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
@@ -121,10 +123,16 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            "results/{competition_id}",
+            route = Screen.CompetitorsResultsListScreen.route + "/{$competitionIdArg}",
             arguments = competitionIdArgument
         ) {
-            // TODO
+            val viewModel = hiltViewModel<CompetitorsResultsViewModel>()
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
+            CompetitorsResultsRoute(
+                navController = navController,
+                viewModel = viewModel,
+                competitionId = competitionId
+            )
         }
     }
 }
