@@ -77,14 +77,14 @@ fun AddResultsScreen(
 @Preview
 @Composable
 fun PreviewAddResultsScreen() {
-    AddResultsScreen(
-        uiState = AddResultsUiState.Loaded(
-            Discipline(
-                0, "Прыжки с крыши",
-            ),
-            listOf(),
-        )
-    )
+//    AddResultsScreen(
+//        uiState = AddResultsUiState.Loaded(
+//            Discipline(
+//                0, "Прыжки с крыши",
+//            ),
+//            listOf(),
+//        )
+//    )
 }
 
 

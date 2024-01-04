@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
-import com.gtohelper.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.AppBorderColor
+
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
