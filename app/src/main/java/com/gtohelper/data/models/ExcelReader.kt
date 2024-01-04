@@ -7,6 +7,7 @@ import com.gtohelper.domain.models.fromAge
 import org.apache.poi.ss.usermodel.CellType
 import org.apache.poi.ss.usermodel.WorkbookFactory
 import java.io.FileInputStream
+import java.io.InputStream
 
 fun main() {
     val filePath = "/Users/glebmoskalev/Downloads/example — копия 2.xlsx"
@@ -14,9 +15,8 @@ fun main() {
 }
 
 class ExcelReader {
-    fun getCompetitorList(filePath: String, rowWithStartCompetitor: Int): List<Competitor> {
-        val fileInputStream = FileInputStream(filePath)
-        val workBook = WorkbookFactory.create(fileInputStream)
+    fun getCompetitorList(stream: InputStream): List<Competitor> {
+        val workBook = WorkbookFactory.create(stream)
         val sheet = workBook.getSheetAt(0)
 
         val listCompetitor = mutableListOf<Competitor>()
@@ -64,7 +64,7 @@ class ExcelReader {
                 throw Exception("Table is filled in incorrectly")
             }
         }
-        fileInputStream.close()
+        stream.close()
         return listCompetitor
     }
 }

@@ -12,35 +12,39 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
 class CompetitorRepositoryImpl(
-    private val competitorDao: CompetitorDao,
+    private val dao: CompetitorDao,
 ) : CompetitorRepository {
     override fun getCompetitionCompetitors(competitionId: Int): Flow<List<Competitor>> {
-        return competitorDao.getCompetitionCompetitors(competitionId).map { list ->
+        return dao.getCompetitionCompetitors(competitionId).map { list ->
             list.map { it.toDomainModel() }
         }
     }
 
+    override fun getCompetitionCompetitorCount(competitionId: Int): Flow<Int> {
+        return dao.getCompetitionCompetitorCount(competitionId)
+    }
+
     override suspend fun create(competitor: Competitor) {
         withContext(Dispatchers.IO) {
-            competitorDao.create(competitor.toEntity())
+            dao.create(competitor.toEntity())
         }
     }
 
     override suspend fun update(competitor: Competitor) {
         withContext(Dispatchers.IO) {
-            competitorDao.update(competitor.toEntity())
+            dao.update(competitor.toEntity())
         }
     }
 
     override suspend fun delete(competitor: Competitor) {
         withContext(Dispatchers.IO) {
-            competitorDao.delete(competitor.toEntity())
+            dao.delete(competitor.toEntity())
         }
     }
 
     override suspend fun getById(competitorNumber: Int, competitionId: Int): Competitor? {
        return withContext(Dispatchers.IO){
-           competitorDao.getCompetitorById(competitorNumber, competitionId)?.toDomainModel()
+           dao.getCompetitorById(competitorNumber, competitionId)?.toDomainModel()
        }
     }
 }

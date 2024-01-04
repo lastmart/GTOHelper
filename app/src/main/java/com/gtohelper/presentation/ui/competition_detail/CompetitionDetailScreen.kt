@@ -24,6 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competition
+import com.gtohelper.presentation.components.composables.LoadFailedScreen
 import com.gtohelper.presentation.components.composables.LoadingScreen
 import kotlinx.coroutines.flow.receiveAsFlow
 
@@ -35,7 +36,6 @@ fun CompetitionDetailRoute(
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
-    val isDeleted by viewModel.isDeleted.receiveAsFlow().collectAsState(initial = false)
     val context = LocalContext.current
 
     LaunchedEffect(context) {
@@ -48,8 +48,6 @@ fun CompetitionDetailRoute(
 
     CompetitionDetailScreen(
         uiState = uiState,
-        competitionDeleted = isDeleted,
-        onCompetitionDeleted = navController::navigateUp,
         onCompetitorsClicked = { navController.navigate("competitors/$competitionId") },
         onDisciplinesClicked = { navController.navigate("disciplines/$competitionId") },
         onResultsClicked = { navController.navigate("results/$competitionId") },
@@ -63,19 +61,15 @@ fun CompetitionDetailRoute(
 @Composable
 fun CompetitionDetailScreen(
     uiState: CompetitionDetailUiState = CompetitionDetailUiState.Loading,
-    competitionDeleted: Boolean = false,
-    onCompetitionDeleted: () -> Unit = {},
     onCompetitorsClicked: () -> Unit = {},
     onDisciplinesClicked: () -> Unit = {},
     onResultsClicked: () -> Unit = {},
     onBackClicked: () -> Unit = {},
     onDeleteClicked: () -> Unit = {},
 ) {
-
-    val context = LocalContext.current
-
     when (uiState) {
         CompetitionDetailUiState.Loading -> LoadingScreen(Modifier.fillMaxSize())
+
         is CompetitionDetailUiState.Loaded -> {
             Scaffold(
                 topBar = {
@@ -106,7 +100,7 @@ fun CompetitionDetailScreen(
                     Text(uiState.competition.description)
 
                     Button(onClick = onCompetitorsClicked) {
-                        Text(stringResource(R.string.competitors))
+                        Text(stringResource(R.string.competitors, uiState.competitorsCount))
                     }
 
                     Button(onClick = onDisciplinesClicked) {
@@ -119,16 +113,35 @@ fun CompetitionDetailScreen(
                 }
             }
         }
+        else -> Unit
     }
+}
+
+@Preview
+@Composable
+fun PreviewLoading() {
+    CompetitionDetailScreen(
+        uiState = CompetitionDetailUiState.Loading
+    )
 }
 
 
 @Preview
 @Composable
-fun CompetitionDetailScreenPreview() {
+fun PreviewLoadFailed() {
+    CompetitionDetailScreen(
+        uiState = CompetitionDetailUiState.LoadFailed
+    )
+}
+
+
+@Preview
+@Composable
+fun PreviewLoaded() {
     CompetitionDetailScreen(
         uiState = CompetitionDetailUiState.Loaded(
-            Competition(0, "Name", "Description")
+            Competition(0, "Name", "Description"),
+            10
         )
     )
 }

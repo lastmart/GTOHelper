@@ -4,18 +4,21 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.repository.CompetitionRepository
+import com.gtohelper.domain.repository.CompetitorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
 @HiltViewModel
 class CompetitionDetailViewModel @Inject constructor(
-    private val repository: CompetitionRepository,
+    private val competitionRepository: CompetitionRepository,
+    competitorRepository: CompetitorRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -23,23 +26,26 @@ class CompetitionDetailViewModel @Inject constructor(
 
     val isDeleted = Channel<Boolean>()
 
-    private val _uiState =
-        MutableStateFlow<CompetitionDetailUiState>(CompetitionDetailUiState.Loading)
-    val uiState = _uiState.asStateFlow()
-
-    init {
-        viewModelScope.launch {
-            _uiState.update {
-                CompetitionDetailUiState.Loaded(repository.getById(id) ?: return@launch)
+    val uiState : StateFlow<CompetitionDetailUiState> = competitorRepository.getCompetitionCompetitorCount(id)
+        .map {
+            val competition = competitionRepository.getById(id)
+            if (competition != null) {
+                CompetitionDetailUiState.Loaded(competition, it)
+            } else {
+                CompetitionDetailUiState.LoadFailed
             }
-        }
-    }
+        }.stateIn(
+            scope = viewModelScope,
+            initialValue = CompetitionDetailUiState.Loading,
+            started = SharingStarted.WhileSubscribed(5_000)
+        )
+
 
     fun delete() {
-        val state = _uiState.value
+        val state = uiState.value
         if (state is CompetitionDetailUiState.Loaded) {
             viewModelScope.launch {
-                repository.delete(state.competition)
+                competitionRepository.delete(state.competition)
                 isDeleted.send(true)
             }
         }

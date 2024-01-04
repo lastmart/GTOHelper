@@ -35,10 +35,11 @@ fun AppTextField(
     maxLength: Int? = null,
     readOnly: Boolean = false,
     textStyle: TextStyle = LocalTextStyle.current,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
 ) {
     TextField(
-        modifier = modifier
-            .fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = { v ->
             if (maxLength != null){
@@ -49,9 +50,11 @@ fun AppTextField(
                 onValueChange(v)
             }
         },
+        singleLine = singleLine,
         textStyle = textStyle,
         readOnly = readOnly,
         shape = RectangleShape,
+        maxLines = maxLines,
         label = { label?.let { Text(it) } },
         keyboardOptions = keyboardOptions,
         supportingText = {

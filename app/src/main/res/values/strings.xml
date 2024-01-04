@@ -8,14 +8,19 @@
     <string name="new_competition">Новое соревнование</string>
     <string name="competitions">Соревнования</string>
     <string name="new_competitor">Новый участник</string>
-    <string name="competitor_name">Имя участника</string>
-    <string name="team_name">Название команды</string>
+    <string name="competitor_name_title">Имя участника</string>
+    <string name="team_name_title">Название команды</string>
+    <string name="team_name">Команда: %1$s</string>
     <string name="competitor_number">Номер участника</string>
-    <string name="competitor_gender">Пол участника</string>
-    <string name="competitor_degree">Ступень участника</string>
+    <string name="competitor_gender_title">Пол участника</string>
+    <string name="competitor_gender">Пол: %1$s</string>
+    <string name="competitor_degree">Ступень: %1$s</string>
+    <string name="competitor_degree_title">Ступень участника</string>
     <string name="save_new_competitor">Сохранить нового участника</string>
     <string name="competitors_list">Список участников</string>
-    <string name="competitors">Участники</string>
+    <string name="competitors">Участники (%1$d)</string>
     <string name="disciplines">Дисциплины</string>
     <string name="results">Результаты</string>
+    <string name="no_competitions_hint">Чтобы добавить соревнование, нажмите + внизу экрана</string>
+    <string name="load_failed">Load failed</string>
 </resources>
