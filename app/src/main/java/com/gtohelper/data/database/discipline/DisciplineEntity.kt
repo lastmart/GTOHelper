@@ -15,5 +15,5 @@ data class DisciplineEntity(
     val parentName: String? = null,
     val imageResource: Int,
     val isSelected: Boolean = false,
-    val type: DisciplinePointType = DisciplinePointType.TIME // TODO
+    val type: DisciplinePointType
 )
