@@ -20,6 +20,10 @@ import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetit
 import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorViewModel
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableRoute
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableViewModel
+import com.gtohelper.presentation.ui.disciplines_list.DisciplineListRoute
+import com.gtohelper.presentation.ui.disciplines_list.DisciplinesListViewModel
+import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineRoute
+import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineViewModel
 
 
 @Composable
@@ -78,7 +82,26 @@ fun AppNavHost(navController: NavHostController) {
             "disciplines/{competition_id}",
             arguments = competitionIdArgument
         ) {
-            // TODO
+            val viewModel = hiltViewModel<DisciplinesListViewModel>()
+            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            DisciplineListRoute(
+                navController = navController,
+                viewModel = viewModel,
+                competitionId = competitionId
+            )
+        }
+
+        composable(
+            route = "add_discipline/{competition_id}",
+            arguments = competitionIdArgument
+        ) {
+            val viewModel = hiltViewModel<AddDisciplineViewModel>()
+            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            AddDisciplineRoute(
+                navController = navController,
+                viewModel = viewModel,
+                competitionId = competitionId
+            )
         }
 
         composable(

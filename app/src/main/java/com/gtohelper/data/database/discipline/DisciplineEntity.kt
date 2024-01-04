@@ -2,13 +2,13 @@ package com.gtohelper.data.database.discipline
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.gtohelper.domain.models.DisciplinePointType
 
-
-// TODO: Implement me
-@Entity(tableName = "disciplines")
+@Entity(tableName = "disciplines_table", primaryKeys = ["competitionId", "name"])
 data class DisciplineEntity(
-    @PrimaryKey
+    val competitionId: Int,
+    //@PrimaryKey(autoGenerate = false)
     val name: String,
-    val pointType: DisciplinePointType,
+    val parentName: String? = null,
+    val imageResource: Int,
+    val isSelected: Boolean = false
 )

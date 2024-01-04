@@ -7,4 +7,4 @@ class DisciplinePresentation(
     name: String,
     subDisciplines: List<DisciplinePresentation>,
     var isExpanded: Boolean = false
-): Discipline(imageResource, name, subDisciplines)
+) : Discipline(name, imageResource, subDisciplines)
