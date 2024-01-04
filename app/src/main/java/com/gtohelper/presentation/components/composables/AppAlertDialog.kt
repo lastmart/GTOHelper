@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.gtohelper.R
-import com.gtohelper.theme.AppBorderColor
-import com.gtohelper.theme.AppGreen
-import com.gtohelper.theme.AppRed
+import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.AppGreen
+import com.gtohelper.presentation.ui.theme.AppRed
 
 @Composable
 fun AppAlertDialogRoute(

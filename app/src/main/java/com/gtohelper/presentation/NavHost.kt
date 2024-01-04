@@ -44,14 +44,14 @@ fun AppNavHost(navController: NavHostController) {
             AddCompetitionRoute(navController, viewModel)
         }
 
-        composable(
-            "detail/{competition_id}",
-            arguments = competitionIdArgument
-        ) {
-            val viewModel = hiltViewModel<CompetitionDetailViewModel>()
-            val competitionId = it.arguments?.getInt("competition_id") ?: 0
-            CompetitionDetailRoute(navController, viewModel, competitionId)
-        }
+//        composable(
+//            "detail/{competition_id}",
+//            arguments = competitionIdArgument
+//        ) {
+//            val viewModel = hiltViewModel<CompetitionDetailViewModel>()
+//            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+//            CompetitionDetailRoute(navController, viewModel, competitionId)
+//        }
 
         composable(
             "competitors/{competition_id}",
