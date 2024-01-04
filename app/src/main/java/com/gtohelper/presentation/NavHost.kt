@@ -8,8 +8,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.gtohelper.presentation.ui.competition_detail.CompetitionDetailRoute
-import com.gtohelper.presentation.ui.competition_detail.CompetitionDetailViewModel
 import com.gtohelper.presentation.ui.competitions.CompetitionListRoute
 import com.gtohelper.presentation.ui.competitions.CompetitionListViewModel
 import com.gtohelper.presentation.ui.competitions.add_competition.AddCompetitionRoute
@@ -31,6 +29,8 @@ fun AppNavHost(navController: NavHostController) {
     val competitionIdArgument =
         remember { listOf(navArgument("competition_id") { type = NavType.IntType }) }
 
+    val competitionNameArgument =
+        remember { navArgument("competition_name") { type = NavType.StringType } }
 
     NavHost(navController = navController, startDestination = "competitions") {
 
@@ -79,15 +79,18 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            "disciplines/{competition_id}",
-            arguments = competitionIdArgument
+            "disciplines/{competition_id}/{competition_name}",
+            arguments = competitionIdArgument + competitionNameArgument
         ) {
             val viewModel = hiltViewModel<DisciplinesListViewModel>()
             val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            val competitionName = it.arguments?.getString("competition_name") ?: "Дисциплиныыыы"
+
             DisciplineListRoute(
                 navController = navController,
                 viewModel = viewModel,
-                competitionId = competitionId
+                competitionId = competitionId,
+                competitionName = competitionName
             )
         }
 

@@ -44,7 +44,7 @@ fun CompetitionListRoute(
         uiState = uiState,
         onSearchQueryChanged = viewModel::updateSearch,
         onAddButtonClicked = { navController.navigate("add_competition") },
-        onItemClicked = { navController.navigate("disciplines/${it.id}") }
+        onItemClicked = { navController.navigate("disciplines/${it.id}/${it.name}") }
     )
 }
 
