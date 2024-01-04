@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
+import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
 import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
@@ -42,10 +43,23 @@ fun DisciplineListRoute(
         onItemClicked = {},
         onAddButtonClicked = { navController.navigate("add_discipline/$competitionId") },
         onItemLongClicked = {
-            viewModel.deleteDiscipline(it)
+            viewModel.onDisciplineLongPressed(it)
             true
         }
     )
+
+    if (viewModel.isDialogShown) {
+        AppAlertDialogRoute(
+            title = "Удалить дисциплину",
+            description = "Вы действительно хотите удалить\nэту дисциплину?",
+            onOKClicked = {
+                viewModel.onDismissDialog()
+                viewModel.deleteDiscipline()
+            }
+        ) {
+            viewModel.onDismissDialog()
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
