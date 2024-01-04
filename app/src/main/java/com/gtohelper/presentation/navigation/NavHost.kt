@@ -1,4 +1,4 @@
-package com.gtohelper.presentation
+package com.gtohelper.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -26,20 +26,30 @@ import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDiscipli
 
 @Composable
 fun AppNavHost(navController: NavHostController) {
+    val competitionIdArg = "competition_id"
+    val competitionNameArg = "competition_name"
+
     val competitionIdArgument =
-        remember { listOf(navArgument("competition_id") { type = NavType.IntType }) }
+        remember { listOf(navArgument(competitionIdArg) { type = NavType.IntType }) }
 
     val competitionNameArgument =
-        remember { navArgument("competition_name") { type = NavType.StringType } }
+        remember { listOf(navArgument(competitionNameArg) { type = NavType.StringType }) }
 
-    NavHost(navController = navController, startDestination = "competitions") {
+    NavHost(
+        navController = navController,
+        startDestination = Screen.CompetitionsScreen.route
+    ) {
 
-        composable("competitions") {
+        composable(
+            route = Screen.CompetitionsScreen.route
+        ) {
             val viewModel = hiltViewModel<CompetitionListViewModel>()
             CompetitionListRoute(navController, viewModel)
         }
 
-        composable("add_competition") {
+        composable(
+            route = Screen.AddCompetitionScreen.route
+        ) {
             val viewModel = hiltViewModel<AddCompetitionViewModel>()
             AddCompetitionRoute(navController, viewModel)
         }
@@ -54,16 +64,18 @@ fun AppNavHost(navController: NavHostController) {
 //        }
 
         composable(
-            "competitors/{competition_id}",
+            route = Screen.CompetitorsListScreen.withArgs(competitionIdArg),
+            //" competitors/{competition_id}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<CompetitorsListViewModel>()
-            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
             CompetitorListRoute(navController, viewModel, competitionId)
         }
 
         composable(
-            "add_competitor/{competition_id}",
+            route = Screen.AddCompetitorScreen.withArgs(competitionIdArg),
+//            "add_competitor/{competition_id}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorViewModel>()
@@ -71,7 +83,8 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            "add_competitor_from_table/{competition_id}",
+            route = Screen.AddCompetitorFromTableScreen.withArgs(competitionIdArg),
+//            "add_competitor_from_table/{competition_id}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorsFromTableViewModel>()
@@ -79,12 +92,12 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            "disciplines/{competition_id}/{competition_name}",
+            route = Screen.DisciplinesListScreen.withArgs(competitionIdArg, competitionNameArg),
             arguments = competitionIdArgument + competitionNameArgument
         ) {
             val viewModel = hiltViewModel<DisciplinesListViewModel>()
-            val competitionId = it.arguments?.getInt("competition_id") ?: 0
-            val competitionName = it.arguments?.getString("competition_name") ?: "Дисциплиныыыы"
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
+            val competitionName = it.arguments?.getString(competitionNameArg) ?: "Дисциплины"
 
             DisciplineListRoute(
                 navController = navController,
@@ -95,11 +108,11 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = "add_discipline/{competition_id}",
+            route = Screen.AddDisciplineScreen.withArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
-            val competitionId = it.arguments?.getInt("competition_id") ?: 0
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
             AddDisciplineRoute(
                 navController = navController,
                 viewModel = viewModel,
