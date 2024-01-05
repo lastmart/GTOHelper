@@ -28,6 +28,7 @@ import com.gtohelper.domain.models.Competition
 import com.gtohelper.presentation.components.composables.AppSearchField
 import com.gtohelper.presentation.components.composables.LoadingScreen
 import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitions.components.CompetitionItem
 import com.gtohelper.presentation.ui.theme.spacing
 
@@ -43,8 +44,15 @@ fun CompetitionListRoute(
         searchQuery = searchQuery,
         uiState = uiState,
         onSearchQueryChanged = viewModel::updateSearch,
-        onAddButtonClicked = { navController.navigate("add_competition") },
-        onItemClicked = { navController.navigate("disciplines/${it.id}/${it.name}") }
+        onAddButtonClicked = { navController.navigate(Screen.AddCompetitionScreen.route) },
+        onItemClicked = {
+            navController.navigate(
+                Screen.DisciplinesListScreen.withArgs(
+                    it.id.toString(),
+                    it.name
+                )
+            )
+        }
     )
 }
 

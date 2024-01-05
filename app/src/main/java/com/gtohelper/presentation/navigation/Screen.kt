@@ -11,11 +11,13 @@ sealed class Screen(val route: String) {
     data object AddDisciplineScreen : Screen("add_discipline")
     data object EditCompetitorScreen : Screen("edit_competitor")
 
+    data object CompetitorsResultsListScreen: Screen("competitors_results")
+
     fun withArgs(vararg args: String): String {
         return buildString {
             append(route)
             args.forEach {
-                append("/{$it}")
+                append("/$it")
             }
         }
     }
