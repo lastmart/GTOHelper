@@ -63,7 +63,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.CompetitorsListScreen.withArgs(competitionIdArg),
+            route = Screen.CompetitorsListScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<CompetitorsListViewModel>()
@@ -72,7 +72,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorViewModel>()
@@ -81,7 +81,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorFromTableScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorFromTableScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorsFromTableViewModel>()
@@ -89,7 +89,10 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.DisciplinesListScreen.route + "/{$competitionIdArg}" + "/{$competitionNameArg}",
+            route = Screen.DisciplinesListScreen.withRouteArgs(
+                competitionIdArg,
+                competitionNameArg
+            ),
             arguments = competitionIdArgument + competitionNameArgument
         ) {
             val viewModel = hiltViewModel<DisciplinesListViewModel>()
@@ -105,7 +108,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddDisciplineScreen.route + "/{$competitionIdArg}",
+            route = Screen.AddDisciplineScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
@@ -118,7 +121,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.EditCompetitorScreen.withArgs(competitorIdArg),
+            route = Screen.EditCompetitorScreen.withRouteArgs(competitorIdArg),
             arguments = competitorIdArgument,
         ) {
             val viewModel = hiltViewModel<EditCompetitorViewModel>()
@@ -131,7 +134,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.CompetitorsResultsListScreen.route + "/{$competitionIdArg}",
+            route = Screen.CompetitorsResultsListScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<CompetitorsResultsViewModel>()
