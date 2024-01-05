@@ -75,7 +75,9 @@ fun DisciplineListRoute(
             )
         },
         onDescriptionClicked = {},
-        onDeleteClicked = {},
+        onDeleteClicked = {
+            viewModel.onDeleteCompetitionPressed()
+        },
         onCompetitorsClicked = {
             navController.navigate(
                 Screen.CompetitorsListScreen.withArgs(competitionId.toString())
@@ -83,17 +85,29 @@ fun DisciplineListRoute(
         }
     )
 
-    if (viewModel.isDialogShown) {
+    if (viewModel.isDeleteDisciplineDialogShown) {
         AppAlertDialogRoute(
             title = "Удалить дисциплину",
             description = "Вы действительно хотите удалить\nэту дисциплину?",
             onOKClicked = {
-                viewModel.onDismissDialog()
+                viewModel.onDismissDeleteDisciplineDialog()
                 viewModel.deleteDiscipline()
-            }
-        ) {
-            viewModel.onDismissDialog()
-        }
+            },
+            onCancelClicked = { viewModel.onDismissDeleteDisciplineDialog() }
+        )
+    }
+
+    if (viewModel.isDeleteCompetitionDialogShown) {
+        AppAlertDialogRoute(
+            title = "Удалить соревнование",
+            description = "Вы действительно хотите удалить\nэто соревнование?",
+            onOKClicked = {
+                viewModel.onDismissDeleteCompetitionDialog()
+                viewModel.deleteCompetition()
+                navController.navigateUp()
+            },
+            onCancelClicked = { viewModel.onDismissDeleteCompetitionDialog() }
+        )
     }
 }
 
@@ -117,7 +131,6 @@ fun DisciplinesListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                //    title = { Text(text = competitionName) },
                 title = {},
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
@@ -128,11 +141,17 @@ fun DisciplinesListScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = onCompetitorsClicked) {
+                    IconButton(onClick = {
+                        isMenuExtended = false
+                        onCompetitorsClicked()
+                    }) {
                         Icon(Icons.Outlined.Person, contentDescription = "Участники")
                     }
 
-                    IconButton(onClick = onResultsClicked) {
+                    IconButton(onClick = {
+                        isMenuExtended = false
+                        onResultsClicked()
+                    }) {
                         Icon(Icons.Outlined.List, contentDescription = "Результаты")
                     }
 
@@ -146,7 +165,10 @@ fun DisciplinesListScreen(
                     ) {
                         DropdownMenuItem(
                             text = { Text(text = "Описание") },
-                            onClick = onDescriptionClicked
+                            onClick = {
+                                isMenuExtended = false
+                                onDescriptionClicked()
+                            }
                         )
 
                         Divider(
@@ -159,7 +181,10 @@ fun DisciplinesListScreen(
 
                         DropdownMenuItem(
                             text = { Text(text = "Удалить") },
-                            onClick = onDeleteClicked
+                            onClick = {
+                                isMenuExtended = false
+                                onDeleteClicked()
+                            }
                         )
 
                         Divider(
@@ -172,7 +197,10 @@ fun DisciplinesListScreen(
 
                         DropdownMenuItem(
                             text = { Text(text = "Скачать") },
-                            onClick = onDownloadClicked
+                            onClick = {
+                                isMenuExtended = false
+                                onDownloadClicked()
+                            }
                         )
                     }
                 }
