@@ -34,6 +34,7 @@ fun PreviewCustomDropdownMenu() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> AppDropdownMenu(
+    modifier: Modifier = Modifier,
     selected: T,
     values: List<T>,
     onValueChanged: (T) -> Unit,
@@ -42,13 +43,12 @@ fun <T> AppDropdownMenu(
 ) {
     var expanded by remember { mutableStateOf(false) }
     ExposedDropdownMenuBox(
-        modifier = Modifier.background(Color(android.graphics.Color.parseColor("#F3F3F3"))),
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
     ) {
 
         AppTextField(
-            modifier = Modifier.menuAnchor().background(Color(android.graphics.Color.parseColor("#F3F3F3"))),
+            modifier = modifier.menuAnchor(),
             value = stringTransform(selected),
             onValueChange = {},
             label = label,
@@ -57,7 +57,6 @@ fun <T> AppDropdownMenu(
         )
 
         ExposedDropdownMenu(
-            modifier = Modifier.background(Color(android.graphics.Color.parseColor("#F3F3F3"))),
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {

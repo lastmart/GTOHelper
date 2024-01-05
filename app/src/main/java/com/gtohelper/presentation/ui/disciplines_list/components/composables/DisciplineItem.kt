@@ -52,7 +52,6 @@ fun DisciplineItem(
         Text(
             text = discipline.name,
             fontSize = textFontSize,
-            color = Color.Black
         )
     }
 }

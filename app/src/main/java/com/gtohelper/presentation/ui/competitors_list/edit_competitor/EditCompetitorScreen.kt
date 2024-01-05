@@ -1,6 +1,5 @@
 package com.gtohelper.presentation.ui.competitors_list.edit_competitor
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -27,12 +26,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
+import com.gtohelper.presentation.components.composables.CheckButton
 import com.gtohelper.presentation.components.forms.FormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorUiForm
-import com.gtohelper.presentation.ui.theme.BackgroundLight
 import com.gtohelper.presentation.ui.theme.spacing
 import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
@@ -71,12 +70,24 @@ fun EditCompetitorRoute(
 
     val form by viewModel.form.collectAsState()
 
+    if (viewModel.isDeleteCompetitorDialogShown) {
+        AppAlertDialogRoute(
+            title = "Удалить участника",
+            description = "Вы действительно хотите удалить\nэтого участника?",
+            onOKClicked = {
+                viewModel.onDismissDeleteCompetitorDialog()
+                viewModel.deleteCompetitor()
+            },
+            onCancelClicked = { viewModel.onDismissDeleteCompetitorDialog() }
+        )
+    }
+
     EditCompetitorScreen(
         form = form,
         snackbarHostState = snackbarHostState,
         onEvent = viewModel::onEvent,
         onBackClicked = navController::navigateUp,
-        onDeleteClicked = viewModel::deleteCompetitor,
+        onDeleteClicked = viewModel::onDeleteClicked,
     )
 }
 
@@ -90,9 +101,7 @@ fun EditCompetitorScreen(
     onDeleteClicked: () -> Unit = {},
     snackbarHostState: SnackbarHostState,
 ) {
-    Scaffold(modifier = Modifier
-        .fillMaxSize()
-        .background(BackgroundLight),
+    Scaffold(
         contentWindowInsets = WindowInsets(
             left = MaterialTheme.spacing.small,
             right = MaterialTheme.spacing.small,
@@ -111,14 +120,16 @@ fun EditCompetitorScreen(
                 actions = {
                     IconButton(onClick = onDeleteClicked) {
                         Icon(
-                            imageVector = Icons.Filled.Delete, contentDescription = "Delete"
+                            imageVector = Icons.Filled.Delete,
+                            contentDescription = "Delete",
+                            tint = MaterialTheme.colorScheme.errorContainer,
                         )
                     }
                 }
             )
         },
         floatingActionButton = {
-            TransparentAddFab(
+            CheckButton(
                 contentDescription = stringResource(R.string.edit_competitor),
                 onClick = { onEvent(CompetitorFormEvent.Submit) },
             )
@@ -128,7 +139,6 @@ fun EditCompetitorScreen(
             onEvent = onEvent,
             modifier = Modifier
                 .padding(it)
-                .background(BackgroundLight),
         )
     }
 }

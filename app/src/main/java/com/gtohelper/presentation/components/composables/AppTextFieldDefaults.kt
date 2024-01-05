@@ -1,5 +1,6 @@
 package com.gtohelper.presentation.components.composables
 
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -10,16 +11,12 @@ object AppTextFieldDefaults {
     @Composable
     fun colors(): TextFieldColors {
         return TextFieldDefaults.colors(
-            focusedContainerColor = Color.White,
-            unfocusedContainerColor = Color.White,
+            focusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
+            unfocusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
             focusedIndicatorColor = Color.Transparent,
             unfocusedIndicatorColor = Color.Transparent,
             disabledIndicatorColor = Color.Transparent,
             errorIndicatorColor = Color.Transparent,
-            disabledSupportingTextColor = Color.Transparent,
-            errorSupportingTextColor = Color.Transparent,
-            focusedSupportingTextColor = Color.Transparent,
-            unfocusedSupportingTextColor = Color.Transparent,
         )
     }
 }

@@ -26,4 +26,6 @@
     <string name="cancel">Отмена</string>
     <string name="adding_from_table_title">Добавление из таблицы</string>
     <string name="edit_competitor">Изменить участника</string>
+    <string name="search_competitors_hint">Поиск участников...</string>
+    <string name="results_title">Результаты</string>
 </resources>

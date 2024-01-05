@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +32,9 @@ class AddResultsViewModel @Inject constructor(
     val results: Flow<List<SportResult>> = sportResultRepository.getCompetitionDisciplineResults(
         competitionId,
         disciplineId,
-    )
+    ).combine(_searchQuery){
+        data, query -> data.filter { it.competitorNumber.toString().contains(query) }
+    }
 
     private val _uiState = MutableStateFlow(AddResultsUiState())
 

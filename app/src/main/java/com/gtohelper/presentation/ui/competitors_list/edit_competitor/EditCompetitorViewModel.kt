@@ -1,5 +1,8 @@
 package com.gtohelper.presentation.ui.competitors_list.edit_competitor
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -32,6 +35,9 @@ class EditCompetitorViewModel @Inject constructor(
     val formState = formStateChannel.receiveAsFlow()
 
     val isDeleted = Channel<Boolean>()
+
+    var isDeleteCompetitorDialogShown by mutableStateOf(false)
+        private set
 
     private val mutableForm = MutableStateFlow(CompetitorFormState())
     val form = mutableForm.asStateFlow()
@@ -131,5 +137,13 @@ class EditCompetitorViewModel @Inject constructor(
                 formStateChannel.send(FormState.FormSubmissionFailedState(error))
             }
         }
+    }
+
+    fun onDeleteClicked(){
+        isDeleteCompetitorDialogShown = true
+    }
+
+    fun onDismissDeleteCompetitorDialog() {
+        isDeleteCompetitorDialogShown = false
     }
 }

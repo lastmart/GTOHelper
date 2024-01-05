@@ -1,9 +1,7 @@
 package com.gtohelper.presentation.components.composables
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,24 +26,19 @@ fun PreviewRadioGroup() {
 
 @Composable
 fun <T> AppRadioGroup(
+    modifier: Modifier = Modifier,
     selectedValue: T,
     onChanged: (T) -> Unit,
     values: List<T>,
     nameTransform: (T) -> String,
 ) {
-    val state = remember { mutableStateOf(selectedValue) }
-
-
-
-
     Row(
-
-    ){
+        modifier = modifier
+    ) {
         values.forEach { value ->
             RadioButton(
-                selected = state.value == value,
+                selected = selectedValue == value,
                 onClick = {
-                    state.value = value
                     onChanged(value)
                 },
             )

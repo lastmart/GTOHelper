@@ -1,5 +1,7 @@
 package com.gtohelper.presentation.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -51,7 +53,11 @@ fun AppNavHost(navController: NavHostController) {
 
     NavHost(
         navController = navController,
-        startDestination = Screen.CompetitionsScreen.route
+        startDestination = Screen.CompetitionsScreen.route,
+        enterTransition = { EnterTransition.None },
+        exitTransition = { ExitTransition.None },
+        popEnterTransition = { EnterTransition.None },
+        popExitTransition = { ExitTransition.None },
     ) {
 
         composable(
@@ -153,7 +159,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddResultsScreen.route + "/{$competitionIdArg}" + "/{$disciplineIdArg}",
+            route = Screen.AddResultsScreen.withRouteArgs(competitionIdArg, disciplineIdArg),
             arguments = competitionIdArgument + disciplineIdArgument
         ) {
             val viewModel = hiltViewModel<AddResultsViewModel>()

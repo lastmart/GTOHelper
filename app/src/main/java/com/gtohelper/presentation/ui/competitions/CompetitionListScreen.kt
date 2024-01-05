@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -25,9 +26,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competition
+import com.gtohelper.presentation.components.composables.AddButton
 import com.gtohelper.presentation.components.composables.AppSearchField
 import com.gtohelper.presentation.components.composables.LoadingScreen
-import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitions.components.CompetitionItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -79,7 +80,7 @@ fun CompetitionListScreen(
         },
         floatingActionButton = {
             if (uiState is CompetitionListUiState.Loaded) {
-                TransparentAddFab(
+                AddButton(
                     onClick = onAddButtonClicked, contentDescription = null
                 )
             }
@@ -92,6 +93,7 @@ fun CompetitionListScreen(
                 CompetitionListUiState.Loading -> LoadingScreen(Modifier.fillMaxSize())
                 is CompetitionListUiState.Loaded -> {
                     AppSearchField(
+                        modifier = Modifier.fillMaxWidth(),
                         value = searchQuery,
                         hint = "Поиск соревнований...",
                         onValueChange = onSearchQueryChanged,
@@ -114,15 +116,6 @@ fun CompetitionListScreen(
 
 @Preview
 @Composable
-fun PreviewLoading() {
-    CompetitionListScreen(
-        searchQuery = "",
-        uiState = CompetitionListUiState.Loading
-    )
-}
-
-@Preview
-@Composable
 fun PreviewLoaded() {
     CompetitionListScreen(
         searchQuery = "",
@@ -133,3 +126,13 @@ fun PreviewLoaded() {
         )
     )
 }
+
+@Preview
+@Composable
+fun PreviewLoading() {
+    CompetitionListScreen(
+        searchQuery = "",
+        uiState = CompetitionListUiState.Loading
+    )
+}
+

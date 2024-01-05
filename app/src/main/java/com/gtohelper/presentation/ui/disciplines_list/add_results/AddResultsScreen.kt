@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -90,12 +91,16 @@ fun AddResultsScreen(
                 .fillMaxHeight(),
         ) {
             AppSearchField(
+                modifier = Modifier.fillMaxWidth(),
                 value = searchQuery,
                 hint = "Поиск по номеру...",
                 onValueChange = onSearchQueryChanged,
             )
+
             Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
             LazyColumn(
+                modifier = Modifier.weight(1f),
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
             ) {
                 items(results) {
@@ -105,11 +110,13 @@ fun AddResultsScreen(
                     )
                 }
             }
+
             Spacer(Modifier.height(MaterialTheme.spacing.medium))
 
             uiState.discipline?.let { discipline ->
                 ResultInputField(
                     result = uiState.currentResult,
+                    number = uiState.currentNumber,
                     disciplinePointType = discipline.type,
                     onValueChange = { onEvent(AddResultsEvent.UpdateResult(it)) }
                 )
@@ -124,10 +131,10 @@ fun AddResultsScreen(
 fun PreviewAddResultsScreen() {
     AddResultsScreen(
         uiState = AddResultsUiState(
-            Discipline("Прыжки с крыши", 0, listOf(), false, DisciplinePointType.TIME),
+            Discipline("Прыжки с крыши", 0, listOf(), false, DisciplinePointType.AMOUNT),
             0, 0,
         ),
-        results = (0..0).map {
+        results = (0..20).map {
             SportResult(
                 sportName = "Прыжки с крыши",
                 competitionId = 0,

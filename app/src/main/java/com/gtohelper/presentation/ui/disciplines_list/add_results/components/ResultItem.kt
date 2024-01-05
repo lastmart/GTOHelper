@@ -48,6 +48,7 @@ fun ResultItem(
                     .width(1.dp)
             )
             Text(
+                textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium)
                     .weight(2f),
