@@ -7,6 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.repository.DisciplineRepository
+import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,12 +22,16 @@ import javax.inject.Inject
 @HiltViewModel
 class DisciplinesListViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository,
+    private val deleteCompetitionByIdUseCase: DeleteCompetitionByIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     private val competitionId = savedStateHandle["competition_id"] ?: 0
     private var disciplineToDelete: DisciplinePresentation? = null
-    var isDialogShown by mutableStateOf(false)
+    var isDeleteDisciplineDialogShown by mutableStateOf(false)
+        private set
+
+    var isDeleteCompetitionDialogShown by mutableStateOf(false)
         private set
 
     val uiState: StateFlow<DisciplinesListUIState> =
@@ -45,11 +50,11 @@ class DisciplinesListViewModel @Inject constructor(
 
     fun onDisciplineLongPressed(discipline: DisciplinePresentation) {
         disciplineToDelete = discipline
-        isDialogShown = true
+        isDeleteDisciplineDialogShown = true
     }
 
-    fun onDismissDialog() {
-        isDialogShown = false
+    fun onDismissDeleteDisciplineDialog() {
+        isDeleteDisciplineDialogShown = false
     }
 
     fun deleteDiscipline() {
@@ -59,8 +64,18 @@ class DisciplinesListViewModel @Inject constructor(
             }
         }
     }
-//
-//    suspend fun deleteCompetitionByName(competitionName: String) {
-//        println("Delete competition $competitionName")
-//    }
+
+    fun onDeleteCompetitionPressed() {
+        isDeleteCompetitionDialogShown = true
+    }
+
+    fun onDismissDeleteCompetitionDialog() {
+        isDeleteCompetitionDialogShown = false
+    }
+
+    fun deleteCompetition() {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteCompetitionByIdUseCase(competitionId)
+        }
+    }
 }

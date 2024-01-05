@@ -57,13 +57,19 @@ fun CompetitorListRoute(
         onSearchQueryChanged = viewModel::updateSearch,
         onBackClicked = navController::navigateUp,
         onAddCompetitorClicked = {
-            navController.navigate("add_competitor/$competitionId")
+            navController.navigate(
+                Screen.AddCompetitorScreen.withArgs(competitionId.toString())
+            )
         },
         onAddCompetitorFromTableClicked = {
-            navController.navigate("add_competitor_from_table/$competitionId")
+            navController.navigate(
+                Screen.AddCompetitorFromTableScreen.withArgs(competitionId.toString())
+            )
         },
         onItemClicked = {
-            navController.navigate("edit_competitor/${it.id}")
+            navController.navigate(
+                Screen.EditCompetitorScreen.withArgs(it.id.toString())
+            )
         }
     )
 }

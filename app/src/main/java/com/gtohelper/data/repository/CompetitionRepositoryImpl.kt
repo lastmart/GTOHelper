@@ -40,4 +40,14 @@ class CompetitionRepositoryImpl(
             dao.delete(competition.toEntity())
         }
     }
+
+    override suspend fun deleteById(id: Int) {
+        withContext(Dispatchers.IO) {
+            val competitionToDelete = getById(id)
+
+            competitionToDelete?.let {
+                delete(it)
+            }
+        }
+    }
 }
