@@ -18,14 +18,16 @@ import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetit
 import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorViewModel
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableRoute
 import com.gtohelper.presentation.ui.competitors_list.add_competitors_from_table.AddCompetitorsFromTableViewModel
-import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsRoute
-import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsViewModel
 import com.gtohelper.presentation.ui.competitors_list.edit_competitor.EditCompetitorRoute
 import com.gtohelper.presentation.ui.competitors_list.edit_competitor.EditCompetitorViewModel
+import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsRoute
+import com.gtohelper.presentation.ui.competitors_results.CompetitorsResultsViewModel
 import com.gtohelper.presentation.ui.disciplines_list.DisciplineListRoute
 import com.gtohelper.presentation.ui.disciplines_list.DisciplinesListViewModel
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineRoute
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineViewModel
+import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsRoute
+import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsViewModel
 
 
 @Composable
@@ -33,6 +35,7 @@ fun AppNavHost(navController: NavHostController) {
     val competitionIdArg = "competition_id"
     val competitionNameArg = "competition_name"
     val competitorIdArg = "competitor_id"
+    val disciplineIdArg = "discipline_id"
 
     val competitionIdArgument =
         remember { listOf(navArgument(competitionIdArg) { type = NavType.IntType }) }
@@ -42,6 +45,9 @@ fun AppNavHost(navController: NavHostController) {
 
     val competitorIdArgument =
         remember { listOf(navArgument(competitorIdArg) { type = NavType.IntType }) }
+
+    val disciplineIdArgument =
+        remember { listOf(navArgument(disciplineIdArg) { type = NavType.StringType }) }
 
     NavHost(
         navController = navController,
@@ -63,7 +69,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.CompetitorsListScreen.withArgs(competitionIdArg),
+            route = Screen.CompetitorsListScreen.route + "/{$competitionIdArg}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<CompetitorsListViewModel>()
@@ -72,7 +78,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorScreen.route + "/{$competitionIdArg}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorViewModel>()
@@ -81,7 +87,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.AddCompetitorFromTableScreen.withArgs(competitionIdArg),
+            route = Screen.AddCompetitorFromTableScreen.route + "/{$competitionIdArg}",
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorsFromTableViewModel>()
@@ -118,7 +124,7 @@ fun AppNavHost(navController: NavHostController) {
         }
 
         composable(
-            route = Screen.EditCompetitorScreen.withArgs(competitorIdArg),
+            route = Screen.EditCompetitorScreen.route + "/{$competitorIdArg}",
             arguments = competitorIdArgument,
         ) {
             val viewModel = hiltViewModel<EditCompetitorViewModel>()
@@ -142,7 +148,21 @@ fun AppNavHost(navController: NavHostController) {
                 competitionId = competitionId
             )
         }
+
+        composable(
+            route = Screen.AddResultsScreen.route + "/{$competitionIdArg}" + "/{$disciplineIdArg}",
+            arguments = competitionIdArgument + disciplineIdArgument
+        ) {
+            val viewModel = hiltViewModel<AddResultsViewModel>()
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
+            val disciplineId = it.arguments?.getString(disciplineIdArg)
+
+            AddResultsRoute(
+                navController = navController,
+                viewModel = viewModel,
+                competitionId = competitionId,
+                disciplineId = disciplineId.toString(),
+            )
+        }
     }
 }
-
-

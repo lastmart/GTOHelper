@@ -9,6 +9,6 @@ data class SportResultEntity(
     val id: Int? = null,
     val sportName: String,
     val competitionId: Int,
-    val value: Long,
+    val value: Int,
     val competitorNumber: Int,
 )

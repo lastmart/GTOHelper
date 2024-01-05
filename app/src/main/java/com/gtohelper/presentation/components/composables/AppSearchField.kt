@@ -26,6 +26,7 @@ fun PreviewAppSearchField() {
 
 @Composable
 fun AppSearchField(
+    modifier : Modifier = Modifier,
     value: String = "",
     hint: String? = "",
     onValueChange: (String) -> Unit = {},

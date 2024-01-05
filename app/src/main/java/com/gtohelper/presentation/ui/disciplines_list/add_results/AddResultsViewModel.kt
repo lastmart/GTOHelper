@@ -7,18 +7,16 @@ import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.repository.SportResultRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class AddResultsViewModel @Inject constructor(
-    private val repository: SportResultRepository,
+    private val sportResultRepository: SportResultRepository,
     private val disciplineRepository: DisciplineRepository,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -27,53 +25,43 @@ class AddResultsViewModel @Inject constructor(
     private val competitionId: Int = savedStateHandle["competition_id"] ?: 0
 
     private val _searchQuery = MutableStateFlow("")
+
     val searchQuery = _searchQuery.asStateFlow()
 
-    private val _uiState = MutableStateFlow<AddResultsUiState>(AddResultsUiState.Loading)
+    val results: Flow<List<SportResult>> = sportResultRepository.getCompetitionDisciplineResults(
+        competitionId,
+        disciplineId,
+    )
+
+    private val _uiState = MutableStateFlow(AddResultsUiState())
+
     val uiState = _uiState.asStateFlow()
 
-
     fun onEvent(event: AddResultsEvent) {
-        val state = _uiState.value
         when (event) {
-            AddResultsEvent.ClearResult -> clearResult(state)
-            AddResultsEvent.SaveResult -> saveResult(state)
-            is AddResultsEvent.SearchResult -> updateSearch(event.query)
-            is AddResultsEvent.UpdateNumber -> updateNumber(state)
-            is AddResultsEvent.UpdateResult -> updateResult(state)
-        }
-    }
-
-    private fun updateResult(state: AddResultsUiState) {
-
-    }
-
-    private fun updateNumber(state: AddResultsUiState) {
-
-    }
-
-    private fun updateSearch(query: String) {
-
-    }
-
-    private fun clearResult(state: AddResultsUiState) {
-        if (state is AddResultsUiState.Loaded) {
-            _uiState.update { state.copy(currentNumber = 0, currentResult = 0) }
-        }
-    }
-
-    private fun saveResult(state: AddResultsUiState) {
-        if (state is AddResultsUiState.Loaded) {
-            val result = SportResult(
-                sportName = disciplineId,
-                competitionId = competitionId,
-                competitorNumber = state.currentNumber,
-                value = state.currentResult,
-            )
-
-            viewModelScope.launch {
-                repository.create(result)
+            AddResultsEvent.SaveResult -> saveResult()
+            AddResultsEvent.ClearResult -> _uiState.update {
+                it.copy(
+                    currentResult = 0, currentNumber = 0
+                )
             }
+
+            is AddResultsEvent.SearchResult -> _searchQuery.update { event.query }
+            is AddResultsEvent.UpdateNumber -> _uiState.update { it.copy(currentNumber = event.value) }
+            is AddResultsEvent.UpdateResult -> _uiState.update { it.copy(currentResult = event.value) }
+        }
+    }
+
+    private fun saveResult() {
+        val result = SportResult(
+            sportName = disciplineId,
+            competitionId = competitionId,
+            competitorNumber = _uiState.value.currentNumber,
+            value = _uiState.value.currentResult,
+        )
+
+        viewModelScope.launch {
+            sportResultRepository.create(result)
         }
     }
 }
