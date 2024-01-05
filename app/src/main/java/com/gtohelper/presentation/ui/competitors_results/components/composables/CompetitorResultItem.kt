@@ -1,5 +1,7 @@
 package com.gtohelper.presentation.ui.competitors_results.components.composables
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,28 +21,32 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.presentation.ui.theme.BorderColor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompetitorResultItem(
     competitor: Competitor,
-    resultPoints: Int
+    resultPoints: Int,
+    onClick: (Pair<Competitor, Int>) -> Unit = {}
 ) {
-
-
     Card(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(10.dp)
+        shape = RoundedCornerShape(10.dp),
+        border = BorderStroke(1.dp, BorderColor),
+        onClick = { onClick(competitor to resultPoints) }
     ) {
 
         Row(
             modifier = Modifier
-                .padding(horizontal = 10.dp),
+                .padding(10.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
@@ -64,7 +71,8 @@ fun CompetitorResultItem(
                         fontWeight = FontWeight.Bold,
                         color = Color.Black,
                         fontSize = 14.sp,
-                        maxLines = 1
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
 
@@ -90,27 +98,30 @@ fun CompetitorResultItem(
                     fontSize = 14.sp,
                     color = Color.Black
                 )
-
             }
 
-            Divider(
-                modifier = Modifier
-                    .height(100.dp)
-                    .width(1.dp), color = Color.Gray
-            )
+            Row(
+                modifier = Modifier.weight(0.25f, fill = false),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Start
+            ) {
+                Divider(
+                    modifier = Modifier
+                        .height(68.dp)
+                        .width(1.dp), color = Color.Gray
+                )
 
-            Spacer(modifier = Modifier.width(5.dp))
+                Spacer(modifier = Modifier.width(5.dp))
 
 
-            Text(
-                modifier = Modifier.padding(end = 5.dp),
-                maxLines = 1,
-                text = resultPoints.toString(),
-                fontSize = 20.sp
-            )
+                Text(
+                    modifier = Modifier.padding(end = 5.dp),
+                    maxLines = 1,
+                    text = resultPoints.toString(),
+                    fontSize = 20.sp
+                )
+            }
         }
-
-
     }
 }
 

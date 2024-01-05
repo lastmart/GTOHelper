@@ -125,7 +125,7 @@ fun CompetitorsResultsScreenPreview() {
                     gender = Gender.MALE,
                     teamName = "Вьетнам",
                     degree = 8
-                ) to 109,
+                ) to 9,
             )
         )
     )

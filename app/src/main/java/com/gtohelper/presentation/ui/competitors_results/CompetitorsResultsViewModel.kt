@@ -24,7 +24,7 @@ class CompetitorsResultsViewModel @Inject constructor(
                         id = 7,
                         number = 33,
                         competitionId = 2,
-                        name = "Хрусталев Дмитрий Романович",
+                        name = "Хруст Дмит Ром",
                         gender = Gender.MALE,
                         teamName = "Кроссфит",
                         degree = 6
@@ -48,7 +48,7 @@ class CompetitorsResultsViewModel @Inject constructor(
                         gender = Gender.MALE,
                         teamName = "Вьетнам",
                         degree = 8
-                    ) to 109,
+                    ) to 9,
                 )
             )
         )
