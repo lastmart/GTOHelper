@@ -20,6 +20,7 @@ class DisciplineRepositoryImpl(
     private val dao: DisciplineDao,
 ) : DisciplineRepository {
 
+    private val initedCompetitions = mutableSetOf<Int>()
     override fun getDisciplines(competitionId: Int): Flow<List<Discipline>> {
 
         GlobalScope.launch(Dispatchers.IO) {
@@ -96,8 +97,10 @@ class DisciplineRepositoryImpl(
     }
 
     private suspend fun initDisciplines(competitionId: Int) {
-        dao.getDisciplines(competitionId).collect() {
-            if (it.isNotEmpty()) return@collect
+        dao.getDisciplines(competitionId).collect {
+            if (it.isNotEmpty() || !initedCompetitions.add(competitionId)) {
+                return@collect
+            }
 
             dao.upsertDisciplines(
                 listOf(

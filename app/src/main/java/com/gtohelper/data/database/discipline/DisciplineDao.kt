@@ -1,6 +1,7 @@
 package com.gtohelper.data.database.discipline
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Query
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
@@ -17,6 +18,9 @@ interface DisciplineDao {
         AND name = :name 
         """)
     suspend fun getDisciplineByName(name: String, competitionId: Int): DisciplineEntity?
+
+    @Delete
+    suspend fun deleteDiscipline(discipline: DisciplineEntity)
 
     @Upsert
     suspend fun upsertDiscipline(discipline: DisciplineEntity)

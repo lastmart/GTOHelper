@@ -19,8 +19,7 @@ object DomainModule {
         disciplineRepository: DisciplineRepository
     ): DeleteCompetitionByIdUseCase {
         return DeleteCompetitionByIdUseCase(
-            competitionRepository = competitionRepository,
-            disciplineRepository = disciplineRepository
+            competitionRepository = competitionRepository
         )
     }
 }

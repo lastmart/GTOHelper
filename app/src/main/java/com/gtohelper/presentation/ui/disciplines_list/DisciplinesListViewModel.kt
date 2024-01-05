@@ -6,7 +6,6 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
@@ -23,7 +22,6 @@ import javax.inject.Inject
 @HiltViewModel
 class DisciplinesListViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository,
-    private val competitionRepository: CompetitionRepository,
     private val deleteCompetitionByIdUseCase: DeleteCompetitionByIdUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -76,7 +74,6 @@ class DisciplinesListViewModel @Inject constructor(
     }
 
     fun deleteCompetition() {
-        println("Delete competition $competitionId")
         viewModelScope.launch(Dispatchers.IO) {
             deleteCompetitionByIdUseCase(competitionId)
         }
