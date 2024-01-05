@@ -41,16 +41,20 @@ class AddCompetitorViewModel @Inject constructor(
     }
 
     private suspend fun validateInput(): String? {
-        // TODO: Create UseCases For Validation
-        if (mutableForm.value.name.isEmpty()) {
+        val state = mutableForm.value
+        if (state.name.isEmpty()) {
             return "Имя участника не может быть пустым"
         }
 
-        if (mutableForm.value.teamName.isEmpty()) {
+        if (state.teamName.isEmpty()) {
             return "Название команды не может быть пустым"
         }
 
-        if (repository.getById(mutableForm.value.number, competitionId) != null){
+        if (state.number == null){
+            return "Номер должен быть указан"
+        }
+
+        if (repository.getByNumberInCompetition(state.number, competitionId) != null){
             return "Участник с таким номером уже существует"
         }
 
@@ -65,7 +69,7 @@ class AddCompetitorViewModel @Inject constructor(
 
         val competitor = Competitor(
             id = 0,
-            number = form.value.number,
+            number = form.value.number ?: 0,
             name = form.value.name,
             gender = form.value.gender,
             degree = form.value.degree,

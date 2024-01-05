@@ -24,6 +24,21 @@ class CompetitorRepositoryImpl(
         return dao.getCompetitionCompetitorCount(competitionId)
     }
 
+    override suspend fun getById(competitorId: Int): Competitor? {
+        return withContext(Dispatchers.IO) {
+            dao.getCompetitorById(competitorId)?.toDomainModel()
+        }
+    }
+
+    override suspend fun getByNumberInCompetition(
+        competitorNumber: Int,
+        competitionId: Int
+    ): Competitor? {
+        return withContext(Dispatchers.IO) {
+            dao.getCompetitorByNumberInCompetition(competitorNumber, competitionId)?.toDomainModel()
+        }
+    }
+
     override suspend fun create(competitor: Competitor) {
         withContext(Dispatchers.IO) {
             dao.create(competitor.toEntity())
@@ -40,11 +55,5 @@ class CompetitorRepositoryImpl(
         withContext(Dispatchers.IO) {
             dao.delete(competitor.toEntity())
         }
-    }
-
-    override suspend fun getById(competitorNumber: Int, competitionId: Int): Competitor? {
-       return withContext(Dispatchers.IO){
-           dao.getCompetitorById(competitorNumber, competitionId)?.toDomainModel()
-       }
     }
 }

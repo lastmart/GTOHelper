@@ -9,6 +9,7 @@ sealed class Screen(val route: String) {
     data object AddCompetitorFromTableScreen : Screen("add_competitor_from_table")
     data object DisciplinesListScreen : Screen("disciplines")
     data object AddDisciplineScreen : Screen("add_discipline")
+    data object EditCompetitorScreen : Screen("edit_competitor")
 
     fun withArgs(vararg args: String): String {
         return buildString {

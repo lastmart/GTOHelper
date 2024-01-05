@@ -26,19 +26,23 @@ class EditCompetitorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val competitionId = savedStateHandle["competition_id"] ?: 0
-    private val competitorId = savedStateHandle["competition_id"] ?: 0
+    private val competitorId = savedStateHandle["competitor_id"] ?: 0
 
     private val formStateChannel = Channel<FormState>()
     val formState = formStateChannel.receiveAsFlow()
 
+    val isDeleted = Channel<Boolean>()
+
     private val mutableForm = MutableStateFlow(CompetitorFormState())
     val form = mutableForm.asStateFlow()
 
+    private var initialCompetitor: Competitor? = null
+
     init {
         viewModelScope.launch {
-            val competitor = repository.getById(competitorId, competitionId)
-            competitor?.let {
+            val competitor = repository.getById(competitorId)
+            initialCompetitor = competitor
+            if (competitor != null) {
                 mutableForm.update {
                     it.copy(
                         name = competitor.name,
@@ -52,6 +56,12 @@ class EditCompetitorViewModel @Inject constructor(
         }
     }
 
+    fun deleteCompetitor() {
+        viewModelScope.launch {
+            repository.delete(initialCompetitor ?: return@launch)
+            isDeleted.send(true)
+        }
+    }
 
     fun onEvent(event: CompetitorFormEvent) = when (event) {
         CompetitorFormEvent.Submit -> submit()
@@ -64,17 +74,31 @@ class EditCompetitorViewModel @Inject constructor(
 
     private suspend fun validateCompetitorForm(): String? {
         // TODO: Create UseCases For Validation
-        if (mutableForm.value.name.isEmpty()) {
+        val form = mutableForm.value
+        if (form.name.isEmpty()) {
             return "Имя участника не может быть пустым"
         }
 
-        if (mutableForm.value.teamName.isEmpty()) {
+        if (form.teamName.isEmpty()) {
             return "Название команды не может быть пустым"
         }
 
-        if (repository.getById(mutableForm.value.number, competitionId) != null) {
+        if (form.number == null) {
+            return "Номер должен быть указан"
+        }
+
+
+        if (form.number == initialCompetitor?.number) {
+            return null
+        }
+
+        if (repository.getByNumberInCompetition(
+                form.number, initialCompetitor?.competitionId ?: 0
+            ) != null
+        ) {
             return "Участник с таким номером уже существует"
         }
+
 
         return null
     }
@@ -85,9 +109,9 @@ class EditCompetitorViewModel @Inject constructor(
         }
 
         val competitor = Competitor(
-            id=competitorId,
-            number = form.value.number,
-            competitionId = competitionId,
+            id = competitorId,
+            number = form.value.number ?: 0,
+            competitionId = initialCompetitor?.competitionId ?: 0,
             name = form.value.name,
             gender = form.value.gender,
             degree = form.value.degree,
@@ -103,7 +127,6 @@ class EditCompetitorViewModel @Inject constructor(
                 } catch (e: Exception) {
                     formStateChannel.send(FormState.FormSubmissionFailedState(e.message.toString()))
                 }
-
             } else {
                 formStateChannel.send(FormState.FormSubmissionFailedState(error))
             }

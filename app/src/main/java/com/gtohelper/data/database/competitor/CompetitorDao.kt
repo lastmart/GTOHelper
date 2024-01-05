@@ -16,8 +16,14 @@ interface CompetitorDao {
     @Query("SELECT COUNT(*) FROM competitors_table WHERE competitionId=:competitionId")
     fun getCompetitionCompetitorCount(competitionId: Int): Flow<Int>
 
-    @Query("SELECT * FROM competitors_table WHERE number=:competitorNumber AND competitionId=:competitionId")
-    suspend fun getCompetitorById(competitorNumber: Int, competitionId: Int): CompetitorEntity?
+    @Query("SELECT * FROM competitors_table WHERE competitionId=:competitionId AND number=:competitorNumber")
+    suspend fun getCompetitorByNumberInCompetition(
+        competitorNumber: Int,
+        competitionId: Int
+    ): CompetitorEntity?
+
+    @Query("SELECT * FROM competitors_table WHERE id=:competitorId")
+    suspend fun getCompetitorById(competitorId: Int): CompetitorEntity?
 
     @Insert
     suspend fun create(competitor: CompetitorEntity)

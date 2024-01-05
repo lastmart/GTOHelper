@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
-import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.BorderColor
 
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -34,7 +34,7 @@ fun DisciplineCardItem(
                 onLongClick = { onLongClick(discipline) }
             ),
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(width = 1.dp, color = AppBorderColor),
+        border = BorderStroke(width = 1.dp, color = BorderColor),
     ) {
         DisciplineItem(
             discipline = discipline,

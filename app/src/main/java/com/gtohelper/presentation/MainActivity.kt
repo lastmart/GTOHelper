@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.compose.material3.Surface
 import androidx.navigation.compose.rememberNavController
 import com.gtohelper.presentation.navigation.AppNavHost
-import com.gtohelper.presentation.ui.theme.AppBackgroundColor
+import com.gtohelper.presentation.ui.theme.BackgroundLight
 import com.gtohelper.presentation.ui.theme.GTOHelperTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,7 +17,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GTOHelperTheme {
                 Surface(
-                    color = AppBackgroundColor,
+                    color = BackgroundLight,
                 ) {
                     val navController = rememberNavController()
                     AppNavHost(navController)

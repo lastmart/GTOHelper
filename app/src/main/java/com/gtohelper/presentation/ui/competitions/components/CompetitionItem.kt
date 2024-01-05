@@ -14,7 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.domain.models.Competition
-import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.BorderColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -23,7 +23,7 @@ fun CompetitionItem(
     onClick: (Competition) -> Unit = {},
 ) {
     Card(modifier = Modifier.fillMaxWidth(),
-        border = BorderStroke(width = 1.dp, color = AppBorderColor),
+        border = BorderStroke(width = 1.dp, color = BorderColor),
         onClick = { onClick(competition) }) {
         Column(
             modifier = Modifier.padding(8.dp),

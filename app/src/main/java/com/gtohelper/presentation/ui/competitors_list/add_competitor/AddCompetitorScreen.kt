@@ -1,7 +1,6 @@
 package com.gtohelper.presentation.ui.competitors_list.add_competitor
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -36,6 +35,7 @@ import kotlinx.coroutines.launch
 fun AddCompetitorRoute(
     navController: NavController,
     viewModel: AddCompetitorViewModel,
+    competitionId: Int,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
@@ -43,7 +43,6 @@ fun AddCompetitorRoute(
 
     LaunchedEffect(context) {
         viewModel.formState.collect { event ->
-            Log.i("ADD_COMPETITION_SCREEN", "Event happened: $event")
             if (event is FormState.FormSubmissionFailedState) {
                 snackbarHostState.currentSnackbarData?.dismiss()
                 coroutineScope.launch {

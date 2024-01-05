@@ -37,7 +37,7 @@ fun CompetitorUiForm(
             value = form.name,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateName(it)) },
             label = stringResource(R.string.competitor_name_title),
-            maxLength = 20,
+            maxLength = 50,
         )
 
         Spacer(Modifier.height(18.dp))
@@ -46,29 +46,29 @@ fun CompetitorUiForm(
             value = form.teamName,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateTeamName(it)) },
             label = stringResource(R.string.team_name_title),
-            maxLength = 20,
+            maxLength = 50,
         )
 
         Spacer(Modifier.height(18.dp))
 
-        Text(stringResource(R.string.competitor_gender_title))
-
-        AppRadioGroup(selectedValue = form.gender,
-            onChanged = { onEvent(CompetitorFormEvent.UpdateGender(it)) },
-            values = Gender.entries,
-            nameTransform = { value -> if (value == Gender.MALE) "Мужской" else "Женский" })
-
-        Spacer(modifier = Modifier.height(18.dp))
         AppTextField(
             label = stringResource(R.string.competitor_number),
-            value = form.number.toString(),
+            value = if (form.number == null) "" else form.number.toString(),
             onValueChange = { value ->
                 onEvent(
-                    CompetitorFormEvent.UpdateNumber((value.toIntOrNull() ?: 0))
+                    CompetitorFormEvent.UpdateNumber(value.toIntOrNull())
                 )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
+
+        Spacer(modifier = Modifier.height(18.dp))
+
+        Text(stringResource(R.string.competitor_gender_title))
+        AppRadioGroup(selectedValue = form.gender,
+            onChanged = { onEvent(CompetitorFormEvent.UpdateGender(it)) },
+            values = Gender.entries,
+            nameTransform = { value -> if (value == Gender.MALE) "Мужской" else "Женский" })
 
         Spacer(Modifier.height(18.dp))
 

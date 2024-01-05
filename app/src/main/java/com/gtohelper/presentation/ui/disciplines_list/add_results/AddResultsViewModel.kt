@@ -32,17 +32,8 @@ class AddResultsViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<AddResultsUiState>(AddResultsUiState.Loading)
     val uiState = _uiState.asStateFlow()
 
-    init {
-        viewModelScope.launch {
-            
-        }
-    }
-
 
     fun onEvent(event: AddResultsEvent) {
-        val a = repository.getCompetitionDisciplineResults(competitionId, disciplineId)
-
-
         val state = _uiState.value
         when (event) {
             AddResultsEvent.ClearResult -> clearResult(state)

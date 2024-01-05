@@ -3,8 +3,6 @@ package com.gtohelper.presentation.components.composables
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -15,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtohelper.R
-import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.BorderColor
 
 @Preview
 @Composable
@@ -36,8 +34,8 @@ fun AppSearchField(
         shape = RoundedCornerShape(10.dp),
         placeholder = { hint?.let { Text(it) } },
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = AppBorderColor,
-            unfocusedBorderColor = AppBorderColor,
+            focusedBorderColor = BorderColor,
+            unfocusedBorderColor = BorderColor,
         ),
         singleLine = true,
         maxLines = 1,

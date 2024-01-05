@@ -4,31 +4,40 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.presentation.components.composables.AppSearchField
 import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitors_list.components.composables.CompetitorItem
 import com.gtohelper.presentation.ui.theme.spacing
 
@@ -36,7 +45,7 @@ import com.gtohelper.presentation.ui.theme.spacing
 fun CompetitorListRoute(
     navController: NavController,
     viewModel: CompetitorsListViewModel,
-    competitorId: Int,
+    competitionId: Int,
 ) {
 
     val uiState by viewModel.uiState.collectAsState()
@@ -47,7 +56,15 @@ fun CompetitorListRoute(
         searchQuery = searchQuery,
         onSearchQueryChanged = viewModel::updateSearch,
         onBackClicked = navController::navigateUp,
-        onAddButtonClicked = { navController.navigate("add_competitor_from_table/$competitorId") },
+        onAddCompetitorClicked = {
+            navController.navigate("add_competitor/$competitionId")
+        },
+        onAddCompetitorFromTableClicked = {
+            navController.navigate("add_competitor_from_table/$competitionId")
+        },
+        onItemClicked = {
+            navController.navigate("edit_competitor/${it.id}")
+        }
     )
 }
 
@@ -59,9 +76,37 @@ fun CompetitorListScreen(
     searchQuery: String,
     onSearchQueryChanged: (String) -> Unit = {},
     onBackClicked: () -> Unit = {},
-    onAddButtonClicked: () -> Unit = {},
     onItemClicked: (Competitor) -> Unit = {},
+    onAddCompetitorClicked: () -> Unit = {},
+    onAddCompetitorFromTableClicked: () -> Unit = {},
 ) {
+
+    val sheetState = rememberModalBottomSheetState()
+    var showBottomSheet by remember { mutableStateOf(false) }
+
+    if (showBottomSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showBottomSheet = false },
+            sheetState = sheetState
+        ) {
+            Column {
+                Button(onClick = {
+                    showBottomSheet = false
+                    onAddCompetitorClicked()
+                }) {
+                    Text("Добавить вручную")
+                }
+                Button(onClick = {
+                    showBottomSheet = false
+                    onAddCompetitorFromTableClicked()
+                }) {
+                    Text("Добавить с помощью таблицы")
+                }
+                Spacer(Modifier.height(40.dp))
+            }
+        }
+    }
+
     Scaffold(
         contentWindowInsets = WindowInsets(
             left = MaterialTheme.spacing.small,
@@ -84,7 +129,8 @@ fun CompetitorListScreen(
         },
         floatingActionButton = {
             TransparentAddFab(
-                onClick = onAddButtonClicked, contentDescription = null
+                onClick = { showBottomSheet = true },
+                contentDescription = null
             )
         },
     ) { padding ->
@@ -101,8 +147,12 @@ fun CompetitorListScreen(
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
             ) {
-                items(uiState.competitors) {
-                    CompetitorItem(it, onEditClick = onItemClicked)
+                items(uiState.competitors) { item ->
+                    CompetitorItem(
+                        modifier = Modifier.fillMaxWidth(),
+                        competitor = item,
+                        onClick = onItemClicked
+                    )
                 }
             }
         }

@@ -14,7 +14,7 @@ import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
-import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.BorderColor
 
 @Composable
 fun DisciplineWithSubDisciplinesItem(
@@ -29,7 +29,7 @@ fun DisciplineWithSubDisciplinesItem(
             .fillMaxWidth()
             .clickable { onClick(discipline) },
         shape = RoundedCornerShape(10.dp),
-        border = BorderStroke(width = 1.dp, color = AppBorderColor),
+        border = BorderStroke(width = 1.dp, color = BorderColor),
     ) {
         DisciplineItem(
             discipline = discipline,

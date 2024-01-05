@@ -7,6 +7,6 @@ sealed class CompetitorFormEvent {
     data class UpdateName(val value: String) : CompetitorFormEvent()
     data class UpdateTeamName(val value: String) : CompetitorFormEvent()
     data class UpdateGender(val value: Gender) : CompetitorFormEvent()
-    data class UpdateNumber(val value: Int) : CompetitorFormEvent()
+    data class UpdateNumber(val value: Int?) : CompetitorFormEvent()
     data class UpdateDegree(val value: Int) : CompetitorFormEvent()
 }

@@ -67,7 +67,7 @@ fun DisciplineListRoute(
         onResultsClicked = {},
         onDescriptionClicked = {},
         onDeleteClicked = {},
-        onCompetitorsClicked = {}
+        onCompetitorsClicked = { navController.navigate("competitors/$competitionId") }
     )
 
     if (viewModel.isDialogShown) {

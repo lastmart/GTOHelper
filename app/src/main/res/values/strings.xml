@@ -24,4 +24,6 @@
     <string name="no_competitions_hint">Чтобы добавить соревнование, нажмите + внизу экрана</string>
     <string name="load_failed">Load failed</string>
     <string name="cancel">Отмена</string>
+    <string name="adding_from_table_title">Добавление из таблицы</string>
+    <string name="edit_competitor">Изменить участника</string>
 </resources>

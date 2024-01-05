@@ -9,32 +9,33 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.ui.theme.AppBorderColor
+import com.gtohelper.presentation.ui.theme.BorderColor
 import com.gtohelper.presentation.ui.theme.spacing
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompetitorItem(
+    modifier: Modifier = Modifier,
     competitor: Competitor,
-    onDeleteClick: (Competitor) -> Unit = {},
-    onEditClick: (Competitor) -> Unit = {},
+    onClick: (Competitor) -> Unit = {},
 ) {
     Card(
-        border = BorderStroke(width = 1.dp, color = AppBorderColor),
-        onClick = { onEditClick(competitor) },
+        modifier=modifier,
+        border = BorderStroke(width = 1.dp, color = BorderColor),
+        onClick = { onClick(competitor) },
     ) {
         Column(
             modifier = Modifier.padding(20.dp),
@@ -44,11 +45,14 @@ fun CompetitorItem(
                     painter = painterResource(R.drawable.icon_person),
                     contentDescription = null
                 )
+                Spacer(Modifier.width(MaterialTheme.spacing.medium))
                 Column {
                     Row {
                         Text(competitor.number.toString())
                         Spacer(Modifier.width(MaterialTheme.spacing.extraSmall))
-                        Text(competitor.name)
+                        Text(
+                            text=competitor.name,
+                            style = TextStyle(fontWeight = FontWeight.Bold))
                     }
                     Text(stringResource(R.string.team_name, competitor.teamName))
                     Text(stringResource(R.string.competitor_degree, competitor.degree))
@@ -59,27 +63,6 @@ fun CompetitorItem(
                         )
                     )
                 }
-            }
-
-            Row {
-                Icon(
-                    painter = painterResource(R.drawable.icon_edit),
-                    contentDescription = null,
-                )
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = "Редактировать",
-                )
-                Spacer(modifier = Modifier.weight(1f))
-
-                Icon(
-                    painter = painterResource(R.drawable.icon_delete),
-                    contentDescription = null,
-                )
-                Text(
-                    modifier = Modifier.align(Alignment.CenterVertically),
-                    text = "Удалить",
-                )
             }
         }
     }
@@ -94,9 +77,9 @@ fun PreviewCompetitorItem() {
             1,
             0,
             0,
-            "Name",
+            "Бойко Владимир Петрович",
             Gender.MALE,
-            "Team name",
+            "Челябинск",
             12
         )
     )

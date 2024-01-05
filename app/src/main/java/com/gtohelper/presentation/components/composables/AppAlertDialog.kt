@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.gtohelper.R
-import com.gtohelper.presentation.ui.theme.AppBorderColor
-import com.gtohelper.presentation.ui.theme.AppGreen
-import com.gtohelper.presentation.ui.theme.AppRed
+import com.gtohelper.presentation.ui.theme.BorderColor
+import com.gtohelper.presentation.ui.theme.Green
+import com.gtohelper.presentation.ui.theme.Red
 
 @Composable
 fun AppAlertDialogRoute(
@@ -51,7 +51,7 @@ fun AppAlertDialog(
 ) {
     Dialog(onDismissRequest = onCancelClicked) {
         Card(
-            border = BorderStroke(1.dp, AppBorderColor),
+            border = BorderStroke(1.dp, BorderColor),
             shape = RoundedCornerShape(20.dp)
         ) {
             Box(
@@ -84,7 +84,7 @@ fun AppAlertDialog(
                             Text(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 16.sp,
-                                color = AppGreen
+                                color = Green
                             )
                         }
 
@@ -92,7 +92,7 @@ fun AppAlertDialog(
                             Text(
                                 text = stringResource(id = R.string.delete),
                                 fontSize = 16.sp,
-                                color = AppRed
+                                color = Red
                             )
                         }
                     }
