@@ -17,9 +17,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             GTOHelperTheme {
-                Surface(
-                    color = BackgroundLight,
-                ) {
+                Surface {
                     val navController = rememberNavController()
                     AppNavHost(navController)
                 }
