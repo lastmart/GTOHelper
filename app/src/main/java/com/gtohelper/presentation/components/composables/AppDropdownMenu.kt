@@ -24,10 +24,10 @@ import com.gtohelper.presentation.ui.util.toRoman
 fun PreviewCustomDropdownMenu() {
     AppDropdownMenu(
         selected = 1,
-        values = (1..11).toList(),
+        values = (1..18).toList(),
         onValueChanged = {},
         label = "Ступень участника",
-        stringTransform = { value -> value.toRoman()?.let { "$it ступень" } ?: "-" }
+        stringTransform = { value -> value.toRoman()?.let { "$it ступень" } ?: "-" },
     )
 }
 

@@ -35,10 +35,12 @@ class ExcelReader {
                 }
                 if (sheet.getRow(row).getCell(2).cellType == CellType.STRING) {
                     val genderTable = sheet.getRow(row).getCell(2).stringCellValue
-                    if (genderTable[0].lowercaseChar() == 'м') {
-                        gender = Gender.MALE
+                    gender = if (genderTable[0].lowercaseChar() == 'м') {
+                        Gender.MALE
                     } else if (genderTable[0].lowercaseChar() == 'ж') {
-                        gender = Gender.FEMALE
+                        Gender.FEMALE
+                    } else {
+                        throw Exception("Table is filled in incorrectly")
                     }
                 }
                 if (sheet.getRow(row).getCell(3).cellType == CellType.NUMERIC) {

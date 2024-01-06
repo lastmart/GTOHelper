@@ -81,7 +81,7 @@ fun CompetitorUiForm(
             modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.competitor_degree_title),
             selected = form.degree,
-            values = (1..11).toList(),
+            values = (1..18).toList(),
             onValueChanged = { onEvent(CompetitorFormEvent.UpdateDegree(it)) },
             stringTransform = { value -> value.toRoman()?.let { "$it ступень" } ?: "-" }
         )
