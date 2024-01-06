@@ -1,6 +1,5 @@
 package com.gtohelper.data.di
 
-import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
@@ -13,10 +12,11 @@ import com.gtohelper.data.database.competition.CompetitionDao
 import com.gtohelper.data.database.competitor.CompetitorDao
 import com.gtohelper.data.database.discipline.DisciplineDao
 import com.gtohelper.data.database.discipline.DisciplinesProvider
-import com.gtohelper.data.database.relations.CompetitionDisciplineDao
+import com.gtohelper.data.database.relations.CompetitionSubDisciplineDao
 import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.data.repository.CompetitionRepositoryImpl
 import com.gtohelper.data.repository.CompetitorRepositoryImpl
+import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import com.gtohelper.data.repository.SportResultRepositoryImpl
 import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.CompetitorRepository
@@ -44,27 +44,38 @@ object DataModule {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
 
-                    println("OnCreate started")
+                    val typeConverter = Converters()
+                    val prePopulatedDisciplines = DisciplinesProvider().disciplines
 
-                    val prePopulatedDisciplines = DisciplinesProvider(0).disciplines
                     prePopulatedDisciplines.forEach { discipline ->
-                        val values = ContentValues().apply {
-                            //    put("competitionId", discipline.competitionId)
+
+                        val disciplineValue = ContentValues().apply {
                             put("name", discipline.name)
-                            put("parentName", discipline.parentName)
                             put("imageResource", discipline.imageResource)
-                            //    put("isSelected", discipline.isSelected)
-                            put("type", Converters().fromDisciplinePointType(discipline.type))
+                            put("type", typeConverter.fromDisciplinePointType(discipline.type))
                         }
 
                         db.insert(
                             table = "disciplines_table",
                             conflictAlgorithm = CONFLICT_REPLACE,
-                            values = values
+                            values = disciplineValue
                         )
-                    }
 
-                    println("OnCreate finished")
+                        discipline.subDisciplines.forEach { subDiscipline ->
+                            val subDisciplineValue = ContentValues().apply {
+                                put("parentName", discipline.name)
+                                put("name", subDiscipline.name)
+                                put("imageResource", subDiscipline.imageResource)
+                                put("type", typeConverter.fromDisciplinePointType(subDiscipline.type))
+                            }
+
+                            db.insert(
+                                table = "sub_disciplines_table",
+                                conflictAlgorithm = CONFLICT_REPLACE,
+                                values = subDisciplineValue
+                            )
+                        }
+                    }
                 }
             })
             .fallbackToDestructiveMigration()
@@ -93,7 +104,7 @@ object DataModule {
 
     @Provides
     @Singleton
-    fun provideCompetitionDisciplineDao(database: AppDatabase): CompetitionDisciplineDao {
+    fun provideCompetitionDisciplineDao(database: AppDatabase): CompetitionSubDisciplineDao {
         return database.getCompetitionDisciplineDao()
     }
 
@@ -109,7 +120,7 @@ object DataModule {
     @Singleton
     fun provideDisciplineRepository(
         dao: DisciplineDao,
-        competitionDisciplineDao: CompetitionDisciplineDao
+        competitionDisciplineDao: CompetitionSubDisciplineDao
     ): DisciplineRepository {
         return DisciplineRepositoryImpl(dao, competitionDisciplineDao)
     }

@@ -1,6 +1,7 @@
 package com.gtohelper.domain.repository
 
 import com.gtohelper.domain.models.Discipline
+import com.gtohelper.domain.models.SubDiscipline
 import kotlinx.coroutines.flow.Flow
 
 interface DisciplineRepository {
@@ -11,7 +12,7 @@ interface DisciplineRepository {
 
     fun getNotSelectedDisciplines(competitionId: Int): Flow<List<Discipline>>
 
-    suspend fun addDisciplineToSelected(discipline: Discipline, competitionId: Int)
+    suspend fun addSubDisciplineToSelectedByName(name: String, competitionId: Int)
 
-    suspend fun deleteDisciplineFromSelectedByName(name: String, competitionId: Int)
+    suspend fun deleteSubDisciplineFromSelectedByName(name: String, competitionId: Int)
 }

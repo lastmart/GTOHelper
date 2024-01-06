@@ -1,7 +1,7 @@
 package com.gtohelper.presentation.ui.disciplines_list
 
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
+import com.gtohelper.domain.models.SubDiscipline
 
 data class DisciplinesListUIState(
-    val disciplines: List<DisciplinePresentation> = listOf()
+    val subDisciplines: List<SubDiscipline> = listOf()
 )

@@ -7,14 +7,7 @@ fun Discipline.toDisciplinePresentation(): DisciplinePresentation {
     return DisciplinePresentation(
         imageResource = imageResource,
         name = name,
-        subDisciplines = subDisciplines.map {
-            DisciplinePresentation(
-                imageResource = it.imageResource,
-                name = it.name,
-                subDisciplines = listOf(),
-                type = it.type
-            )
-        },
+        subDisciplines = subDisciplines,
         isExpanded = false,
         type = type
     )
@@ -25,7 +18,6 @@ fun DisciplinePresentation.toDiscipline(isSelected: Boolean = false): Discipline
         imageResource = imageResource,
         name = name,
         subDisciplines = subDisciplines,
-//        isSelected = isSelected,
         type = type
     )
 }

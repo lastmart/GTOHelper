@@ -38,11 +38,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
-import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.presentation.components.composables.AddButton
+import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
 import com.gtohelper.presentation.navigation.Screen
-import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
+import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.theme.spacing
 
 @Composable
@@ -68,7 +68,7 @@ fun DisciplineListRoute(
             )
         },
         onItemLongClicked = {
-            viewModel.onDisciplineLongPressed(it)
+            viewModel.onSubDisciplineLongPressed(it)
             true
         },
         onDownloadClicked = {},
@@ -88,15 +88,15 @@ fun DisciplineListRoute(
         }
     )
 
-    if (viewModel.isDeleteDisciplineDialogShown) {
+    if (viewModel.isDeleteSubDisciplineDialogShown) {
         AppAlertDialogRoute(
             title = "Удалить дисциплину",
             description = "Вы действительно хотите удалить\nэту дисциплину?",
             onOKClicked = {
-                viewModel.onDismissDeleteDisciplineDialog()
-                viewModel.deleteDiscipline()
+                viewModel.onDismissDeleteSubDisciplineDialog()
+                viewModel.deleteSubDiscipline()
             },
-            onCancelClicked = { viewModel.onDismissDeleteDisciplineDialog() }
+            onCancelClicked = { viewModel.onDismissDeleteSubDisciplineDialog() }
         )
     }
 
@@ -120,8 +120,8 @@ fun DisciplinesListScreen(
     competitionName: String,
     uiState: DisciplinesListUIState,
     onBackClicked: () -> Unit,
-    onItemClicked: (DisciplinePresentation) -> Unit,
-    onItemLongClicked: (DisciplinePresentation) -> Boolean,
+    onItemClicked: (SubDiscipline) -> Unit,
+    onItemLongClicked: (SubDiscipline) -> Boolean,
     onAddButtonClicked: () -> Unit,
     onCompetitorsClicked: () -> Unit,
     onResultsClicked: () -> Unit,
@@ -230,9 +230,9 @@ fun DisciplinesListScreen(
                 verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                 modifier = Modifier.padding(horizontal = 15.dp)
             ) {
-                items(uiState.disciplines) {
-                    DisciplineCardItem(
-                        discipline = it,
+                items(uiState.subDisciplines) {
+                    SubDisciplineCardItem(
+                        subDiscipline = it,
                         onClick = onItemClicked,
                         onLongClick = onItemLongClicked
                     )
@@ -249,16 +249,14 @@ fun DisciplinesListScreenPreview() {
     DisciplinesListScreen(
         uiState = DisciplinesListUIState(
             listOf(
-                DisciplinePresentation(
+                SubDiscipline(
                     imageResource = R.drawable.sub_discipline_long_distance_running_1km,
                     name = "Бег на 1 км",
-                    subDisciplines = listOf(),
                     type = DisciplinePointType.TIME,
                 ),
-                DisciplinePresentation(
+                SubDiscipline(
                     imageResource = R.drawable.sub_discipline_long_distance_running_2km,
                     name = "Бег на 2 км",
-                    subDisciplines = listOf(),
                     type = DisciplinePointType.TIME,
                 ),
             )

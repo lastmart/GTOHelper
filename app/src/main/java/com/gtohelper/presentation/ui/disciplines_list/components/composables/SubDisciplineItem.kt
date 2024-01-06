@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,14 +20,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
+import com.gtohelper.domain.models.SubDiscipline
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DisciplineItem(
-    discipline: DisciplinePresentation,
-    onClick: (DisciplinePresentation) -> Unit,
-    onLongClick: (DisciplinePresentation) -> Boolean,
+fun SubDisciplineItem(
+    subDiscipline: SubDiscipline,
+    onClick: (SubDiscipline) -> Unit,
+    onLongClick: (SubDiscipline) -> Boolean,
     textFontSize: TextUnit = 20.sp
 ) {
     Row(
@@ -36,21 +35,21 @@ fun DisciplineItem(
             .fillMaxWidth()
             .padding(5.dp)
             .combinedClickable(
-                onClick = { onClick(discipline) },
-                onLongClick = { onLongClick(discipline) }
+                onClick = { onClick(subDiscipline) },
+                onLongClick = { onLongClick(subDiscipline) }
             ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
-            painter = painterResource(id = discipline.imageResource),
-            contentDescription = discipline.name,
+            painter = painterResource(id = subDiscipline.imageResource),
+            contentDescription = subDiscipline.name,
             contentScale = ContentScale.Crop
         )
 
         Spacer(modifier = Modifier.width(5.dp))
 
         Text(
-            text = discipline.name,
+            text = subDiscipline.name,
             fontSize = textFontSize,
         )
     }
@@ -59,12 +58,11 @@ fun DisciplineItem(
 
 @Preview
 @Composable
-fun DisciplineItemPreview() {
-    DisciplineItem(
-        discipline = DisciplinePresentation(
+fun SubDisciplineItemPreview() {
+    SubDisciplineItem(
+        subDiscipline = SubDiscipline(
             imageResource = R.drawable.sub_discipline_sprinting_30m,
             name = "Бег на 30 м",
-            subDisciplines = listOf(),
             type = DisciplinePointType.TIME
         ),
         onClick = {},

@@ -128,7 +128,6 @@ fun AppNavHost(navController: NavHostController) {
             AddDisciplineRoute(
                 navController = navController,
                 viewModel = viewModel,
-                competitionId = competitionId
             )
         }
 

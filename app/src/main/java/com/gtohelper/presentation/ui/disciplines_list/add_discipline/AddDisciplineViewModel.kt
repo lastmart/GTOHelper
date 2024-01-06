@@ -3,9 +3,9 @@ package com.gtohelper.presentation.ui.disciplines_list.add_discipline
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,17 +38,9 @@ class AddDisciplineViewModel @Inject constructor(
                 )
             )
 
-    //    private var _disciplinesLiveData = MutableLiveData<List<DisciplinePresentation>>()
-//    val disciplinesLiveData: LiveData<List<DisciplinePresentation>> = _disciplinesLiveData
-//
-//    suspend fun getDisciplines() {
-//        val disciplines = disciplineRepository.getNotSelectedDisciplines()
-//        _disciplinesLiveData.postValue(disciplines.map { it.toDisciplinePresentation() })
-//    }
-//
-    fun addDiscipline(disciplinePresentation: DisciplinePresentation) {
+    fun addSubDiscipline(subDiscipline: SubDiscipline) {
         viewModelScope.launch(Dispatchers.IO) {
-            disciplineRepository.addDisciplineToSelected(disciplinePresentation, competitionId)
+            disciplineRepository.addSubDisciplineToSelectedByName(subDiscipline.name, competitionId)
         }
     }
 }

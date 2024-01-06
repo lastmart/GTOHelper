@@ -3,7 +3,7 @@ package com.gtohelper.domain.models
 open class Discipline(
     val name: String,
     val imageResource: Int,
-    val subDisciplines: List<Discipline> = emptyList(),
+    val subDisciplines: List<SubDiscipline> = emptyList(),
     val type: DisciplinePointType
 ) {
 

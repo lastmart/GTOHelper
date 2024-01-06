@@ -6,10 +6,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
-import com.gtohelper.presentation.ui.mappers.toDisciplinePresentation
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.SharingStarted
@@ -27,8 +26,8 @@ class DisciplinesListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val competitionId = savedStateHandle["competition_id"] ?: 0
-    private var disciplineToDelete: DisciplinePresentation? = null
-    var isDeleteDisciplineDialogShown by mutableStateOf(false)
+    private var subDisciplineToDelete: SubDiscipline? = null
+    var isDeleteSubDisciplineDialogShown by mutableStateOf(false)
         private set
 
     var isDeleteCompetitionDialogShown by mutableStateOf(false)
@@ -39,7 +38,15 @@ class DisciplinesListViewModel @Inject constructor(
             .getSelectedDisciplines(competitionId)
             .map { disciplines ->
                 DisciplinesListUIState(
-                    disciplines.map { it.toDisciplinePresentation() }
+                    disciplines.flatMap { discipline ->
+                        discipline.subDisciplines.map { subDiscipline ->
+                            SubDiscipline(
+                                name = subDiscipline.name,
+                                type = subDiscipline.type,
+                                imageResource = discipline.imageResource
+                            )
+                        }
+                    }
                 )
             }
             .stateIn(
@@ -48,19 +55,19 @@ class DisciplinesListViewModel @Inject constructor(
                 initialValue = DisciplinesListUIState()
             )
 
-    fun onDisciplineLongPressed(discipline: DisciplinePresentation) {
-        disciplineToDelete = discipline
-        isDeleteDisciplineDialogShown = true
+    fun onSubDisciplineLongPressed(subDiscipline: SubDiscipline) {
+        subDisciplineToDelete = subDiscipline
+        isDeleteSubDisciplineDialogShown = true
     }
 
-    fun onDismissDeleteDisciplineDialog() {
-        isDeleteDisciplineDialogShown = false
+    fun onDismissDeleteSubDisciplineDialog() {
+        isDeleteSubDisciplineDialogShown = false
     }
 
-    fun deleteDiscipline() {
+    fun deleteSubDiscipline() {
         viewModelScope.launch(Dispatchers.IO) {
-            disciplineToDelete?.let {
-                disciplineRepository.deleteDisciplineFromSelectedByName(it.name, competitionId)
+            subDisciplineToDelete?.let {
+                disciplineRepository.deleteSubDisciplineFromSelectedByName(it.name, competitionId)
             }
         }
     }

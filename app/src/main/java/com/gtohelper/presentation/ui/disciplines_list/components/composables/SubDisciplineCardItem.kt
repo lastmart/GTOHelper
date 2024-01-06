@@ -13,31 +13,31 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
-import com.gtohelper.presentation.ui.models.DisciplinePresentation
+import com.gtohelper.domain.models.SubDiscipline
 
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun DisciplineCardItem(
-    discipline: DisciplinePresentation,
-    onClick: (DisciplinePresentation) -> Unit,
-    onLongClick: (DisciplinePresentation) -> Boolean,
+fun SubDisciplineCardItem(
+    subDiscipline: SubDiscipline,
+    onClick: (SubDiscipline) -> Unit,
+    onLongClick: (SubDiscipline) -> Boolean,
     textFontSize: TextUnit = 20.sp
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .combinedClickable(
-                onClick = { onClick(discipline) },
-                onLongClick = { onLongClick(discipline) }
+                onClick = { onClick(subDiscipline) },
+                onLongClick = { onLongClick(subDiscipline) }
             ),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.secondaryContainer,
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ),
     ) {
-        DisciplineItem(
-            discipline = discipline,
+        SubDisciplineItem(
+            subDiscipline = subDiscipline,
             onClick = onClick,
             onLongClick = onLongClick,
             textFontSize = textFontSize
@@ -48,12 +48,11 @@ fun DisciplineCardItem(
 
 @Preview
 @Composable
-fun DisciplineCardItemPreview() {
-    DisciplineCardItem(
-        discipline = DisciplinePresentation(
+fun SubDisciplineCardItemPreview() {
+    SubDisciplineCardItem(
+        subDiscipline = SubDiscipline(
             imageResource = R.drawable.sub_discipline_long_distance_running_1km,
             name = "Бег на 1 км",
-            subDisciplines = listOf(),
             type = DisciplinePointType.TIME
         ),
         onClick = {},

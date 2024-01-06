@@ -22,44 +22,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.gtohelper.R
+import com.gtohelper.data.mappers.toSubDiscipline
 import com.gtohelper.domain.models.DisciplinePointType
-import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineWithSubDisciplinesItem
+import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
 
 @Composable
 fun AddDisciplineRoute(
     navController: NavController,
     viewModel: AddDisciplineViewModel,
-    competitionId: Int
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     AddDisciplineScreen(
-        navController = navController,
         uiState = uiState,
         onSubDisciplineClicked = {
-            viewModel.addDiscipline(it)
+            viewModel.addSubDiscipline(it)
             navController.navigateUp()
         },
-        competitionId = competitionId
+        onBackClicked = { navController.navigateUp() }
     )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddDisciplineScreen(
-    navController: NavController,
     uiState: AddDisciplineUIState,
-    onSubDisciplineClicked: (DisciplinePresentation) -> Unit,
-    competitionId: Int
+    onSubDisciplineClicked: (SubDiscipline) -> Unit = {},
+    onBackClicked: () -> Unit = {}
 ) {
     Scaffold(
         topBar = {
             TopAppBar(title = { Text("Добавить дисциплину") }, navigationIcon = {
-                IconButton(onClick = { navController.navigateUp() }) {
+                IconButton(onClick = onBackClicked) {
                     Icon(
                         imageVector = Icons.Filled.ArrowBack,
                         contentDescription = "Назад"
@@ -83,12 +81,10 @@ fun AddDisciplineScreen(
 @Composable
 fun AddDisciplineScreenPreview() {
     AddDisciplineScreen(
-        rememberNavController(),
         uiState = AddDisciplineUIState(
             previewDisciplines
         ),
         onSubDisciplineClicked = {},
-        competitionId = 0
     )
 }
 
@@ -97,7 +93,7 @@ fun AddDisciplineScreenPreview() {
 fun CollapsableLazyColumn(
     modifier: Modifier = Modifier,
     disciplines: List<DisciplinePresentation>,
-    onSubDisciplineClicked: (DisciplinePresentation) -> Unit
+    onSubDisciplineClicked: (SubDiscipline) -> Unit
 ) {
     val expandedState =
         remember(disciplines) { disciplines.map { it.isExpanded } }.toMutableStateList()
@@ -111,15 +107,11 @@ fun CollapsableLazyColumn(
             val isExpanded = expandedState[index]
 
             item {
-            //    if (discipline.subDisciplines.isEmpty()) {
-            //        return@item
-                    //    }
-
                 if (discipline.subDisciplines.size == 1
                     && discipline.subDisciplines[0].name == discipline.name
                 ) {
-                    DisciplineCardItem(
-                        discipline = discipline,
+                    SubDisciplineCardItem(
+                        subDiscipline = discipline.toSubDiscipline(),
                         onClick = onSubDisciplineClicked,
                         onLongClick = { false }
                     )
@@ -157,22 +149,19 @@ val previewDisciplines = listOf(
         imageResource = R.drawable.discipline_sprinting,
         name = "Бег на короткие дистанции",
         subDisciplines = listOf(
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 30 м",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME,
             ),
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 60 м",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 100 м",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
         ),
@@ -183,28 +172,24 @@ val previewDisciplines = listOf(
         imageResource = R.drawable.discipline_long_distance_running,
         name = "Бег на длинные дистанции",
         subDisciplines = listOf(
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_1km,
                 name = "Бег на 1 км",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
                 name = "Бег на 1.5 км",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_2km,
                 name = "Бег на 2 км",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
-            DisciplinePresentation(
+            SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_3km,
                 name = "Бег на 3 км",
-                subDisciplines = listOf(),
                 type = DisciplinePointType.TIME
             ),
         ),

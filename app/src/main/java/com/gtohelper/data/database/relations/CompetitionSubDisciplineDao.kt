@@ -9,16 +9,16 @@ import androidx.room.Transaction
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface CompetitionDisciplineDao {
+interface CompetitionSubDisciplineDao {
 
     @Transaction
     @Query("SELECT * FROM competitions_table")
-    fun getDisciplines(): Flow<List<CompetitionWithDisciplines>>
+    fun getCompetitionWithSubDisciplines(): Flow<List<CompetitionWithSubDisciplines>>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(competitionDiscipline: CompetitionDisciplineCrossRef)
+    suspend fun insert(competitionDiscipline: CompetitionSubDisciplineCrossRef)
 
     @Transaction
     @Delete
-    suspend fun delete(competitionDiscipline: CompetitionDisciplineCrossRef)
+    suspend fun delete(competitionDiscipline: CompetitionSubDisciplineCrossRef)
 }

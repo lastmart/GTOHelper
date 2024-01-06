@@ -131,7 +131,7 @@ fun AddResultsScreen(
 fun PreviewAddResultsScreen() {
     AddResultsScreen(
         uiState = AddResultsUiState(
-            Discipline("Прыжки с крыши", 0, listOf(), false, DisciplinePointType.AMOUNT),
+            Discipline( "Прыжки с крыши", 0, listOf(),  DisciplinePointType.AMOUNT),
             0, 0,
         ),
         results = (0..20).map {

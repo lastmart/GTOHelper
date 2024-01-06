@@ -1,3 +1,4 @@
+/*
 package com.gtohelper.presentation.ui.disciplines_list.add_discipline.adapter
 
 import android.view.LayoutInflater
@@ -100,4 +101,4 @@ class DisciplineWithSubDisciplinesDiffUtil(
                 && oldItem.subDisciplines == newItem.subDisciplines
                 && oldItem.isExpanded == newItem.isExpanded
     }
-}
+}*/
