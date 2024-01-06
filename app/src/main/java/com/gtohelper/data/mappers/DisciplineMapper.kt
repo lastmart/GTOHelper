@@ -5,6 +5,6 @@ import com.gtohelper.domain.models.Discipline
 
 fun DisciplineEntity.toSubDiscipline(): Discipline{
     return Discipline(
-        name, imageResource, listOf(), isSelected, type
+        name, imageResource, listOf(), type
     )
 }

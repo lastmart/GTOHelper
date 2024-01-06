@@ -9,16 +9,19 @@ import com.gtohelper.data.database.competitor.CompetitorDao
 import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.discipline.DisciplineDao
 import com.gtohelper.data.database.discipline.DisciplineEntity
+import com.gtohelper.data.database.relations.CompetitionDisciplineCrossRef
+import com.gtohelper.data.database.relations.CompetitionDisciplineDao
 import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.data.database.sport_result.SportResultEntity
 
 @Database(
-    version = 11,
+    version = 12,
     entities = [
         CompetitorEntity::class,
         SportResultEntity::class,
         CompetitionEntity::class,
-        DisciplineEntity::class
+        DisciplineEntity::class,
+        CompetitionDisciplineCrossRef::class
     ]
 )
 @TypeConverters(Converters::class)
@@ -30,4 +33,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun getCompetitionDao(): CompetitionDao
 
     abstract fun getDisciplineDao(): DisciplineDao
+
+    abstract fun getCompetitionDisciplineDao(): CompetitionDisciplineDao
 }

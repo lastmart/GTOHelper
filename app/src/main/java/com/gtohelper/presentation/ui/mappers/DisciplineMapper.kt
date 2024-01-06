@@ -25,7 +25,7 @@ fun DisciplinePresentation.toDiscipline(isSelected: Boolean = false): Discipline
         imageResource = imageResource,
         name = name,
         subDisciplines = subDisciplines,
-        isSelected = isSelected,
+//        isSelected = isSelected,
         type = type
     )
 }

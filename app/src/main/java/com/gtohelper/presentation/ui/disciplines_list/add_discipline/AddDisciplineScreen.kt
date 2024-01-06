@@ -111,9 +111,9 @@ fun CollapsableLazyColumn(
             val isExpanded = expandedState[index]
 
             item {
-                if (discipline.subDisciplines.isEmpty()) {
-                    return@item
-                }
+            //    if (discipline.subDisciplines.isEmpty()) {
+            //        return@item
+                    //    }
 
                 if (discipline.subDisciplines.size == 1
                     && discipline.subDisciplines[0].name == discipline.name

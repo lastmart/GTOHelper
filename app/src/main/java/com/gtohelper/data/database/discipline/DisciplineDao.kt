@@ -9,15 +9,26 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface DisciplineDao {
 
-    @Query("SELECT * FROM disciplines_table WHERE competitionId = :competitionId")
-    fun getDisciplines(competitionId: Int): Flow<List<DisciplineEntity>>
+    //  @Query("SELECT * FROM disciplines_table WHERE competitionId = :competitionId")
 
-    @Query(""" 
+    @Query("SELECT * FROM disciplines_table")
+    suspend fun getAllDisciplines(): List<DisciplineEntity>
+
+    @Query("SELECT * FROM disciplines_table")
+    fun getDisciplines(): Flow<List<DisciplineEntity>>
+
+    /*@Query("""
         SELECT * FROM disciplines_table 
         WHERE competitionId = :competitionId
         AND name = :name 
-        """)
-    suspend fun getDisciplineByName(name: String, competitionId: Int): DisciplineEntity?
+        """)*/
+    @Query(
+        """ 
+        SELECT * FROM disciplines_table 
+        WHERE name = :name 
+        """
+    )
+    suspend fun getDisciplineByName(name: String): DisciplineEntity?
 
     @Delete
     suspend fun deleteDiscipline(discipline: DisciplineEntity)

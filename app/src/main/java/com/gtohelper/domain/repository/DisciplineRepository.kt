@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface DisciplineRepository {
 
-    fun getDisciplines(competitionId: Int): Flow<List<Discipline>>
+    fun getDisciplines(): Flow<List<Discipline>>
 
     fun getSelectedDisciplines(competitionId: Int): Flow<List<Discipline>>
 
