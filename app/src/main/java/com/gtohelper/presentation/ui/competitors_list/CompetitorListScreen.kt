@@ -35,8 +35,8 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.presentation.components.composables.AddButton
 import com.gtohelper.presentation.components.composables.AppSearchField
-import com.gtohelper.presentation.components.composables.TransparentAddFab
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitors_list.components.composables.CompetitorItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -51,8 +51,7 @@ fun CompetitorListRoute(
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
 
-    CompetitorListScreen(
-        uiState = uiState,
+    CompetitorListScreen(uiState = uiState,
         searchQuery = searchQuery,
         onSearchQueryChanged = viewModel::updateSearch,
         onBackClicked = navController::navigateUp,
@@ -70,8 +69,7 @@ fun CompetitorListRoute(
             navController.navigate(
                 Screen.EditCompetitorScreen.withArgs(it.id.toString())
             )
-        }
-    )
+        })
 }
 
 
@@ -92,8 +90,7 @@ fun CompetitorListScreen(
 
     if (showBottomSheet) {
         ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false },
-            sheetState = sheetState
+            onDismissRequest = { showBottomSheet = false }, sheetState = sheetState
         ) {
             Column {
                 Button(onClick = {
@@ -126,17 +123,15 @@ fun CompetitorListScreen(
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
                         Icon(
-                            imageVector = Icons.Filled.ArrowBack,
-                            contentDescription = "Back"
+                            imageVector = Icons.Filled.ArrowBack, contentDescription = "Back"
                         )
                     }
                 },
             )
         },
         floatingActionButton = {
-            TransparentAddFab(
-                onClick = { showBottomSheet = true },
-                contentDescription = null
+            AddButton(
+                onClick = { showBottomSheet = true }, contentDescription = null
             )
         },
     ) { padding ->
@@ -145,8 +140,9 @@ fun CompetitorListScreen(
         ) {
 
             AppSearchField(
+                modifier = Modifier.fillMaxWidth(),
                 value = searchQuery,
-                hint = "Поиск участников...",
+                hint = stringResource(R.string.search_competitors_hint),
                 onValueChange = onSearchQueryChanged,
             )
             Spacer(Modifier.height(MaterialTheme.spacing.small))
@@ -169,13 +165,11 @@ fun CompetitorListScreen(
 @Composable
 fun CompetitorListScreenPreview() {
     CompetitorListScreen(
-        uiState = CompetitorListUiState(
-            (0..11).map {
-                Competitor(
-                    1, 1, 1, "Name", Gender.MALE, "teamName", 2
-                )
-            }
-        ),
+        uiState = CompetitorListUiState((0..11).map {
+            Competitor(
+                1, 1, 1, "Name", Gender.MALE, "teamName", 2
+            )
+        }),
         searchQuery = "",
     )
 }

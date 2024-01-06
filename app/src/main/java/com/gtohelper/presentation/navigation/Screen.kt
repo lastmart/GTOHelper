@@ -11,6 +11,7 @@ sealed class Screen(val route: String) {
     data object AddDisciplineScreen : Screen("add_discipline")
     data object EditCompetitorScreen : Screen("edit_competitor")
 
+    data object AddResultsScreen: Screen("add_results")
     data object CompetitorsResultsListScreen : Screen("competitors_results")
 
     fun withRouteArgs(vararg args: String): String {

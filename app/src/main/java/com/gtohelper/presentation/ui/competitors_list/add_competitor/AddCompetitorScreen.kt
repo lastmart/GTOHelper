@@ -1,12 +1,15 @@
 package com.gtohelper.presentation.ui.competitors_list.add_competitor
 
 
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -21,13 +24,16 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.components.composables.AddButton
+import com.gtohelper.presentation.components.composables.CheckButton
 import com.gtohelper.presentation.components.forms.FormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorUiForm
+import com.gtohelper.presentation.ui.theme.spacing
 import kotlinx.coroutines.launch
 
 
@@ -65,6 +71,17 @@ fun AddCompetitorRoute(
     )
 }
 
+@Preview
+@Composable
+fun Preview() {
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    AddCompetitorScreen(
+        form = CompetitorFormState(),
+        snackbarHostState = snackbarHostState
+    )
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCompetitorScreen(
@@ -74,6 +91,10 @@ fun AddCompetitorScreen(
     onEvent: (CompetitorFormEvent) -> Unit = {},
 ) {
     Scaffold(
+        contentWindowInsets = WindowInsets(
+            left = MaterialTheme.spacing.small,
+            right = MaterialTheme.spacing.small,
+        ),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
@@ -91,29 +112,18 @@ fun AddCompetitorScreen(
             )
         },
         floatingActionButton = {
-            TransparentAddFab(
+            CheckButton(
                 contentDescription = stringResource(R.string.save_new_competitor),
                 onClick = { onEvent(CompetitorFormEvent.Submit) },
             )
         }) {
 
         CompetitorUiForm(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(it),
             form = form,
             onEvent = onEvent,
-            modifier = Modifier.padding(it),
         )
     }
 }
-
-// TODO: Make it work?
-//@Composable
-//private fun <T> ObserveAsEvents(flow: Flow<T>, onEvent: (T) -> Unit) {
-//    val lifecycleOwner = LocalLifecycleOwner.current
-//    LaunchedEffect(flow, lifecycleOwner.lifecycle) {
-//        lifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-//            withContext(Dispatchers.Main.immediate) {
-//                flow.collect(onEvent)
-//            }
-//        }
-//    }
-//}

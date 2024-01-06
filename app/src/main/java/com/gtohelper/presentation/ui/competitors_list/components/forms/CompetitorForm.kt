@@ -34,6 +34,7 @@ fun CompetitorUiForm(
     ) {
 
         AppTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = form.name,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateName(it)) },
             label = stringResource(R.string.competitor_name_title),
@@ -43,6 +44,7 @@ fun CompetitorUiForm(
         Spacer(Modifier.height(18.dp))
 
         AppTextField(
+            modifier = Modifier.fillMaxWidth(),
             value = form.teamName,
             onValueChange = { onEvent(CompetitorFormEvent.UpdateTeamName(it)) },
             label = stringResource(R.string.team_name_title),
@@ -52,6 +54,7 @@ fun CompetitorUiForm(
         Spacer(Modifier.height(18.dp))
 
         AppTextField(
+            modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.competitor_number),
             value = if (form.number == null) "" else form.number.toString(),
             onValueChange = { value ->
@@ -65,7 +68,9 @@ fun CompetitorUiForm(
         Spacer(modifier = Modifier.height(18.dp))
 
         Text(stringResource(R.string.competitor_gender_title))
-        AppRadioGroup(selectedValue = form.gender,
+        AppRadioGroup(
+            selectedValue = form.gender,
+            modifier = Modifier.fillMaxWidth(),
             onChanged = { onEvent(CompetitorFormEvent.UpdateGender(it)) },
             values = Gender.entries,
             nameTransform = { value -> if (value == Gender.MALE) "Мужской" else "Женский" })
@@ -73,6 +78,7 @@ fun CompetitorUiForm(
         Spacer(Modifier.height(18.dp))
 
         AppDropdownMenu(
+            modifier = Modifier.fillMaxWidth(),
             label = stringResource(R.string.competitor_degree_title),
             selected = form.degree,
             values = (1..11).toList(),

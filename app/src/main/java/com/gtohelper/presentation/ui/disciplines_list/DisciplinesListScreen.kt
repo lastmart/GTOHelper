@@ -39,7 +39,7 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
-import com.gtohelper.presentation.components.composables.TransparentAddFab
+import com.gtohelper.presentation.components.composables.AddButton
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.DisciplineCardItem
 import com.gtohelper.presentation.ui.models.DisciplinePresentation
@@ -57,7 +57,11 @@ fun DisciplineListRoute(
         uiState = uiState,
         competitionName = competitionName,
         onBackClicked = { navController.navigateUp() },
-        onItemClicked = {},
+        onItemClicked = {
+              navController.navigate(
+                  Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
+              )
+        },
         onAddButtonClicked = {
             navController.navigate(
                 Screen.AddDisciplineScreen.withArgs(competitionId.toString())
@@ -206,7 +210,7 @@ fun DisciplinesListScreen(
             )
         },
         floatingActionButton = {
-            TransparentAddFab(
+            AddButton(
                 onClick = { onAddButtonClicked() },
                 contentDescription = "Добавить дисциплину"
             )

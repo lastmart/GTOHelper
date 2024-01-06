@@ -1,6 +1,5 @@
 package com.gtohelper.presentation.components.composables
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,6 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -22,9 +23,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.gtohelper.R
-import com.gtohelper.presentation.ui.theme.BorderColor
-import com.gtohelper.presentation.ui.theme.Green
-import com.gtohelper.presentation.ui.theme.Red
 
 @Composable
 fun AppAlertDialogRoute(
@@ -32,7 +30,6 @@ fun AppAlertDialogRoute(
     description: String,
     onOKClicked: () -> Unit,
     onCancelClicked: () -> Unit
-
 ) {
     AppAlertDialog(
         title = title,
@@ -51,7 +48,10 @@ fun AppAlertDialog(
 ) {
     Dialog(onDismissRequest = onCancelClicked) {
         Card(
-            border = BorderStroke(1.dp, BorderColor),
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.secondary,
+                contentColor = MaterialTheme.colorScheme.onSecondary,
+            ),
             shape = RoundedCornerShape(20.dp)
         ) {
             Box(
@@ -84,7 +84,7 @@ fun AppAlertDialog(
                             Text(
                                 text = stringResource(id = R.string.cancel),
                                 fontSize = 16.sp,
-                                color = Green
+                                color = Color.White
                             )
                         }
 
@@ -92,7 +92,7 @@ fun AppAlertDialog(
                             Text(
                                 text = stringResource(id = R.string.delete),
                                 fontSize = 16.sp,
-                                color = Red
+                                color = MaterialTheme.colorScheme.errorContainer
                             )
                         }
                     }

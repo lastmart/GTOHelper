@@ -1,12 +1,20 @@
 package com.gtohelper.presentation.ui.disciplines_list.add_results
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,8 +27,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.models.DisciplinePointType
+import com.gtohelper.domain.models.SportResult
 import com.gtohelper.presentation.components.composables.AppSearchField
-import com.gtohelper.presentation.components.composables.LoadingScreen
+import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultInputField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultItem
 import com.gtohelper.presentation.ui.theme.spacing
 
@@ -29,12 +38,20 @@ import com.gtohelper.presentation.ui.theme.spacing
 fun AddResultsRoute(
     navController: NavController,
     viewModel: AddResultsViewModel,
+    competitionId: Int,
+    disciplineId: String,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
+    val results by viewModel.results.collectAsState(initial = listOf())
 
     AddResultsScreen(
         uiState = uiState,
-        onEvent = viewModel::onEvent
+        searchQuery = searchQuery,
+        results = results,
+        onEvent = viewModel::onEvent,
+        onBackClicked = navController::navigateUp,
+        onSearchQueryChanged = { viewModel.onEvent(AddResultsEvent.SearchResult(it)) }
     )
 }
 
@@ -42,32 +59,67 @@ fun AddResultsRoute(
 @Composable
 fun AddResultsScreen(
     uiState: AddResultsUiState,
+    searchQuery: String,
+    results: List<SportResult>,
+    onSearchQueryChanged: (String) -> Unit = {},
     onEvent: (AddResultsEvent) -> Unit = {},
+    onBackClicked: () -> Unit = {},
 ) {
-    when (uiState) {
-        AddResultsUiState.Loading -> LoadingScreen()
-        is AddResultsUiState.Loaded -> {
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text(uiState.discipline.name) },
-                        navigationIcon = {
 
-                        }
+    Scaffold(
+        contentWindowInsets = WindowInsets(
+            left = MaterialTheme.spacing.small,
+            right = MaterialTheme.spacing.small,
+        ),
+        topBar = {
+            TopAppBar(
+                title = { uiState.discipline?.name?.let { Text(it) } },
+                navigationIcon = {
+                    IconButton(onClick = onBackClicked) {
+                        Icon(
+                            imageVector = Icons.Filled.ArrowBack,
+                            contentDescription = "Back"
+                        )
+                    }
+                },
+            )
+        },
+    ) { padding ->
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxHeight(),
+        ) {
+            AppSearchField(
+                modifier = Modifier.fillMaxWidth(),
+                value = searchQuery,
+                hint = "Поиск по номеру...",
+                onValueChange = onSearchQueryChanged,
+            )
+
+            Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
+            LazyColumn(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+            ) {
+                items(results) {
+                    ResultItem(
+                        pointType = DisciplinePointType.TIME,
+                        result = it
                     )
                 }
-            ) { padding ->
-                Column(
-                    modifier = Modifier.padding(padding)
-                ) {
-                    AppSearchField()
-                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
-                    LazyColumn {
-                        items(uiState.results) {
-                            ResultItem(DisciplinePointType.TIME, result = it)
-                        }
-                    }
-                }
+            }
+
+            Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
+            uiState.discipline?.let { discipline ->
+                ResultInputField(
+                    result = uiState.currentResult,
+                    number = uiState.currentNumber,
+                    disciplinePointType = discipline.type,
+                    onValueChange = { onEvent(AddResultsEvent.UpdateResult(it)) }
+                )
             }
         }
     }
@@ -77,16 +129,19 @@ fun AddResultsScreen(
 @Preview
 @Composable
 fun PreviewAddResultsScreen() {
-//    AddResultsScreen(
-//        uiState = AddResultsUiState.Loaded(
-//            Discipline(
-//                0, "Прыжки с крыши",
-//            ),
-//            listOf(),
-//        )
-//    )
+    AddResultsScreen(
+        uiState = AddResultsUiState(
+            Discipline("Прыжки с крыши", 0, listOf(), false, DisciplinePointType.AMOUNT),
+            0, 0,
+        ),
+        results = (0..20).map {
+            SportResult(
+                sportName = "Прыжки с крыши",
+                competitionId = 0,
+                competitorNumber = 0,
+                value = it
+            )
+        }.toList(),
+        searchQuery = ""
+    )
 }
-
-
-
-

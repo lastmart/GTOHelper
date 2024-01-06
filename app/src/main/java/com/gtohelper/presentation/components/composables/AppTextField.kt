@@ -1,7 +1,5 @@
 package com.gtohelper.presentation.components.composables
 
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
@@ -10,9 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 
 @Preview
 @Composable
@@ -39,7 +35,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
 ) {
     TextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = value,
         onValueChange = { v ->
             if (maxLength != null){
@@ -57,17 +53,6 @@ fun AppTextField(
         maxLines = maxLines,
         label = { label?.let { Text(it) } },
         keyboardOptions = keyboardOptions,
-        supportingText = {
-            maxLength?.let {
-                Text(
-                    text = "${value.length} / $it",
-                    textAlign = TextAlign.End,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(end = 16.dp)
-                )
-            }
-        },
         colors = AppTextFieldDefaults.colors(),
     )
 }
