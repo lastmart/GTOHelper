@@ -16,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -30,13 +29,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.components.composables.AddButton
 import com.gtohelper.presentation.components.composables.AppSearchField
+import com.gtohelper.presentation.components.composables.ExpandingAddButton
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitors_list.components.composables.CompetitorItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -84,31 +82,8 @@ fun CompetitorListScreen(
     onAddCompetitorClicked: () -> Unit = {},
     onAddCompetitorFromTableClicked: () -> Unit = {},
 ) {
-
-    val sheetState = rememberModalBottomSheetState()
-    var showBottomSheet by remember { mutableStateOf(false) }
-
-    if (showBottomSheet) {
-        ModalBottomSheet(
-            onDismissRequest = { showBottomSheet = false }, sheetState = sheetState
-        ) {
-            Column {
-                Button(onClick = {
-                    showBottomSheet = false
-                    onAddCompetitorClicked()
-                }) {
-                    Text("Добавить вручную")
-                }
-                Button(onClick = {
-                    showBottomSheet = false
-                    onAddCompetitorFromTableClicked()
-                }) {
-                    Text("Добавить с помощью таблицы")
-                }
-                Spacer(Modifier.height(40.dp))
-            }
-        }
-    }
+    
+    var fabExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         contentWindowInsets = WindowInsets(
@@ -130,8 +105,23 @@ fun CompetitorListScreen(
             )
         },
         floatingActionButton = {
-            AddButton(
-                onClick = { showBottomSheet = true }, contentDescription = null
+            ExpandingAddButton(
+                expanded = fabExpanded,
+                onClick = {
+                    fabExpanded = !fabExpanded
+                },
+                actions = {
+                    Button(onClick = {
+                        onAddCompetitorClicked()
+                    }) {
+                        Text("Добавить вручную")
+                    }
+                    Button(onClick = {
+                        onAddCompetitorFromTableClicked()
+                    }) {
+                        Text("Добавить с помощью таблицы")
+                    }
+                }
             )
         },
     ) { padding ->
