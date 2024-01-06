@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,10 +35,17 @@ fun CompetitionItem(
             modifier = Modifier.padding(8.dp),
         ) {
             Text(
-                text = competition.id.toString() + '/' + competition.name,
-                style = TextStyle(fontSize = 30.sp)
+                text = competition.name,
+                fontSize = 30.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
-            Text(text = competition.description, style = TextStyle(fontSize = 20.sp))
+            Text(
+                text = competition.description,
+                fontSize = 20.sp,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
         }
     }
 }
