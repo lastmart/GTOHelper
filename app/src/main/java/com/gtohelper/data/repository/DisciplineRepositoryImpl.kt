@@ -244,13 +244,6 @@ class DisciplineRepositoryImpl(
                     ),
                     DisciplineEntity(
                         competitionId = competitionId,
-                        name = "Прыжок в длину с разбега",
-                        parentName = "Прыжок в длину с разбега",
-                        imageResource = R.drawable.discipline_running_long_jump,
-                        type = DisciplinePointType.AMOUNT,
-                    ),
-                    DisciplineEntity(
-                        competitionId = competitionId,
                         name = "Поднимание туловища",
                         parentName = "Поднимание туловища",
                         imageResource = R.drawable.discipline_lifting_body,
