@@ -2,6 +2,7 @@
     <string name="app_name">GTO Helper</string>
     <string name="home">Главная</string>
     <string name="help">Помощь</string>
+    <string name="help_title">Помощь</string>
     <string name="delete">Удалить</string>
     <string name="tableName">Название</string>
     <string name="tableDescription">Описание</string>

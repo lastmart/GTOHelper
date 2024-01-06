@@ -30,6 +30,7 @@ import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDiscipli
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineViewModel
 import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsRoute
 import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsViewModel
+import com.gtohelper.presentation.ui.help.HelpRoute
 
 
 @Composable
@@ -171,6 +172,14 @@ fun AppNavHost(navController: NavHostController) {
                 viewModel = viewModel,
                 competitionId = competitionId,
                 disciplineId = disciplineId.toString(),
+            )
+        }
+
+        composable(
+            route = Screen.HelpScreen.route
+        ) {
+            HelpRoute(
+                navController = navController,
             )
         }
     }
