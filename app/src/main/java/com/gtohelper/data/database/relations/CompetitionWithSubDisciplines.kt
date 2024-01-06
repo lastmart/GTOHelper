@@ -1,14 +1,12 @@
 package com.gtohelper.data.database.relations
 
 import androidx.room.Embedded
+import androidx.room.ForeignKey
 import androidx.room.Junction
 import androidx.room.Relation
 import com.gtohelper.data.database.competition.CompetitionEntity
 import com.gtohelper.data.database.discipline.SubDisciplineEntity
 
-// @Entity
-// Foreign Key
-// Transaction in dao
 data class CompetitionWithSubDisciplines(
     @Embedded val competition: CompetitionEntity,
 

@@ -8,17 +8,7 @@ import com.gtohelper.data.database.Converters
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.SubDiscipline
 
-@Entity(
-    tableName = "disciplines_table",
-    /*foreignKeys = [
-        ForeignKey(
-            entity = CompetitionEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["competitionId"],
-            onDelete = ForeignKey.CASCADE,
-        )
-    ]*/
-)
+@Entity(tableName = "disciplines_table",)
 @TypeConverters(Converters::class)
 data class DisciplineEntity(
     @PrimaryKey(autoGenerate = true)
