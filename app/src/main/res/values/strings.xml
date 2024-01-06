@@ -2,6 +2,7 @@
     <string name="app_name">GTO Helper</string>
     <string name="home">Главная</string>
     <string name="help">Помощь</string>
+    <string name="help_title">Помощь</string>
     <string name="delete">Удалить</string>
     <string name="tableName">Название</string>
     <string name="tableDescription">Описание</string>
@@ -12,7 +13,7 @@
     <string name="team_name_title">Название команды</string>
     <string name="team_name">Команда: %1$s</string>
     <string name="competitor_number">Номер участника</string>
-    <string name="competitor_gender_title">Пол участника</string>
+    <string name="gender_title">Пол</string>
     <string name="competitor_gender">Пол: %1$s</string>
     <string name="competitor_degree">Ступень: %1$s</string>
     <string name="competitor_degree_title">Ступень участника</string>
@@ -28,4 +29,5 @@
     <string name="edit_competitor">Изменить участника</string>
     <string name="search_competitors_hint">Поиск участников...</string>
     <string name="results_title">Результаты</string>
+    <string name="ok">Ок</string>
 </resources>

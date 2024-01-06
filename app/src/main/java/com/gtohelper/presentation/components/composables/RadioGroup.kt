@@ -1,17 +1,13 @@
 package com.gtohelper.presentation.components.composables
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.presentation.ui.util.capitalize
 
 @Preview
 @Composable
@@ -20,7 +16,7 @@ fun PreviewRadioGroup() {
         selectedValue = Gender.FEMALE,
         onChanged = {},
         values = Gender.entries,
-        nameTransform = { value -> value.name }
+        nameTransform = { value -> value.name.lowercase().capitalize() }
     )
 }
 
@@ -33,20 +29,15 @@ fun <T> AppRadioGroup(
     nameTransform: (T) -> String,
 ) {
     Row(
-        modifier = modifier
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         values.forEach { value ->
-            RadioButton(
+            AppRadioButton(
+                value = value,
                 selected = selectedValue == value,
-                onClick = {
-                    onChanged(value)
-                },
-            )
-            Text(
-                modifier = Modifier
-                    .padding(start = 4.dp)
-                    .align(Alignment.CenterVertically),
-                text = nameTransform(value),
+                nameTransform = nameTransform,
+                onClick = onChanged,
             )
         }
     }

@@ -12,6 +12,8 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -53,7 +56,8 @@ fun CompetitionListRoute(
                     it.name
                 )
             )
-        }
+        },
+        onHelpClick = { navController.navigate(Screen.HelpScreen.route) }
     )
 }
 
@@ -65,6 +69,7 @@ fun CompetitionListScreen(
     onSearchQueryChanged: (String) -> Unit = {},
     onAddButtonClicked: () -> Unit = {},
     onItemClicked: (Competition) -> Unit = {},
+    onHelpClick: () -> Unit = {},
 ) {
     Scaffold(
         contentWindowInsets = WindowInsets(
@@ -76,6 +81,14 @@ fun CompetitionListScreen(
                 title = {
                     Text(stringResource(R.string.competitions))
                 },
+                actions = {
+                    IconButton(onClick = onHelpClick) {
+                        Icon(
+                            painter = painterResource(R.drawable.help_icon),
+                            contentDescription = null
+                        )
+                    }
+                }
             )
         },
         floatingActionButton = {

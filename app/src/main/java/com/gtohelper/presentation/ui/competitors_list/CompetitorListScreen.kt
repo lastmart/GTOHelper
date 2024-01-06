@@ -167,7 +167,7 @@ fun CompetitorListScreenPreview() {
     CompetitorListScreen(
         uiState = CompetitorListUiState((0..11).map {
             Competitor(
-                1, 1, 1, "Name", Gender.MALE, "teamName", 2
+                1, 1, 1, "><j", Gender.MALE, "teamName", 2
             )
         }),
         searchQuery = "",

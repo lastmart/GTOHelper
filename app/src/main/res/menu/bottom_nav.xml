@@ -7,5 +7,5 @@
     <item
         android:id="@+id/helpFragment"
         android:icon="@drawable/help_icon"
-        android:title="@string/help" />
+        android:title="@string/help_title" />
 </menu>
