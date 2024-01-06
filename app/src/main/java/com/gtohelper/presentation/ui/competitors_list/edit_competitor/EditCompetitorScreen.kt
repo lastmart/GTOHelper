@@ -137,8 +137,7 @@ fun EditCompetitorScreen(
         CompetitorUiForm(
             form = form,
             onEvent = onEvent,
-            modifier = Modifier
-                .padding(it)
+            modifier = Modifier.padding(it)
         )
     }
 }

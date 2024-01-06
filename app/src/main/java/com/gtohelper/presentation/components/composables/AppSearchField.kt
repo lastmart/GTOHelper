@@ -43,7 +43,12 @@ fun AppSearchField(
     TextField(
         modifier = modifier,
         placeholder = {
-            hint?.let { Text(text = it) }
+            hint?.let {
+                Text(
+                    text = it,
+                    color = MaterialTheme.colorScheme.tertiaryContainer,
+                )
+            }
         },
         colors = TextFieldDefaults.colors(
             focusedContainerColor = MaterialTheme.colorScheme.onTertiaryContainer,
