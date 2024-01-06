@@ -3,7 +3,6 @@ import JsonParser
 import com.gtohelper.domain.PointsCalculator
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.domain.models.fromAge
 import org.junit.Test
 import org.junit.Assert.*
 
@@ -13,8 +12,8 @@ class CalculatingPointsTest {
 
     @Test
     fun TestValuesThatInTable(){
-        val maleSevenDegree = Competitor(0, "Майкл Фелпс",
-            Gender.MALE, "Балтимор", 12, 1, fromAge(19)
+        val maleSevenDegree = Competitor(0, 1,1,"Майкл Фелпс",
+            Gender.MALE, "Балтимор", 12,
         )
 
         assertEquals(84, calculatingPoints.getPoint(maleSevenDegree,
@@ -24,8 +23,8 @@ class CalculatingPointsTest {
         assertEquals(48, calculatingPoints.getPoint(maleSevenDegree,
             "Рывок гири 16 кг (количество раз)", 21.0))
 
-        val femaleTwoDegree = Competitor(0,"Майкл Фелпс",
-            Gender.FEMALE, "Москва", 1, 1, fromAge(8)
+        val femaleTwoDegree = Competitor(0,1,1,"Майкл Фелпс",
+            Gender.FEMALE, "Москва", 1,
         )
 
         assertEquals(100, calculatingPoints.getPoint(femaleTwoDegree,
@@ -35,8 +34,8 @@ class CalculatingPointsTest {
         assertEquals(60, calculatingPoints.getPoint(femaleTwoDegree,
             "Метание теннисного мяча в цель, дистанция 6 м (кол-во попаданий)", 3.0))
 
-        val maleEighteenDegree = Competitor(0, "Майкл Фелпс",
-            Gender.MALE, "Вашинтгон", 90, 1, fromAge(73)
+        val maleEighteenDegree = Competitor(0, 1,1,"Майкл Фелпс",
+            Gender.MALE, "Вашинтгон", 90,
         )
 
         assertEquals(95, calculatingPoints.getPoint(maleEighteenDegree,
@@ -47,8 +46,8 @@ class CalculatingPointsTest {
 
     @Test
     fun TestValuesThatNotInTable(){
-        val maleSevenDegree = Competitor(0, "Майкл Фелпс",
-            Gender.MALE, "Балтимор", 12, 1, fromAge(26)
+        val maleSevenDegree = Competitor(0, 1,1,"Майкл Фелпс",
+            Gender.MALE, "Балтимор", 12,
         )
         assertEquals(86, calculatingPoints.getPoint(maleSevenDegree,
             "Бег на 60 м (с)", jsonParser.convertRunTime("7.01")))
@@ -64,8 +63,8 @@ class CalculatingPointsTest {
         assertEquals(0, calculatingPoints.getPoint(maleSevenDegree,
             "Бег на 3000 м (мин, с)", jsonParser.convertTime("16:50.10")))
 
-        val femaleSeventeenDegree =  Competitor(0, "Майкл Фелпс",
-            Gender.FEMALE, "Москва", 2, 1, fromAge(66)
+        val femaleSeventeenDegree =  Competitor(0, 1,1,"Майкл Фелпс",
+            Gender.FEMALE, "Москва", 2,
         )
 
         assertEquals(98, calculatingPoints.getPoint(femaleSeventeenDegree,
@@ -76,8 +75,8 @@ class CalculatingPointsTest {
             "Наклон вперед из положения стоя на гимнастической скамье (от уровня скамьи - см)",
             -13.00))
 
-        val maleFourDegree = Competitor(0, "Майкл Фелпс",
-            Gender.MALE, "Вашинтгон", 90, 1, fromAge(12)
+        val maleFourDegree = Competitor(0, 1,1,"Майкл Фелпс",
+            Gender.MALE, "Вашинтгон", 90,
         )
 
         assertEquals(18, calculatingPoints.getPoint(maleFourDegree,

@@ -42,10 +42,7 @@ class PointsCalculator {
     }
 
     private fun <T: Comparable<T>> comparisonNormative (normative:T, result: T, valuesToCompare:List<Int>): Boolean{
-        if (normative.compareTo(result) in valuesToCompare){
-            return true
-        }
-        return false
+        return normative.compareTo(result) in valuesToCompare
     }
 
     private fun <T: Comparable<T>> findPoint(valuesToCompare: List<Int>, sortedNormative: SortedMap<Any, Int>,

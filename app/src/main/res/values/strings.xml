@@ -28,4 +28,5 @@
     <string name="edit_competitor">Изменить участника</string>
     <string name="search_competitors_hint">Поиск участников...</string>
     <string name="results_title">Результаты</string>
+    <string name="ok">Ок</string>
 </resources>
