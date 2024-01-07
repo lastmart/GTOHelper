@@ -67,7 +67,7 @@ fun DisciplineWithSubDisciplinesItem(
                 onClick = onClick,
                 textOverflow = TextOverflow.Ellipsis,
                 onLongClick = { false },
-                textFontSize = 20.sp,
+                textFontSize = 18.sp,
                 textMaxLines = textMaxLines
             )
 
@@ -94,7 +94,7 @@ fun DisciplineWithSubDisciplinesItem(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { onSubDisciplineClicked(subDiscipline) },
                     onLongClick = { false },
-                    textFontSize = 25.sp,
+                    textFontSize = 18.sp,
                 )
             }
 

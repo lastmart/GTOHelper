@@ -36,12 +36,12 @@ fun SubDisciplineItem(
     onClick: (SubDiscipline) -> Unit,
     onLongClick: (SubDiscipline) -> Boolean,
     textOverflow: TextOverflow = TextOverflow.Clip,
-    textFontSize: TextUnit = 20.sp,
+    textFontSize: TextUnit = 18.sp,
     textMaxLines: Int = 2
 ) {
     var modifier = modifier
     var fontSize by remember { mutableStateOf(textFontSize) }
-    var isReadyToDraw by remember { mutableStateOf(false) }
+//    var isReadyToDraw by remember { mutableStateOf(false) }
 
     if (isClickable) {
         modifier = modifier.combinedClickable(
@@ -52,11 +52,11 @@ fun SubDisciplineItem(
 
     Row(
         modifier = modifier
-            .drawWithContent {
-                if (isReadyToDraw) {
-                    drawContent()
-                }
-            }
+        //    .drawWithContent {
+        //        if (isReadyToDraw) {
+        //            drawContent()
+        //        }
+        //    }
             .padding(5.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -73,13 +73,13 @@ fun SubDisciplineItem(
             fontSize = fontSize,
             overflow = textOverflow,
             maxLines = textMaxLines,
-            onTextLayout = { textLayoutResult ->
-                if (textLayoutResult.lineCount >= 2 && fontSize == textFontSize) {
-                    fontSize = 18.sp
-                } else {
-                    isReadyToDraw = true
-                }
-            }
+          //  onTextLayout = { textLayoutResult ->
+          //      if (textLayoutResult.lineCount >= 2 && fontSize == textFontSize) {
+          //          fontSize = 18.sp
+          //      } else {
+          //          isReadyToDraw = true
+          //      }
+          //  }
         )
     }
 }

@@ -23,7 +23,7 @@ fun SubDisciplineCardItem(
     modifier: Modifier = Modifier,
     onClick: (SubDiscipline) -> Unit,
     onLongClick: (SubDiscipline) -> Boolean,
-    textFontSize: TextUnit = 20.sp
+    textFontSize: TextUnit = 18.sp
 ) {
     Card(
         modifier = Modifier
