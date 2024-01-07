@@ -1,5 +1,9 @@
 package com.gtohelper.presentation.ui.disciplines_list
 
+import android.os.Build
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,6 +35,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,6 +50,8 @@ import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.theme.spacing
 
+@RequiresApi(Build.VERSION_CODES.R) // TODO
+
 @Composable
 fun DisciplineListRoute(
     navController: NavController,
@@ -52,6 +59,32 @@ fun DisciplineListRoute(
     competitionId: Int,
     competitionName: String
 ) {
+
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(
+        contract = CreateDocument("application/vnd.ms-excel"),
+        onResult = {
+            try {
+                val fileInputStream = context.assets.open("таблица1.xlsx")
+
+                val size = fileInputStream.available()
+                val buffer = ByteArray(size)
+
+                fileInputStream.read(buffer)
+                fileInputStream.close()
+
+                val outputStream = context.contentResolver.openOutputStream(it!!)
+
+                outputStream!!.write(buffer)
+                outputStream.close()
+            } catch (e: Exception) {
+                println("Error: $e")
+                e.printStackTrace()
+            }
+        }
+    )
+
     val uiState by viewModel.uiState.collectAsState()
     DisciplinesListScreen(
         uiState = uiState,
@@ -71,7 +104,9 @@ fun DisciplineListRoute(
             viewModel.onSubDisciplineLongPressed(it)
             true
         },
-        onDownloadClicked = {},
+        onDownloadClicked = {
+            launcher.launch("результаты_${competitionName}.xls")
+        },
         onResultsClicked = {
             navController.navigate(
                 Screen.CompetitorsResultsListScreen.withArgs(competitionId.toString())
