@@ -20,6 +20,7 @@ import com.gtohelper.domain.models.SubDiscipline
 @Composable
 fun SubDisciplineCardItem(
     subDiscipline: SubDiscipline,
+    modifier: Modifier = Modifier,
     onClick: (SubDiscipline) -> Unit,
     onLongClick: (SubDiscipline) -> Boolean,
     textFontSize: TextUnit = 20.sp
@@ -39,6 +40,7 @@ fun SubDisciplineCardItem(
         SubDisciplineItem(
             subDiscipline = subDiscipline,
             onClick = onClick,
+            modifier = modifier,
             onLongClick = onLongClick,
             textFontSize = textFontSize
         )

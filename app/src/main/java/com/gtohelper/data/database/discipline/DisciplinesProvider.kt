@@ -93,7 +93,7 @@ class DisciplinesProvider {
                     type = DisciplinePointType.TIME,
                 ),
                 SubDisciplineEntity(
-                    name = "Смешанное передвижение на 1000 м",
+                    name = "Смешанное передвижение на 2000 м",
                     imageResource = R.drawable.sub_discipline_mixed_movement_2km,
                     type = DisciplinePointType.TIME,
                 ),

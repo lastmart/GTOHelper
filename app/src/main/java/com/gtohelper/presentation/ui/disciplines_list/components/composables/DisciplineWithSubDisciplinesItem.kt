@@ -1,13 +1,26 @@
 package com.gtohelper.presentation.ui.disciplines_list.components.composables
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,6 +37,15 @@ fun DisciplineWithSubDisciplinesItem(
     onLongClick: (SubDiscipline) -> Boolean,
     onSubDisciplineClicked: (SubDiscipline) -> Unit
 ) {
+    val isExpanded = discipline.isExpanded
+
+    val rotationState by animateFloatAsState(
+        targetValue = if (isExpanded) 180f else 0f,
+        label = "arrow"
+    )
+
+    val enterTransition = expandVertically(expandFrom = Alignment.Top)
+    val exitTransition = shrinkVertically()
 
     Card(
         modifier = Modifier
@@ -35,24 +57,49 @@ fun DisciplineWithSubDisciplinesItem(
             contentColor = MaterialTheme.colorScheme.onSecondaryContainer,
         ),
     ) {
-        SubDisciplineItem(
-            subDiscipline = discipline.toSubDiscipline(),
-            onClick = onClick,
-            onLongClick = { false },
-            textFontSize = 20.sp
-        )
+        Row {
+            val textMaxLines = if (isExpanded) 3 else 2
 
-        val isExpanded = discipline.isExpanded
-        if (!isExpanded) return@Card
-
-        discipline.subDisciplines.forEach { subDiscipline ->
             SubDisciplineItem(
-                subDiscipline = subDiscipline,
-                onClick = { onSubDisciplineClicked(subDiscipline) },
+                subDiscipline = discipline.toSubDiscipline(),
+                isClickable = false,
+                modifier = Modifier.weight(1f),
+                onClick = onClick,
+                textOverflow = TextOverflow.Ellipsis,
                 onLongClick = { false },
-                textFontSize = 25.sp
+                textFontSize = 20.sp,
+                textMaxLines = textMaxLines
+            )
+
+            Icon(
+                modifier = Modifier
+                    .align(Alignment.CenterVertically)
+                    .padding(end = 5.dp)
+                    .rotate(rotationState),
+                imageVector = Icons.Default.ArrowDropDown,
+                contentDescription = null
             )
         }
+
+
+        discipline.subDisciplines.forEach { subDiscipline ->
+
+            AnimatedVisibility(
+                visible = isExpanded,
+                enter = enterTransition,
+                exit = exitTransition
+            ) {
+                SubDisciplineItem(
+                    subDiscipline = subDiscipline,
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { onSubDisciplineClicked(subDiscipline) },
+                    onLongClick = { false },
+                    textFontSize = 25.sp,
+                )
+            }
+
+        }
+
     }
 }
 
