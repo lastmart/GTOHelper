@@ -6,13 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.outlined.List
 import androidx.compose.material.icons.outlined.MoreVert
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -32,6 +31,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -58,9 +58,9 @@ fun DisciplineListRoute(
         competitionName = competitionName,
         onBackClicked = { navController.navigateUp() },
         onItemClicked = {
-              navController.navigate(
-                  Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
-              )
+            navController.navigate(
+                Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
+            )
         },
         onAddButtonClicked = {
             navController.navigate(
@@ -148,14 +148,22 @@ fun DisciplinesListScreen(
                         isMenuExtended = false
                         onCompetitorsClicked()
                     }) {
-                        Icon(Icons.Outlined.Person, contentDescription = "Участники")
+                        Icon(
+                            modifier = Modifier.size(30.dp),
+                            painter = painterResource(id = R.drawable.icon_person),
+                            contentDescription = "Участники"
+                        )
                     }
 
                     IconButton(onClick = {
                         isMenuExtended = false
                         onResultsClicked()
                     }) {
-                        Icon(Icons.Outlined.List, contentDescription = "Результаты")
+                        Icon(
+                            modifier = Modifier.size(30.dp),
+                            painter = painterResource(id = R.drawable.icon_pedestal),
+                            contentDescription = "Результаты"
+                        )
                     }
 
                     IconButton(onClick = { isMenuExtended = true }) {
@@ -221,7 +229,7 @@ fun DisciplinesListScreen(
                 modifier = Modifier.padding(horizontal = 15.dp),
                 text = competitionName,
                 fontSize = 35.sp,
-                color = Color.Black
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
             )
 
             Spacer(Modifier.height(15.dp))
@@ -233,6 +241,7 @@ fun DisciplinesListScreen(
                 items(uiState.subDisciplines) {
                     SubDisciplineCardItem(
                         subDiscipline = it,
+                        modifier = Modifier.fillMaxWidth(),
                         onClick = onItemClicked,
                         onLongClick = onItemLongClicked
                     )
