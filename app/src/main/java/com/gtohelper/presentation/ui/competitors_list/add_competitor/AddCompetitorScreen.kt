@@ -27,8 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.AddButton
-import com.gtohelper.presentation.components.composables.CheckButton
+import com.gtohelper.presentation.components.composables.buttons.CheckButton
 import com.gtohelper.presentation.components.forms.FormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState

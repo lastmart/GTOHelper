@@ -5,7 +5,7 @@ data class SportResult(
     val sportName: String,
     val competitionId: Int,
     val value: Int,
-    val competitorNumber: Int,
+    val competitorId: Int,
 )
 
 

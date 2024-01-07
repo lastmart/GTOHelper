@@ -25,10 +25,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
+import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.models.DisciplinePointType
+import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
-import com.gtohelper.presentation.components.composables.AppSearchField
+import com.gtohelper.domain.models.SportResultAndCompetitor
+import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultInputField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -60,7 +63,7 @@ fun AddResultsRoute(
 fun AddResultsScreen(
     uiState: AddResultsUiState,
     searchQuery: String,
-    results: List<SportResult>,
+    results: List<SportResultAndCompetitor>,
     onSearchQueryChanged: (String) -> Unit = {},
     onEvent: (AddResultsEvent) -> Unit = {},
     onBackClicked: () -> Unit = {},
@@ -105,8 +108,8 @@ fun AddResultsScreen(
             ) {
                 items(results) {
                     ResultItem(
-                        pointType = DisciplinePointType.TIME,
-                        result = it
+                        pointType = DisciplinePointType.SHORT_TIME,
+                        resultWithCompetitor = it
                     )
                 }
             }
@@ -115,8 +118,8 @@ fun AddResultsScreen(
 
             uiState.discipline?.let { discipline ->
                 ResultInputField(
-                    result = uiState.currentResult,
-                    number = uiState.currentNumber,
+                    result = uiState.result,
+                    number = uiState.number,
                     disciplinePointType = discipline.type,
                     onValueChange = { onEvent(AddResultsEvent.UpdateResult(it)) }
                 )
@@ -131,16 +134,28 @@ fun AddResultsScreen(
 fun PreviewAddResultsScreen() {
     AddResultsScreen(
         uiState = AddResultsUiState(
-            Discipline( "Прыжки с крыши", 0, listOf(),  DisciplinePointType.AMOUNT),
+            Discipline("Прыжки с крыши", 0, listOf(), DisciplinePointType.AMOUNT),
             0, 0,
         ),
-        results = (0..20).map {
-            SportResult(
-                sportName = "Прыжки с крыши",
-                competitionId = 0,
-                competitorNumber = 0,
-                value = it
+        results = (1..20).map {
+            SportResultAndCompetitor(
+                competitor = Competitor(
+                    id = 0,
+                    number = it,
+                    competitionId = 0,
+                    name = "Да",
+                    gender = Gender.MALE,
+                    teamName = "да",
+                    degree = 10,
+                ),
+                result = SportResult(
+                    sportName = "Прыжки с крыши",
+                    competitionId = 0,
+                    competitorId = 0,
+                    value = it * 10
+                )
             )
+
         }.toList(),
         searchQuery = ""
     )

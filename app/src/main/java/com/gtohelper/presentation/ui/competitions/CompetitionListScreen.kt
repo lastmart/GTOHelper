@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competition
-import com.gtohelper.presentation.components.composables.AddButton
-import com.gtohelper.presentation.components.composables.AppSearchField
-import com.gtohelper.presentation.components.composables.LoadingScreen
+import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
+import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitions.components.CompetitionItem
 import com.gtohelper.presentation.ui.theme.spacing

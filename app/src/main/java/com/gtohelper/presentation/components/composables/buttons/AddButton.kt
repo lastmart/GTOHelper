@@ -1,10 +1,9 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.buttons
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -14,12 +13,12 @@ import androidx.compose.ui.unit.dp
 
 @Preview
 @Composable
-fun CheckButtonPreview() {
-    CheckButton()
+fun AddButtonPreview() {
+    AddButton()
 }
 
 @Composable
-fun CheckButton(
+fun AddButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit = {},
     contentDescription: String? = null,
@@ -30,7 +29,7 @@ fun CheckButton(
     ) {
         Icon(
             modifier = Modifier.size(40.dp),
-            imageVector = Icons.Filled.Check,
+            imageVector = Icons.Filled.Add,
             contentDescription = contentDescription,
         )
     }

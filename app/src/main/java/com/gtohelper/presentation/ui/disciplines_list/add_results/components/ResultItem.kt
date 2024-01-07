@@ -4,8 +4,6 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,15 +17,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.DisciplinePointType
+import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
+import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.presentation.ui.theme.BorderColor
 import com.gtohelper.presentation.ui.theme.spacing
 
 @Composable
 fun ResultItem(
     pointType: DisciplinePointType,
-    result: SportResult,
+    resultWithCompetitor: SportResultAndCompetitor,
 ) {
     Card(
         border = BorderStroke(width = 1.dp, color = BorderColor),
@@ -40,7 +41,7 @@ fun ResultItem(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium)
                     .weight(1f),
-                text = result.competitorNumber.toString()
+                text = resultWithCompetitor.competitor.number.toString()
             )
             Divider(
                 modifier = Modifier
@@ -52,7 +53,7 @@ fun ResultItem(
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium)
                     .weight(2f),
-                text = pointType.toReadable(result.value)
+                text = pointType.toReadable(resultWithCompetitor.result.value)
             )
         }
     }
@@ -61,23 +62,33 @@ fun ResultItem(
 @Preview
 @Composable
 fun PreviewResultItem() {
-    val result = SportResult(
-        0,
-        "Прыжки с крыши",
-        0,
-        61,
-        1
+    val resultAndCompetitor = SportResultAndCompetitor(
+        competitor = Competitor(
+            id = 0,
+            number = 1,
+            competitionId = 0,
+            name = "Да",
+            gender = Gender.MALE,
+            teamName = "да",
+            degree = 10,
+        ),
+        result = SportResult(
+            sportName = "Прыжки с крыши",
+            competitionId = 0,
+            competitorId = 0,
+            value = 100
+        )
     )
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         ResultItem(
-            pointType = DisciplinePointType.TIME,
-            result = result,
+            pointType = DisciplinePointType.SHORT_TIME,
+            resultWithCompetitor = resultAndCompetitor,
         )
         ResultItem(
             pointType = DisciplinePointType.AMOUNT,
-            result = result,
+            resultWithCompetitor = resultAndCompetitor,
         )
     }
 }

@@ -46,7 +46,7 @@ class EditCompetitorViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val competitor = repository.getById(competitorId)
+            val competitor = repository.getBy(competitorId)
             initialCompetitor = competitor
             if (competitor != null) {
                 mutableForm.update {
@@ -98,7 +98,7 @@ class EditCompetitorViewModel @Inject constructor(
             return null
         }
 
-        if (repository.getByNumberInCompetition(
+        if (repository.getBy(
                 form.number, initialCompetitor?.competitionId ?: 0
             ) != null
         ) {

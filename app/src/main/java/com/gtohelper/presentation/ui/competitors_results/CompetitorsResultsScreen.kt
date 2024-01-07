@@ -27,7 +27,7 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.components.composables.AppSearchField
+import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
 import com.gtohelper.presentation.ui.competitors_results.components.composables.CompetitorResultItem
 
 

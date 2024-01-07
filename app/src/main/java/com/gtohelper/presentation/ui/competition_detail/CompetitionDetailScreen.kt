@@ -24,8 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competition
-import com.gtohelper.presentation.components.composables.LoadFailedScreen
-import com.gtohelper.presentation.components.composables.LoadingScreen
+import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
 import kotlinx.coroutines.flow.receiveAsFlow
 
 @Composable
@@ -113,6 +112,7 @@ fun CompetitionDetailScreen(
                 }
             }
         }
+
         else -> Unit
     }
 }

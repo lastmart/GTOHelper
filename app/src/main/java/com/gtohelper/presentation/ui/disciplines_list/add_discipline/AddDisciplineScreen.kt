@@ -152,21 +152,21 @@ val previewDisciplines = listOf(
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 30 м",
-                type = DisciplinePointType.TIME,
+                type = DisciplinePointType.SHORT_TIME,
             ),
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 60 м",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_sprinting_30m,
                 name = "Бег на 100 м",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
         ),
         isExpanded = true,
-        type = DisciplinePointType.TIME
+        type = DisciplinePointType.SHORT_TIME
     ),
     DisciplinePresentation(
         imageResource = R.drawable.discipline_long_distance_running,
@@ -175,24 +175,24 @@ val previewDisciplines = listOf(
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_1km,
                 name = "Бег на 1 км",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
                 name = "Бег на 1.5 км",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_2km,
                 name = "Бег на 2 км",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
             SubDiscipline(
                 imageResource = R.drawable.sub_discipline_long_distance_running_3km,
                 name = "Бег на 3 км",
-                type = DisciplinePointType.TIME
+                type = DisciplinePointType.SHORT_TIME
             ),
         ),
-        type = DisciplinePointType.TIME
+        type = DisciplinePointType.SHORT_TIME
     )
 )

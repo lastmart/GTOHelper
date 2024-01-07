@@ -26,8 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.AddButton
-import com.gtohelper.presentation.components.composables.AppTextField
+import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.input_fields.AppTextField
 import com.gtohelper.presentation.components.forms.FormState
 import kotlinx.coroutines.launch
 

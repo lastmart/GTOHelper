@@ -9,26 +9,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.PlatformTextStyle
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.components.composables.AppDropdownMenu
-import com.gtohelper.presentation.components.composables.AppRadioGroup
-import com.gtohelper.presentation.components.composables.AppTextField
+import com.gtohelper.presentation.components.composables.menus.AppDropdownMenu
+import com.gtohelper.presentation.components.composables.groups.AppRadioGroup
+import com.gtohelper.presentation.components.composables.input_fields.AppTextField
 import com.gtohelper.presentation.ui.util.toRoman
 
 

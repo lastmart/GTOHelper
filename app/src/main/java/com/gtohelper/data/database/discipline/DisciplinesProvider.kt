@@ -2,7 +2,6 @@ package com.gtohelper.data.database.discipline
 
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
-import com.gtohelper.domain.models.SubDiscipline
 
 class DisciplinesProvider {
 
@@ -10,92 +9,92 @@ class DisciplinesProvider {
         DisciplineEntity(
             name = "Бег на короткие дистанции",
             imageResource = R.drawable.discipline_sprinting,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Бег на 30 м",
                     imageResource = R.drawable.sub_discipline_sprinting_30m,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 60 м",
                     imageResource = R.drawable.sub_discipline_sprinting_60m,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 100 м",
                     imageResource = R.drawable.sub_discipline_sprinting_100m,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Бег на длинные дистанции",
             imageResource = R.drawable.discipline_long_distance_running,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Бег на 1 км",
                     imageResource = R.drawable.sub_discipline_long_distance_running_1km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 1.5 км",
                     imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 2 км",
                     imageResource = R.drawable.sub_discipline_long_distance_running_2km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 3 км",
                     imageResource = R.drawable.sub_discipline_long_distance_running_3km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Кросс по пересечённой местности",
             imageResource = R.drawable.discipline_cross_country,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Кросс на 2000 м по пересечённой местности",
                     imageResource = R.drawable.sub_discipline_cross_country_2km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Кросс на 3000 м по пересечённой местности",
                     imageResource = R.drawable.sub_discipline_cross_country_3km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Кросс на 5000 м по пересечённой местности",
                     imageResource = R.drawable.sub_discipline_cross_country_5km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Смешанное передвижение",
             imageResource = R.drawable.discipline_mixed_movement,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Смешанное передвижение на 1000 м",
                     imageResource = R.drawable.sub_discipline_mixed_movement_1km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Смешанное передвижение на 1000 м",
                     imageResource = R.drawable.sub_discipline_mixed_movement_2km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
 
@@ -103,95 +102,95 @@ class DisciplinesProvider {
         DisciplineEntity(
             name = "Смешанное передвижение по пересеченной местности",
             imageResource = R.drawable.discipline_mixed_movement_over_rough_terrain,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Передвижение на 1000 м по пересеченной местности",
                     imageResource = R.drawable.sub_discipline_mixed_movement_over_rough_terrain_1km,
-                    type = DisciplinePointType.TIME
+                    type = DisciplinePointType.SHORT_TIME
                 ),
                 SubDisciplineEntity(
                     name = "Передвижение на 2000 м по пересеченной местности",
                     imageResource = R.drawable.sub_discipline_mixed_movement_over_rough_terrain_2km,
-                    type = DisciplinePointType.TIME
+                    type = DisciplinePointType.SHORT_TIME
                 ),
                 SubDisciplineEntity(
                     name = "Передвижение на 3000 м по пересеченной местности",
                     imageResource = R.drawable.sub_discipline_mixed_movement_over_rough_terrain_3km,
-                    type = DisciplinePointType.TIME
+                    type = DisciplinePointType.SHORT_TIME
                 )
             )
         },
         DisciplineEntity(
             name = "Челночный бег 3х10 м",
             imageResource = R.drawable.discipline_shuttle_run,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Челночный бег 3х10 м",
                     imageResource = R.drawable.discipline_shuttle_run,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Скандинавская ходьба на 3000 м",
             imageResource = R.drawable.discipline_nordic_walking,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Скандинавская ходьба на 3000 м",
                     imageResource = R.drawable.discipline_nordic_walking,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Передвижение на лыжах",
             imageResource = R.drawable.discipline_movement_on_skis,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Передвижение на лыжах на 2000 м",
                     imageResource = R.drawable.sub_discipline_movement_on_skis_2km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Передвижение на лыжах на 3000 м",
                     imageResource = R.drawable.sub_discipline_movement_on_skis_3km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
         DisciplineEntity(
             name = "Бег на лыжах",
             imageResource = R.drawable.discipline_skiing,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Бег на лыжах на 1000 м",
                     imageResource = R.drawable.sub_discipline_skiing_1km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на лыжах на 2000 м",
                     imageResource = R.drawable.sub_discipline_skiing_2km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на лыжах на 3000 м",
                     imageResource = R.drawable.sub_discipline_skiing_3km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на лыжах на 5000 м",
                     imageResource = R.drawable.sub_discipline_skiing_5km,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
@@ -286,18 +285,18 @@ class DisciplinesProvider {
         DisciplineEntity(
             name = "Плавание",
             imageResource = R.drawable.discipline_swimming,
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Плавание 25 м",
                     imageResource = R.drawable.sub_discipline_swimming_25m,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Плавание 50 м",
                     imageResource = R.drawable.sub_discipline_swimming_50m,
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
@@ -363,7 +362,7 @@ class DisciplinesProvider {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Метание мяча в цель с дистанции 6 м",
-                    imageResource = R.drawable.discipline_ball_throwing_at_target,
+                    imageResource = R.drawable.discipline_flexion_extension_arms,
                     type = DisciplinePointType.AMOUNT,
                 ),
             )

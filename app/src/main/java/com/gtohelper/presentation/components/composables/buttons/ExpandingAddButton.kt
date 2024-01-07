@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.buttons
 
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.updateTransition

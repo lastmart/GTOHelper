@@ -39,8 +39,8 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.SubDiscipline
-import com.gtohelper.presentation.components.composables.AddButton
-import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
+import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.dialogs.AppAlertDialogRoute
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -252,12 +252,12 @@ fun DisciplinesListScreenPreview() {
                 SubDiscipline(
                     imageResource = R.drawable.sub_discipline_long_distance_running_1km,
                     name = "Бег на 1 км",
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDiscipline(
                     imageResource = R.drawable.sub_discipline_long_distance_running_2km,
                     name = "Бег на 2 км",
-                    type = DisciplinePointType.TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         ),

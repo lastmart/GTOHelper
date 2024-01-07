@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.cards
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

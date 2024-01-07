@@ -63,7 +63,7 @@ fun SubDisciplineItemPreview() {
         subDiscipline = SubDiscipline(
             imageResource = R.drawable.sub_discipline_sprinting_30m,
             name = "Бег на 30 м",
-            type = DisciplinePointType.TIME
+            type = DisciplinePointType.SHORT_TIME
         ),
         onClick = {},
         onLongClick = { false },

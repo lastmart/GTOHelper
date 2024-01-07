@@ -1,7 +1,6 @@
 package com.gtohelper.presentation.ui.competitors_list.edit_competitor
 
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -26,8 +25,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.AppAlertDialogRoute
-import com.gtohelper.presentation.components.composables.CheckButton
+import com.gtohelper.presentation.components.composables.dialogs.AppAlertDialogRoute
+import com.gtohelper.presentation.components.composables.buttons.CheckButton
 import com.gtohelper.presentation.components.forms.FormState
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormEvent
 import com.gtohelper.presentation.ui.competitors_list.components.forms.CompetitorFormState

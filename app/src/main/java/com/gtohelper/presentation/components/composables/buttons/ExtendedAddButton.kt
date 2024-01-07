@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.buttons
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add

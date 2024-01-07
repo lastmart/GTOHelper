@@ -24,13 +24,13 @@ class CompetitorRepositoryImpl(
         return dao.getCompetitionCompetitorCount(competitionId)
     }
 
-    override suspend fun getById(competitorId: Int): Competitor? {
+    override suspend fun getBy(id: Int): Competitor? {
         return withContext(Dispatchers.IO) {
-            dao.getCompetitorById(competitorId)?.toDomainModel()
+            dao.getCompetitorById(id)?.toDomainModel()
         }
     }
 
-    override suspend fun getByNumberInCompetition(
+    override suspend fun getBy(
         competitorNumber: Int,
         competitionId: Int
     ): Competitor? {

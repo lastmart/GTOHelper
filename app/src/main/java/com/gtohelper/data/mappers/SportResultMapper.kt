@@ -9,7 +9,7 @@ fun SportResult.toEntity(): SportResultEntity {
         id = id,
         sportName = sportName,
         value = value,
-        competitorNumber=competitorNumber,
+        competitorId = competitorId,
         competitionId = competitionId,
     )
 }
@@ -18,7 +18,7 @@ fun SportResultEntity.toDomainModel(): SportResult {
     return SportResult(
         id = id,
         sportName = sportName,
-        competitorNumber=competitorNumber,
+        competitorId = competitorId,
         value = value,
         competitionId = competitionId,
     )

@@ -19,7 +19,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -33,8 +32,8 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
-import com.gtohelper.presentation.components.composables.AppSearchField
-import com.gtohelper.presentation.components.composables.ExpandingAddButton
+import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
+import com.gtohelper.presentation.components.composables.buttons.ExpandingAddButton
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.competitors_list.components.composables.CompetitorItem
 import com.gtohelper.presentation.ui.theme.spacing

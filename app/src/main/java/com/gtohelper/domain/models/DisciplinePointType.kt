@@ -1,15 +1,25 @@
 package com.gtohelper.domain.models
 
-enum class DisciplinePointType{
-    TIME,
-    AMOUNT,
-    BINARY;
 
-    fun toReadable(value: Int) : String {
+enum class DisciplinePointType {
+    SHORT_TIME, // ss:ms
+    LONG_TIME, // mm:ss
+    AMOUNT; // just number
+
+    fun toReadable(value: Int): String {
         return when (this) {
-            TIME -> "${(value / 60).toString().padStart(2, '0')}:${(value % 60).toString().padStart(2, '0')}"
+            SHORT_TIME -> """
+                ${(value / 60).toString().padStart(2, '0')}:
+                ${(value / 600).toString().padStart(2, '0')}
+                """
+
+            LONG_TIME -> {
+                """
+                ${(value / 60).toString().padStart(2, '0')}:
+                ${(value % 60).toString().padStart(2, '0')}
+                """
+            }
             AMOUNT -> value.toString()
-            BINARY -> if (value != 0) "Зачет" else "Незачет"
         }
     }
 }

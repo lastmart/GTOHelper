@@ -39,9 +39,9 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.AddButton
-import com.gtohelper.presentation.components.composables.CheckButton
-import com.gtohelper.presentation.components.composables.ExpandableCard
+import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.buttons.CheckButton
+import com.gtohelper.presentation.components.composables.cards.ExpandableCard
 import com.gtohelper.presentation.ui.theme.spacing
 
 

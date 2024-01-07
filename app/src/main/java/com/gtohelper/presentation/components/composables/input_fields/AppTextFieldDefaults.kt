@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.input_fields
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TextFieldColors

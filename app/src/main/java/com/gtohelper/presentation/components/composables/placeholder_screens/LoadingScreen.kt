@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.components.composables
+package com.gtohelper.presentation.components.composables.placeholder_screens
 
 
 import androidx.compose.foundation.layout.Box

@@ -54,7 +54,7 @@ class AddCompetitorViewModel @Inject constructor(
             return "Номер должен быть указан"
         }
 
-        if (repository.getByNumberInCompetition(state.number, competitionId) != null){
+        if (repository.getBy(state.number, competitionId) != null){
             return "Участник с таким номером уже существует"
         }
 

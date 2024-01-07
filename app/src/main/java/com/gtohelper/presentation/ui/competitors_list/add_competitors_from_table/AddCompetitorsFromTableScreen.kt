@@ -32,9 +32,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.presentation.components.composables.ExtendedAddButton
-import com.gtohelper.presentation.components.composables.InfoAlertDialog
-import com.gtohelper.presentation.components.composables.LoadingScreen
+import com.gtohelper.presentation.components.composables.buttons.ExtendedAddButton
+import com.gtohelper.presentation.components.composables.dialogs.InfoAlertDialog
+import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
 import com.gtohelper.presentation.ui.theme.spacing
 
 @Composable

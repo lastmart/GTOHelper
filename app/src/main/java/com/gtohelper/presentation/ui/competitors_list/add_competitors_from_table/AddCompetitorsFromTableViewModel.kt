@@ -79,7 +79,7 @@ class AddCompetitorsFromTableViewModel @Inject constructor(
     }
 
     private suspend fun getAlreadyExistingNumbers(competitors: List<Int>): List<Int> {
-        return competitors.filter { repository.getByNumberInCompetition(it, competitionId) != null }
+        return competitors.filter { repository.getBy(it, competitionId) != null }
     }
 
     private fun findAllDuplicates(items: List<Int>): Set<Int> {
