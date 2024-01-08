@@ -58,7 +58,7 @@ fun SimpleExpandableCard(
     title: String,
     content: @Composable () -> Unit,
 ) {
-    var expanded by remember { mutableStateOf(true) }
+    var expanded by remember { mutableStateOf(false) }
 
     ExpandableCard(
         modifier = modifier,
