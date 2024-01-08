@@ -9,28 +9,28 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.withStyle
 
-class VisibleHintTransformation(
+
+class MirroringVisibleHintTransformation(
     private val hint: String
 ) : VisualTransformation {
 
     override fun filter(text: AnnotatedString): TransformedText {
         val transformedText = buildAnnotatedString {
-            append(text)
             if (text.length < hint.length) {
                 withStyle(SpanStyle(Color.Unspecified.copy(alpha = 0.4f))){
                     append(hint.drop(text.length))
                 }
             }
+            append(text)
         }
         return TransformedText(
-            offsetMapping = createOffsetMapping(text.length),
+            offsetMapping = createOffsetMapping(text.length, hint.length),
             text = transformedText
         )
     }
-
-    private fun createOffsetMapping(textLength: Int): OffsetMapping =
+    private fun createOffsetMapping(textLength: Int, hintLength: Int): OffsetMapping =
         object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int = offset
+            override fun originalToTransformed(offset: Int): Int = hintLength
             override fun transformedToOriginal(offset: Int): Int = textLength
         }
 }

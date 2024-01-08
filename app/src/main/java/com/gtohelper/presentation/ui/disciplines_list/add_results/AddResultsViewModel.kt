@@ -47,10 +47,10 @@ class AddResultsViewModel @Inject constructor(
 
     val uiState = _uiState.asStateFlow()
 
-    init{
+    init {
         viewModelScope.launch {
             val discipline = disciplineRepository.getBy(disciplineName)
-            if (discipline != null){
+            if (discipline != null) {
                 _uiState.update { AddResultsUiState.Loaded(discipline) }
             }
         }
@@ -58,16 +58,15 @@ class AddResultsViewModel @Inject constructor(
 
     fun onEvent(event: AddResultsEvent) {
         val state = _uiState.value
-        if (state is AddResultsUiState.Loaded){
+        if (state is AddResultsUiState.Loaded) {
             when (event) {
                 AddResultsEvent.SaveResult -> saveResult(state)
-                AddResultsEvent.ClearResult -> clearResult(state)
                 is AddResultsEvent.SearchResult -> _searchQuery.update { event.query }
                 is AddResultsEvent.UpdateNumber -> _uiState.update { state.copy(number = event.value) }
                 is AddResultsEvent.UpdateResult -> _uiState.update { state.copy(result = event.value) }
             }
         }
-        if (event is ModifyEvent){
+        if (event is ModifyEvent) {
             saveResultState = null
         }
     }
@@ -87,6 +86,9 @@ class AddResultsViewModel @Inject constructor(
                 disciplineName
             )
             saveResultState = result
+            if (result is SaveSportResultResult.Success) {
+                clearResult(state)
+            }
         }
     }
 }

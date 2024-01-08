@@ -1,14 +1,16 @@
 package com.gtohelper.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.gtohelper.presentation.ui.competitions.CompetitionListRoute
 import com.gtohelper.presentation.ui.competitions.CompetitionListViewModel
@@ -33,8 +35,12 @@ import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsView
 import com.gtohelper.presentation.ui.help.HelpRoute
 
 
+@RequiresApi(Build.VERSION_CODES.R)
 @Composable
-fun AppNavHost(navController: NavHostController) {
+fun AppNavHost(
+    onShowSnackbar: suspend (String, String?) -> Boolean,
+) {
+    val navController = rememberNavController()
     val competitionIdArg = "competition_id"
     val competitionNameArg = "competition_name"
     val competitorIdArg = "competitor_id"
@@ -125,7 +131,6 @@ fun AppNavHost(navController: NavHostController) {
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
-            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
             AddDisciplineRoute(
                 navController = navController,
                 viewModel = viewModel,
@@ -141,7 +146,6 @@ fun AppNavHost(navController: NavHostController) {
             EditCompetitorRoute(
                 navController = navController,
                 viewModel = viewModel,
-                competitorId = competitorId,
             )
         }
 

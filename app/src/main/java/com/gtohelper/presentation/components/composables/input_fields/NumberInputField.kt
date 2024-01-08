@@ -1,6 +1,6 @@
 package com.gtohelper.presentation.components.composables.input_fields
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.sp
 import com.gtohelper.presentation.components.transformations.VisibleHintTransformation
 
 @Preview
@@ -36,11 +35,11 @@ fun NumberInputField(
     modifier: Modifier = Modifier,
     value: Int,
     onChanged: (Int) -> Unit = {},
+    textStyle: TextStyle = TextStyle.Default,
 ) {
-    val textStyle = TextStyle(fontSize = 25.sp)
-
-    Box(
-        modifier=modifier,
+    Row(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.Center
     ) {
         BasicTextField(
             modifier = Modifier.width(IntrinsicSize.Min),
@@ -54,6 +53,7 @@ fun NumberInputField(
                 }
             },
             textStyle = textStyle,
+            visualTransformation = VisibleHintTransformation("№"),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
     }

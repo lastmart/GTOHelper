@@ -39,7 +39,6 @@ import kotlinx.coroutines.launch
 fun EditCompetitorRoute(
     navController: NavController,
     viewModel: EditCompetitorViewModel,
-    competitorId: Int,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()

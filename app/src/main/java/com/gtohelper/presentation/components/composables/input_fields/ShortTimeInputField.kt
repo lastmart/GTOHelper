@@ -1,5 +1,6 @@
 package com.gtohelper.presentation.components.composables.input_fields
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.width
@@ -17,7 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.gtohelper.domain.models.ShortDuration
-import com.gtohelper.presentation.components.transformations.VisibleHintTransformation
+import com.gtohelper.presentation.components.transformations.MirroringVisibleHintTransformation
 
 @Preview
 @Composable
@@ -44,17 +45,15 @@ fun PreviewTimeInputField() {
 fun ShortTimeInputField(
     modifier: Modifier = Modifier,
     value: ShortDuration,
-    onChanged: (ShortDuration) -> Unit = {}
+    textStyle: TextStyle = TextStyle.Default,
+    onChanged: (ShortDuration) -> Unit = {},
 ) {
-    val textStyle = TextStyle(fontSize = 25.sp)
     Row(
         modifier = modifier,
+        horizontalArrangement = Arrangement.Center
     ) {
-
-    
         BasicTextField(
-            modifier = Modifier
-                .width(IntrinsicSize.Min),
+            modifier=Modifier.width(IntrinsicSize.Min),
             value = if (value.seconds == 0) "" else value.seconds.toString(),
             onValueChange = { v ->
                 if (v.length <= 2) {
@@ -65,17 +64,18 @@ fun ShortTimeInputField(
                 }
             },
             textStyle = textStyle,
-            visualTransformation = VisibleHintTransformation("00"),
+            visualTransformation = MirroringVisibleHintTransformation("00"),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
 
 
         Text(
+            modifier=Modifier.width(IntrinsicSize.Min),
             text = ".",
             style = textStyle,
         )
         BasicTextField(
-            modifier = Modifier.width(IntrinsicSize.Min),
+            modifier=Modifier.width(IntrinsicSize.Min),
             value = if (value.deciSeconds == 0) "" else value.deciSeconds.toString(),
             onValueChange = { v ->
                 if (v.length <= 1) {
@@ -86,7 +86,7 @@ fun ShortTimeInputField(
                 }
             },
             textStyle = textStyle,
-            visualTransformation = VisibleHintTransformation("0"),
+            visualTransformation = MirroringVisibleHintTransformation("0"),
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         )
     }

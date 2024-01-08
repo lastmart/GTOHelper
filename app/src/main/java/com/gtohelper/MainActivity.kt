@@ -1,13 +1,10 @@
-package com.gtohelper.presentation
+package com.gtohelper
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.navigation.compose.rememberNavController
-import com.gtohelper.presentation.navigation.AppNavHost
-import com.gtohelper.presentation.ui.theme.BackgroundLight
+import com.gtohelper.presentation.ui.GHApp
 import com.gtohelper.presentation.ui.theme.GTOHelperTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -18,8 +15,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             GTOHelperTheme {
                 Surface {
-                    val navController = rememberNavController()
-                    AppNavHost(navController)
+                    GHApp()
                 }
             }
         }
