@@ -33,7 +33,8 @@ import com.gtohelper.presentation.ui.competitors_results.components.composables.
 
 @Composable
 fun CompetitorsResultsRoute(
-    navController: NavController, viewModel: CompetitorsResultsViewModel, competitionId: Int
+    navController: NavController,
+    viewModel: CompetitorsResultsViewModel,
 ) {
     val uiState by viewModel.uiState.collectAsState()
 

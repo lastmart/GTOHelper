@@ -95,8 +95,7 @@ fun AppNavHost(
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<AddCompetitorViewModel>()
-            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
-            AddCompetitorRoute(navController, viewModel, competitionId)
+            AddCompetitorRoute(navController, viewModel)
         }
 
         composable(
@@ -142,7 +141,6 @@ fun AppNavHost(
             arguments = competitorIdArgument,
         ) {
             val viewModel = hiltViewModel<EditCompetitorViewModel>()
-            val competitorId = it.arguments?.getInt(competitorIdArg) ?: 0
             EditCompetitorRoute(
                 navController = navController,
                 viewModel = viewModel,
@@ -154,11 +152,9 @@ fun AppNavHost(
             arguments = competitionIdArgument
         ) {
             val viewModel = hiltViewModel<CompetitorsResultsViewModel>()
-            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
             CompetitorsResultsRoute(
                 navController = navController,
                 viewModel = viewModel,
-                competitionId = competitionId
             )
         }
 
@@ -167,14 +163,10 @@ fun AppNavHost(
             arguments = competitionIdArgument + disciplineIdArgument
         ) {
             val viewModel = hiltViewModel<AddResultsViewModel>()
-            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
-            val disciplineName = it.arguments?.getString(disciplineIdArg).toString()
 
             AddResultsRoute(
                 navController = navController,
                 viewModel = viewModel,
-                competitionId = competitionId,
-                disciplineName = disciplineName,
             )
         }
 

@@ -54,8 +54,6 @@ import com.gtohelper.presentation.ui.theme.spacing
 fun AddResultsRoute(
     navController: NavController,
     viewModel: AddResultsViewModel,
-    competitionId: Int,
-    disciplineName: String,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
