@@ -24,7 +24,7 @@ class SportResultRepositoryImpl(
 
     override suspend fun getBy(
         competitionId: Int,
-        disciplineId: String,
+        disciplineId: Int,
         competitorId: Int,
     ): SportResult? {
         return withContext(Dispatchers.IO) {
@@ -55,7 +55,7 @@ class SportResultRepositoryImpl(
     }
 
     override fun getResultsAndCompetitors(
-        competitionId: Int, disciplineId: String
+        competitionId: Int, disciplineId: Int
     ): Flow<List<SportResultAndCompetitor>> {
         return dao.getResultsAndCompetitors(
             competitionId,
@@ -64,7 +64,7 @@ class SportResultRepositoryImpl(
     }
 
     override fun getCompetitionDisciplineResults(
-        competitionId: Int, disciplineId: String
+        competitionId: Int, disciplineId: Int
     ): Flow<List<SportResult>> {
         return dao.getCompetitionSportResults(competitionId, disciplineId).map {
             it.map { item -> item.toDomainModel() }

@@ -11,7 +11,7 @@ class GetResultsAndCompetitors(
 ) {
     operator fun invoke(
         competitionId: Int,
-        disciplineId: String,
+        disciplineId: Int,
     ): Flow<List<SportResultAndCompetitor>> {
         return sportResultRepository.getResultsAndCompetitors(
             competitionId = competitionId,

@@ -18,16 +18,15 @@ class SaveSportResultUseCase(
         number: Int,
         value: Int,
         competitionId: Int,
-        disciplineId: String
+        disciplineId: Int,
     ): SaveSportResultResult {
         val competitor = competitorRepository.getBy(number, competitionId)
         if (competitor != null) {
-            return if (sportResultRepository.getBy(
-                    competitionId, disciplineId, competitor.id
-                ) == null
-            ) {
+            val existingResult =
+                sportResultRepository.getBy(competitionId, disciplineId, competitor.id)
+            return if (existingResult == null) {
                 val result = SportResult(
-                    sportName = disciplineId,
+                    disciplineId = disciplineId,
                     competitionId = competitionId,
                     value = value,
                     competitorId = competitor.id
@@ -37,7 +36,6 @@ class SaveSportResultUseCase(
             } else {
                 SaveSportResultResult.ResultAlreadyExists
             }
-
         } else {
             return SaveSportResultResult.CompetitorDoesNotExist
         }

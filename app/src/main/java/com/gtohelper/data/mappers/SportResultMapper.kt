@@ -7,7 +7,7 @@ import com.gtohelper.domain.models.SportResult
 fun SportResult.toEntity(): SportResultEntity {
     return SportResultEntity(
         id = id,
-        sportName = sportName,
+        disciplineId = disciplineId,
         value = value,
         competitorId = competitorId,
         competitionId = competitionId,
@@ -17,7 +17,7 @@ fun SportResult.toEntity(): SportResultEntity {
 fun SportResultEntity.toDomainModel(): SportResult {
     return SportResult(
         id = id,
-        sportName = sportName,
+        disciplineId = disciplineId,
         competitorId = competitorId,
         value = value,
         competitionId = competitionId,

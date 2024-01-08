@@ -92,7 +92,7 @@ fun DisciplineListRoute(
         onBackClicked = { navController.navigateUp() },
         onItemClicked = {
             navController.navigate(
-                Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
+                Screen.AddResultsScreen.withArgs(competitionId.toString(), it.id.toString())
             )
         },
         onAddButtonClicked = {

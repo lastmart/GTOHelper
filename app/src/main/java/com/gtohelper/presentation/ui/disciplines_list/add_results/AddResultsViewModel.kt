@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.domain.repository.DisciplineRepository
-import com.gtohelper.domain.usecases.sport_results.save_result.SaveSportResultResult
+import com.gtohelper.domain.usecases.sport_results.SaveSportResultResult
 import com.gtohelper.domain.usecases.sport_results.SportResultUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -26,7 +26,7 @@ class AddResultsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
-    private val disciplineName: String = savedStateHandle["discipline_id"] ?: ""
+    private val disciplineId: Int = savedStateHandle["discipline_id"] ?: 0
     private val competitionId: Int = savedStateHandle["competition_id"] ?: 0
 
     private val _searchQuery = MutableStateFlow("")
@@ -38,7 +38,7 @@ class AddResultsViewModel @Inject constructor(
     val results: Flow<List<SportResultAndCompetitor>> =
         sportResultUseCases.getResultsAndCompetitors(
             competitionId,
-            disciplineName,
+            disciplineId,
         ).combine(_searchQuery) { data, query ->
             data.filter { it.competitor.number.toString().contains(query) }
         }
@@ -49,7 +49,7 @@ class AddResultsViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val discipline = disciplineRepository.getBy(disciplineName)
+            val discipline = disciplineRepository.getBy(disciplineId)
             if (discipline != null) {
                 _uiState.update { AddResultsUiState.Loaded(discipline) }
             }
@@ -83,7 +83,7 @@ class AddResultsViewModel @Inject constructor(
                 state.number,
                 state.result,
                 competitionId,
-                disciplineName
+                disciplineId
             )
             saveResultState = result
             if (result is SaveSportResultResult.Success) {
