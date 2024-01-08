@@ -123,10 +123,7 @@ fun AddResultsScreen(
         ) {
 
             when (uiState) {
-                AddResultsUiState.Loading -> {
-                    LoadingScreen(Modifier.fillMaxSize())
-                }
-
+                AddResultsUiState.Loading -> LoadingScreen(Modifier.fillMaxSize())
                 is AddResultsUiState.Loaded -> {
                     AppSearchField(
                         modifier = Modifier.fillMaxWidth(),
@@ -143,7 +140,7 @@ fun AddResultsScreen(
                     ) {
                         items(results) {
                             ResultItem(
-                                pointType = DisciplinePointType.LONG_TIME,
+                                pointType = uiState.discipline.type,
                                 resultWithCompetitor = it,
                             )
                         }
@@ -161,9 +158,10 @@ fun AddResultsScreen(
                                 .align(Alignment.CenterVertically),
                             result = uiState.result,
                             number = uiState.number,
-                            disciplinePointType = uiState.discipline.type,
+                            pointType = uiState.discipline.type,
                             onResultChange = { onEvent(AddResultsEvent.UpdateResult(it)) },
                             onNumberChanged = { onEvent(AddResultsEvent.UpdateNumber(it)) },
+                            onDone = { onEvent(AddResultsEvent.SaveResult) }
                         )
 
                         val containerColor =
@@ -176,7 +174,7 @@ fun AddResultsScreen(
                         )
                     }
 
-                    Spacer(Modifier.height(MaterialTheme.spacing.small))
+                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
                 }
             }
         }

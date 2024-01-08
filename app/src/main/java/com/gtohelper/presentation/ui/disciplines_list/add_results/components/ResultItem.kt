@@ -27,7 +27,6 @@ import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
-import com.gtohelper.presentation.ui.theme.spacing
 
 @Composable
 fun ResultItem(
@@ -95,13 +94,11 @@ fun PreviewResultItem() {
     Column(
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        ResultItem(
-            pointType = DisciplinePointType.LONG_TIME,
-            resultWithCompetitor = resultAndCompetitor,
-        )
-        ResultItem(
-            pointType = DisciplinePointType.AMOUNT,
-            resultWithCompetitor = resultAndCompetitor,
-        )
+        DisciplinePointType.entries.forEach {
+            ResultItem(
+                pointType = it,
+                resultWithCompetitor = resultAndCompetitor,
+            )
+        }
     }
 }

@@ -22,8 +22,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -49,7 +49,7 @@ fun Preview() {
             ResultInputField(result = value,
                 number = number,
                 hasError = true,
-                disciplinePointType = it,
+                pointType = it,
                 onNumberChanged = { v1 -> number = v1 },
                 onResultChange = { v2 -> value = v2 })
         }
@@ -62,9 +62,10 @@ fun ResultInputField(
     modifier: Modifier = Modifier,
     result: Int,
     number: Int,
-    disciplinePointType: DisciplinePointType,
+    pointType: DisciplinePointType,
     onNumberChanged: (Int) -> Unit = {},
     onResultChange: (Int) -> Unit = {},
+    onDone: () -> Unit = {},
     hasError: Boolean = false,
 ) {
     val contentColor = if (hasError) MaterialTheme.colorScheme.onErrorContainer
@@ -100,7 +101,10 @@ fun ResultInputField(
                 },
                 visualTransformation = VisibleHintTransformation("№"),
                 textStyle = textStyle.copy(textAlign = TextAlign.Center),
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next
+                ),
             )
             Divider(
                 modifier = Modifier
@@ -110,7 +114,7 @@ fun ResultInputField(
                 color = contentColor,
             )
             val inputFieldModifier = Modifier.weight(2f)
-            when (disciplinePointType) {
+            when (pointType) {
                 DisciplinePointType.SHORT_TIME -> ShortTimeInputField(
                     textStyle = textStyle,
                     modifier = inputFieldModifier,
@@ -123,6 +127,7 @@ fun ResultInputField(
                     modifier = inputFieldModifier,
                     value = LongDuration.fromMillis(result),
                     onChanged = { onResultChange(it.toMillis()) },
+                    onDone = onDone,
                 )
 
                 DisciplinePointType.AMOUNT -> NumberInputField(
@@ -130,6 +135,7 @@ fun ResultInputField(
                     modifier = inputFieldModifier,
                     value = result,
                     onChanged = onResultChange,
+                    onDone = onDone,
                 )
             }
         }

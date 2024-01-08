@@ -10,7 +10,7 @@ enum class DisciplinePointType {
         return when (this) {
             SHORT_TIME -> {
                 val duration = ShortDuration.fromMillis(value)
-                return "${duration.seconds}:${duration.deciSeconds}"
+                return "${duration.seconds}.${duration.deciSeconds}"
             }
 
             LONG_TIME -> {
