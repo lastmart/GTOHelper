@@ -98,11 +98,7 @@ fun AddResultsScreen(
         ),
         topBar = {
             TopAppBar(
-                title = {
-                    if (uiState is AddResultsUiState.Loaded) {
-                        Text(uiState.discipline.name)
-                    }
-                },
+                title = {},
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
                         Icon(
@@ -123,19 +119,23 @@ fun AddResultsScreen(
             when (uiState) {
                 AddResultsUiState.Loading -> LoadingScreen(Modifier.fillMaxSize())
                 is AddResultsUiState.Loaded -> {
-                    AppSearchField(
-                        modifier = Modifier.fillMaxWidth(),
-                        value = searchQuery,
-                        hint = "Поиск по номеру...",
-                        onValueChange = onSearchQueryChanged,
-                    )
 
-                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
 
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                     ) {
+                        item {
+                            Text(uiState.discipline.name)
+//                            AppSearchField(
+//                                modifier = Modifier.fillMaxWidth(),
+//                                value = searchQuery,
+//                                hint = "Поиск по номеру...",
+//                                onValueChange = onSearchQueryChanged,
+//                            )
+
+                            Spacer(Modifier.height(MaterialTheme.spacing.medium))
+                        }
                         items(results) {
                             ResultItem(
                                 pointType = uiState.discipline.type,

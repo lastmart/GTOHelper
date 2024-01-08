@@ -10,7 +10,6 @@ data class Competitor(
     val degree: Int,
 )
 
-
 fun calculateDegree(age: Int): Int {
     return when (age) {
         in 3..7 -> 1

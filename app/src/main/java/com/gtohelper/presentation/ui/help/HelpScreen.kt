@@ -41,7 +41,7 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.presentation.components.composables.buttons.AddButton
 import com.gtohelper.presentation.components.composables.buttons.CheckButton
-import com.gtohelper.presentation.components.composables.cards.ExpandableCard
+import com.gtohelper.presentation.components.composables.cards.SimpleExpandableCard
 import com.gtohelper.presentation.ui.theme.spacing
 
 
@@ -189,7 +189,7 @@ fun HelpScreen(
                 bold = true,
             )
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как создать соревнование?",
             ) {
@@ -204,7 +204,7 @@ fun HelpScreen(
                 )
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как изменить название / описание соревнования?",
             ) {
@@ -220,7 +220,7 @@ fun HelpScreen(
                 )
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как добавить участников?",
             ) {
@@ -254,7 +254,7 @@ fun HelpScreen(
                 }
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как редактировать список дисциплин?",
             ) {
@@ -279,7 +279,7 @@ fun HelpScreen(
                 }
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как должна выглядеть импортируемая таблица с участниками?",
             ) {
@@ -303,7 +303,7 @@ fun HelpScreen(
                 bold = true,
             )
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как добавить результат участника?",
             ) {
@@ -316,7 +316,7 @@ fun HelpScreen(
                 }
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как изменить результат участника?",
             ) {
@@ -335,7 +335,7 @@ fun HelpScreen(
                 bold = true,
             )
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как скачать таблицу с результатами?",
             ) {
@@ -351,7 +351,7 @@ fun HelpScreen(
                 )
             }
 
-            ExpandableCard(
+            SimpleExpandableCard(
                 modifier = Modifier.fillMaxWidth(),
                 title = "Как посмотреть результаты?",
             ) {

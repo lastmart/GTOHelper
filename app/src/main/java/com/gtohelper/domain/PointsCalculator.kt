@@ -3,9 +3,17 @@ package com.gtohelper.domain
 import JsonParser
 import com.gtohelper.domain.models.Competitor
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 import java.util.SortedMap
 
 class PointsCalculator {
+    fun getPointForStringResult(competitor: Competitor, sport:String, resultString:String):Int{
+        if (":" in resultString){
+            val formatter = DateTimeFormatter.ofPattern("HH:mm:ss[.SSS]")
+            return getPoint(competitor, sport, LocalTime.parse(resultString, formatter))
+        }
+        return getPoint(competitor, sport, resultString.toDouble())
+    }
 
     fun <T: Comparable<T>> getPoint(competitor: Competitor, sport:String, result:T):Int{
         if (!(result is Double || result is LocalTime)){
