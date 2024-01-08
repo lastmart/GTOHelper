@@ -70,7 +70,8 @@ fun CompetitorsResultsScreen(
             AppSearchField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 15.dp)
+                    .padding(horizontal = 15.dp),
+                hint = "Поиск результатов...",
             )
 
             Spacer(modifier = Modifier.height(15.dp))

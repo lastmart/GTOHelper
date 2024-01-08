@@ -16,10 +16,12 @@ import com.gtohelper.data.database.relations.CompetitionSubDisciplineDao
 import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.data.repository.CompetitionRepositoryImpl
 import com.gtohelper.data.repository.CompetitorRepositoryImpl
+import com.gtohelper.data.repository.CompetitorResultsRepositoryImpl
 import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import com.gtohelper.data.repository.SportResultRepositoryImpl
 import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.CompetitorRepository
+import com.gtohelper.domain.repository.CompetitorResultsRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.repository.SportResultRepository
 import dagger.Module
@@ -138,6 +140,18 @@ object DataModule {
         dao: SportResultDao,
     ): SportResultRepository {
         return SportResultRepositoryImpl(dao)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCompetitorResultsRepository(
+        sportResultDao: SportResultDao,
+        competitorDao: CompetitorDao,
+    ): CompetitorResultsRepository {
+        return CompetitorResultsRepositoryImpl(
+            sportResultDao = sportResultDao,
+            competitorDao = competitorDao
+        )
     }
 
 

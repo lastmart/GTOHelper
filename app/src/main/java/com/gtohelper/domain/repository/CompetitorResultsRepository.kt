@@ -1,7 +1,14 @@
 package com.gtohelper.domain.repository
 
+import com.gtohelper.domain.models.Competitor
+import com.gtohelper.domain.models.SportResult
+import kotlinx.coroutines.flow.Flow
+
 interface CompetitorResultsRepository {
-     suspend fun getDictSportNormative(id: Int): MutableMap<String, MutableMap<String, Double>>
-     suspend fun getTotalPoints(id: Int): Double
-     suspend fun changeResult(sport:String, oldNormative: String, newNormative:String)
+    fun getCompetitorsWithSportResults(competitionId: Int): Flow<List<Pair<Competitor, Int>>>
+
+    suspend fun getTotalPoints(
+        competitor: Competitor,
+        sportResult: SportResult,
+    ): Int
 }

@@ -19,7 +19,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -64,7 +63,6 @@ fun CompetitorResultItem(
                     Text(
                         text = competitor.number.toString(),
                         fontSize = 14.sp,
-                        color = Color.Black,
                     )
 
                     Spacer(modifier = Modifier.width(5.dp))
@@ -72,7 +70,6 @@ fun CompetitorResultItem(
                     Text(
                         text = competitor.name,
                         fontWeight = FontWeight.Bold,
-                        color = Color.Black,
                         fontSize = 14.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
@@ -82,13 +79,11 @@ fun CompetitorResultItem(
                 Text(
                     text = "Команда: ${competitor.teamName}",
                     fontSize = 14.sp,
-                    color = Color.Black
                 )
 
                 Text(
                     text = "Ступень: ${competitor.degree}",
                     fontSize = 14.sp,
-                    color = Color.Black
                 )
 
                 val gender = when (competitor.gender) {
@@ -99,30 +94,39 @@ fun CompetitorResultItem(
                 Text(
                     text = "Пол: $gender",
                     fontSize = 14.sp,
-                    color = Color.Black
                 )
             }
 
             Row(
                 modifier = Modifier.weight(0.25f, fill = false),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Start
+                horizontalArrangement = Arrangement.Center
             ) {
                 Divider(
                     modifier = Modifier
                         .height(68.dp)
-                        .width(1.dp), color = Color.Gray
+                        .width(1.dp),
+                    color = MaterialTheme.colorScheme.onTertiaryContainer
                 )
 
                 Spacer(modifier = Modifier.width(5.dp))
 
 
-                Text(
-                    modifier = Modifier.padding(end = 5.dp),
-                    maxLines = 1,
-                    text = resultPoints.toString(),
-                    fontSize = 20.sp
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+
+                    Text(
+                        modifier = Modifier.padding(end = 5.dp),
+                        maxLines = 1,
+                        text = resultPoints.toString(),
+                        fontSize = 20.sp
+                    )
+
+                }
+
+
             }
         }
     }

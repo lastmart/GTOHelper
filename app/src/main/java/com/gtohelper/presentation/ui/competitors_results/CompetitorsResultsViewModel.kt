@@ -1,22 +1,40 @@
 package com.gtohelper.presentation.ui.competitors_results
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.domain.models.Competitor
-import com.gtohelper.domain.models.Gender
+import com.gtohelper.domain.repository.CompetitorResultsRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel
 class CompetitorsResultsViewModel @Inject constructor(
-//    val competitorResultsRepository: CompetitorResultsRepository,
-//    val sportResultDao: SportResultDao
+    val competitorResultsRepository: CompetitorResultsRepository,
+    val sportResultDao: SportResultDao,
+    savedStateHandle: SavedStateHandle
 ) : ViewModel() {
-    val uiState: StateFlow<CompetitorsResultsUIState> = flow {
+
+    private val competitionId: Int = savedStateHandle["competition_id"] ?: 0
+
+    /*val uiState: StateFlow<CompetitorsResultsUIState> = flow {
+
+
+        val competitorsSportResults = competitorResultsRepository.getCompetitorsWithSportResults(competitionId)
+            .collect{
+                println("Collected:")
+                println(it)
+            }
+
+
         emit(
             CompetitorsResultsUIState(
                 competitorsResults = listOf(
@@ -51,38 +69,59 @@ class CompetitorsResultsViewModel @Inject constructor(
                     ) to 9,
                 )
             )
-        )
-    }.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5_000),
-        initialValue = CompetitorsResultsUIState(listOf())
-    )
+        )*/
 
-    //   private var _competitorsResultsLiveData = MutableLiveData<List<CompetitorResults>>()
-    //   val competitorsResultsLiveData: LiveData<List<CompetitorResults>> get() = _competitorsResultsLiveData
+    private val _searchQuery = MutableStateFlow("")
+    val searchQuery = _searchQuery.asStateFlow()
 
-    init {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            sportResultDao.upsertResult(SportResultEntity("Бег 60 м", 2, LocalTime.of(0, 1, 5, 1_000_000 * 9), null))
-//            println(sportResultDao.getAllResults()[0].resultTime?.hour)
-//            println(sportResultDao.getAllResults()[0].resultTime?.minute)
-//            println(sportResultDao.getAllResults()[0].resultTime?.second)
-//        }
+
+    val uiState: StateFlow<CompetitorsResultsUIState> =
+        competitorResultsRepository.getCompetitorsWithSportResults(competitionId)
+            .combine(_searchQuery) { list, query ->
+
+                if (query.isBlank())
+                    return@combine list
+
+                val newList = list.filter { (competitor, result) ->
+                    doesCompetitorMatchQuery(competitor, query)
+                }
+
+                return@combine newList
+            }
+            .map { competitorsResults ->
+                CompetitorsResultsUIState(
+                    competitorsResults = competitorsResults.sortedByDescending { it.second }
+                )
+            }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = CompetitorsResultsUIState(listOf())
+            )
+    //.map { competitorsResults ->
+    //    CompetitorsResultsUIState(
+    //        competitorsResults = competitorsResults.sortedByDescending { it.second }
+    //    )
+    //}.stateIn(
+    //    scope = viewModelScope,
+    //    started = SharingStarted.WhileSubscribed(5_000),
+    //    initialValue = CompetitorsResultsUIState(listOf())
+    //)
+
+
+    private val _isSearching = MutableStateFlow(false)
+    val isSearching = _isSearching.asStateFlow()
+
+    fun onSearchQueryChange(query: String) {
+        _searchQuery.value = query
     }
 
-    suspend fun getCompetitorsResults() {
-//        withContext(Dispatchers.IO) {
-//            val competitorsResults = FakeCompetitors.competitorsWithResults
-//            _competitorsResultsLiveData.postValue(competitorsResults)
-//        }
-    }
-
-    suspend fun searchCompetitorsResultsByName(name: String) {
-//        withContext(Dispatchers.IO) {
-//            val competitorsResults = FakeCompetitors.competitorsWithResults
-//                .filter { it.name.contains(name) }
-//
-//            _competitorsResultsLiveData.postValue(competitorsResults)
-//        }
+    private fun doesCompetitorMatchQuery(competitor: Competitor, query: String): Boolean {
+        return when {
+            competitor.name.contains(query, ignoreCase = true) -> true
+            competitor.number == query.toIntOrNull() -> true
+            competitor.teamName.contains(query, ignoreCase = true) -> true
+            else -> false
+        }
     }
 }

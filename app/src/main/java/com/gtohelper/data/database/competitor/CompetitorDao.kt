@@ -4,7 +4,9 @@ import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
+import com.gtohelper.data.database.relations.CompetitorWithSportResults
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,6 +26,10 @@ interface CompetitorDao {
 
     @Query("SELECT * FROM competitors_table WHERE id=:competitorId")
     suspend fun getCompetitorById(competitorId: Int): CompetitorEntity?
+
+    @Transaction
+    @Query("SELECT * FROM competitors_table WHERE competitionId = :competitionId")
+    fun getCompetitorsWithSportResults(competitionId: Int): Flow<List<CompetitorWithSportResults>>
 
     @Insert
     suspend fun create(competitor: CompetitorEntity)
