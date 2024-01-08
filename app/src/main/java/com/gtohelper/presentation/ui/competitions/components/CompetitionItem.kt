@@ -37,14 +37,14 @@ fun CompetitionItem(
             Text(
                 text = competition.name,
                 fontSize = 30.sp,
-//                maxLines = 1,
-//                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
             )
             Text(
                 text = competition.description,
                 fontSize = 20.sp,
-//                maxLines = 1,
-//                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
             )
         }
     }
@@ -53,5 +53,6 @@ fun CompetitionItem(
 @Preview
 @Composable
 fun CompetitionItemPreview() {
-    CompetitionItem(Competition(1, "11 'Ы'", "Сдача нормативов"))
+    CompetitionItem(Competition(1, "ааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааа",
+        "Без описания"))
 }

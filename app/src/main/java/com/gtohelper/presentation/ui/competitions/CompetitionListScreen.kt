@@ -136,7 +136,10 @@ fun PreviewLoaded() {
         searchQuery = "",
         uiState = CompetitionListUiState.Loaded(
             competitions = (0..10).map {
-                Competition(1, (0..it).map { "asd" }.joinToString(""), "Сдача нормативов")
+                Competition(1,
+                    name = (0..it).joinToString("") { "asd" },
+                    description = (0..it).joinToString("") { "asd" },
+                )
             }.toList()
         )
     )

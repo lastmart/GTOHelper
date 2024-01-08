@@ -110,7 +110,7 @@ fun AddCompetitionScreen(
                 value = uiState.name,
                 label = "Название",
                 onValueChange = { onEvent(AddCompetitionEvent.UpdateName(it)) },
-                maxLength = 20,
+                maxLength = 50,
                 singleLine = true,
             )
 
@@ -119,11 +119,10 @@ fun AddCompetitionScreen(
                 value = uiState.description,
                 label = "Описание",
                 onValueChange = { onEvent(AddCompetitionEvent.UpdateDescription(it)) },
-                maxLength = 20,
+                maxLength = 200,
             )
         }
     }
-
 }
 
 @Preview
