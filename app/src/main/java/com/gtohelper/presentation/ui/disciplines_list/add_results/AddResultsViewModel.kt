@@ -67,6 +67,9 @@ class AddResultsViewModel @Inject constructor(
                 is AddResultsEvent.UpdateResult -> _uiState.update { state.copy(result = event.value) }
             }
         }
+        if (event is ModifyEvent){
+            saveResultState = null
+        }
     }
 
     private fun clearResult(state: AddResultsUiState.Loaded) {

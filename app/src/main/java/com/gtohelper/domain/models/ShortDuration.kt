@@ -11,8 +11,8 @@ data class ShortDuration(
     companion object {
         fun fromMillis(value: Int) : ShortDuration {
             return ShortDuration(
-                deciSeconds = 10,
-                seconds = value
+                deciSeconds = value % 1000 / 100,
+                seconds = value / 1000
             )
         }
     }

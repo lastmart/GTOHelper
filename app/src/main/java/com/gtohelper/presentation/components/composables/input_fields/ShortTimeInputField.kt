@@ -1,64 +1,94 @@
 package com.gtohelper.presentation.components.composables.input_fields
 
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.TextField
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
+import com.gtohelper.domain.models.ShortDuration
 import com.gtohelper.presentation.components.transformations.VisibleHintTransformation
-import kotlin.time.Duration
-import kotlin.time.DurationUnit
-import kotlin.time.toDuration
-
-
-@Composable
-fun ShortTimeInputField(
-    decimalSeconds: Int,
-    seconds: Int,
-    onChanged: (Duration) -> Unit = {}
-) {
-    Row {
-        TextField(
-            value = seconds.toString() + decimalSeconds.toString(),
-            onValueChange = { value ->
-                val millis = value.toInt()
-                if (millis in 0..599) onChanged(
-                    (seconds * 1000 + decimalSeconds * 100).toDuration(
-                        DurationUnit.MILLISECONDS,
-                    )
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            textStyle = TextStyle()
-        )
-    }
-}
 
 @Preview
 @Composable
 fun PreviewTimeInputField() {
 
-    var text by remember {
-        mutableStateOf("")
+    var value by remember {
+        mutableStateOf(
+            ShortDuration(
+                seconds = 10,
+                deciSeconds = 1,
+            )
+        )
     }
 
-    BasicTextField(
-        value = text,
-        onValueChange = { value ->
-            if (value.length <= 2){
-                text = value.filter { it.isDigit() }
-            }
+    ShortTimeInputField(
+        value = value,
+        onChanged = {
+            value = it
         },
-        textStyle = TextStyle(fontSize = 40.sp),
-        visualTransformation = VisibleHintTransformation("00"),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
     )
 }
+
+@Composable
+fun ShortTimeInputField(
+    modifier: Modifier = Modifier,
+    value: ShortDuration,
+    onChanged: (ShortDuration) -> Unit = {}
+) {
+    val textStyle = TextStyle(fontSize = 25.sp)
+    Row(
+        modifier = modifier,
+    ) {
+
+    
+        BasicTextField(
+            modifier = Modifier
+                .width(IntrinsicSize.Min),
+            value = if (value.seconds == 0) "" else value.seconds.toString(),
+            onValueChange = { v ->
+                if (v.length <= 2) {
+                    val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
+                    if (number in 0..59) {
+                        onChanged(value.copy(seconds = number))
+                    }
+                }
+            },
+            textStyle = textStyle,
+            visualTransformation = VisibleHintTransformation("00"),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+
+
+        Text(
+            text = ".",
+            style = textStyle,
+        )
+        BasicTextField(
+            modifier = Modifier.width(IntrinsicSize.Min),
+            value = if (value.deciSeconds == 0) "" else value.deciSeconds.toString(),
+            onValueChange = { v ->
+                if (v.length <= 1) {
+                    val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
+                    if (number in 0..9) {
+                        onChanged(value.copy(deciSeconds = number))
+                    }
+                }
+            },
+            textStyle = textStyle,
+            visualTransformation = VisibleHintTransformation("0"),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        )
+    }
+}
+

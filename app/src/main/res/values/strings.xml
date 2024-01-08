@@ -30,4 +30,6 @@
     <string name="search_competitors_hint">Поиск участников...</string>
     <string name="results_title">Результаты</string>
     <string name="ok">Ок</string>
+    <string name="competitor_does_not_exist">Участник с таким номером не существует в соревновании</string>
+    <string name="result_already_exists">Результат участника с таким номером уже существует</string>
 </resources>

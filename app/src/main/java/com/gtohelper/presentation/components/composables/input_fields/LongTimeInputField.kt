@@ -13,7 +13,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,7 +36,7 @@ fun PreviewLongTimeInputField() {
 
     LongTimeInputField(
         value = value,
-        onDurationChanged = {
+        onChanged = {
             value = it
         }
     )
@@ -47,7 +46,7 @@ fun PreviewLongTimeInputField() {
 fun LongTimeInputField(
     modifier: Modifier = Modifier,
     value: LongDuration,
-    onDurationChanged: (LongDuration) -> Unit,
+    onChanged: (LongDuration) -> Unit,
 ) {
     val textStyle = TextStyle(fontSize = 25.sp)
     Row(
@@ -63,7 +62,7 @@ fun LongTimeInputField(
                     if (v.length <= 2) {
                         val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
                         if (number in 0..23) {
-                            onDurationChanged(value.copy(hours = number))
+                            onChanged(value.copy(hours = number))
                         }
                     }
                 },
@@ -84,7 +83,7 @@ fun LongTimeInputField(
                 if (v.length <= 2) {
                     val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
                     if (number in 0..59) {
-                        onDurationChanged(value.copy(minutes = number))
+                        onChanged(value.copy(minutes = number))
                     }
                 }
             },
@@ -103,7 +102,7 @@ fun LongTimeInputField(
                 if (v.length <= 2) {
                     val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
                     if (number in 0..59) {
-                        onDurationChanged(value.copy(seconds = number))
+                        onChanged(value.copy(seconds = number))
                     }
                 }
             },

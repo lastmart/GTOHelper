@@ -52,7 +52,7 @@ fun ResultItem(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .padding(MaterialTheme.spacing.medium)
-                    .weight(2f),
+                    .weight(3f),
                 text = pointType.toReadable(resultWithCompetitor.result.value)
             )
         }
