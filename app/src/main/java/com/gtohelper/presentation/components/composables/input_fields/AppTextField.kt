@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.RectangleShape
@@ -33,6 +34,7 @@ fun AppTextField(
     textStyle: TextStyle = LocalTextStyle.current,
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    colors: TextFieldColors = AppTextFieldDefaults.colors(),
 ) {
     TextField(
         modifier = modifier,
@@ -53,6 +55,6 @@ fun AppTextField(
         maxLines = maxLines,
         label = { label?.let { Text(it) } },
         keyboardOptions = keyboardOptions,
-        colors = AppTextFieldDefaults.colors(),
+        colors = colors,
     )
 }

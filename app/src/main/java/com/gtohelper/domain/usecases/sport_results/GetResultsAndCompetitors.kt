@@ -3,8 +3,10 @@ package com.gtohelper.domain.usecases.sport_results
 import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.domain.repository.SportResultRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.map
 
-class GetResultsAndCompetitorsUseCase(
+class GetResultsAndCompetitors(
     private val sportResultRepository: SportResultRepository,
 ) {
     operator fun invoke(

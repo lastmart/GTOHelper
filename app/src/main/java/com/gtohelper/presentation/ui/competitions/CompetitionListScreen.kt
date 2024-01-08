@@ -98,8 +98,7 @@ fun CompetitionListScreen(
                 )
             }
         },
-    ) { padding ->
-
+    ) { padding->
 
         Column(modifier = Modifier.padding(padding)) {
             when (uiState) {

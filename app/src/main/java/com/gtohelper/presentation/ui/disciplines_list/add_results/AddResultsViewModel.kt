@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.domain.repository.DisciplineRepository
-import com.gtohelper.domain.usecases.sport_results.SaveSportResultResult
+import com.gtohelper.domain.usecases.sport_results.save_result.SaveSportResultResult
 import com.gtohelper.domain.usecases.sport_results.SportResultUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow

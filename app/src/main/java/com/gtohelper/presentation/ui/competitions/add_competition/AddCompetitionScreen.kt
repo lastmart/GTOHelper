@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.buttons.CheckButton
 import com.gtohelper.presentation.components.composables.input_fields.AppTextField
 import com.gtohelper.presentation.components.composables.snackbars.ErrorSnackbarHost
 import com.gtohelper.presentation.components.forms.FormState
@@ -96,7 +97,7 @@ fun AddCompetitionScreen(
             )
         },
         floatingActionButton = {
-            AddButton(
+            CheckButton(
                 onClick = onAddButtonClicked, contentDescription = null
             )
         },
