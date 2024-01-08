@@ -5,7 +5,7 @@ import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import com.gtohelper.data.models.ExcelReader
+import com.gtohelper.domain.ExcelReader
 import com.gtohelper.domain.repository.CompetitorRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -40,7 +40,7 @@ class AddCompetitorsFromTableViewModel @Inject constructor(
             val inputStream = application.contentResolver.openInputStream(excelUri) ?: return@launch
 
             try {
-                val competitors = reader.getCompetitorList(inputStream, competitionId)
+                val competitors = reader.getCompetitorList(competitionId, inputStream)
                 val numbers = competitors.map { it.number }
                 val duplicates = findAllDuplicates(numbers)
                 if (duplicates.isNotEmpty()) {
@@ -71,7 +71,7 @@ class AddCompetitorsFromTableViewModel @Inject constructor(
                 _uiState.update { AddCompetitorsFromTableUiState.Success }
 
             } catch (ex: Exception) {
-                _uiState.update { AddCompetitorsFromTableUiState.Failed("Формат таблицы неверен. Проверьте правильность данных.") }
+                _uiState.update { AddCompetitorsFromTableUiState.Failed(ex.message.toString()) }
             }
 
             inputStream.close()
