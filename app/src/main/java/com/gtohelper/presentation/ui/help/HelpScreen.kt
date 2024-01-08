@@ -82,7 +82,11 @@ fun HelpScreen(
     ))
 
     val tripleDotIcon = Pair("triple_dot_icon", InlineTextContent(
-        placeholder = placeholder,
+        placeholder = Placeholder(
+            width = 20.sp,
+            height = 20.sp,
+            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+        ),
         children = {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
