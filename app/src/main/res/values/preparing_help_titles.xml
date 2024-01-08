@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string name="how_to_create_competition">Как создать соревнование?</string>
-    <string name="how_to_add_competitors">Как добавить участников?</string>
-    <string name="how_to_edit_disciplines">Как редактировать список дисциплин?</string>
-    <string name="how_should_look_imported_competitors_table">Как должна выглядеть импортируемая таблица с участниками?</string>
-</resources>
