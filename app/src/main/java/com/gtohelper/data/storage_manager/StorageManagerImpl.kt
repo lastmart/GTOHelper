@@ -8,9 +8,6 @@ class StorageManagerImpl : StorageManager {
 
     override fun saveFile() {
 
-        if(isExternalStorageAvailable() && !isExternalStorageReadOnly()){
-            println("Can save file")
-        }
 
     }
 
