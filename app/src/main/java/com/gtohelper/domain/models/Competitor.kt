@@ -9,7 +9,9 @@ data class Competitor(
     val teamName: String,
     val degree: Int,
 )
-
+enum class Gender(val string: String){
+    FEMALE("female"), MALE("male");
+}
 
 fun calculateDegree(age: Int): Int {
     return when (age) {
