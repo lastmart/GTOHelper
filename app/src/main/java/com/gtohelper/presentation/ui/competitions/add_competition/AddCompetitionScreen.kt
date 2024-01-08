@@ -10,9 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -29,6 +27,7 @@ import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.presentation.components.composables.buttons.AddButton
 import com.gtohelper.presentation.components.composables.input_fields.AppTextField
+import com.gtohelper.presentation.components.composables.snackbars.ErrorSnackbarHost
 import com.gtohelper.presentation.components.forms.FormState
 import kotlinx.coroutines.launch
 
@@ -43,6 +42,7 @@ fun AddCompetitionRoute(
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
 
     LaunchedEffect(context) {
         viewModel.formState.collect { event ->
@@ -78,7 +78,7 @@ fun AddCompetitionScreen(
     snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { ErrorSnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
