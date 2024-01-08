@@ -15,7 +15,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -92,7 +91,7 @@ fun SubDisciplineItemPreview() {
         subDiscipline = SubDiscipline(
             imageResource = R.drawable.sub_discipline_sprinting_30m,
             name = "Бег на 30 м",
-            type = DisciplinePointType.SHORT_TIME
+            type = DisciplinePointType.LONG_TIME
         ),
         onClick = {},
         onLongClick = { false },

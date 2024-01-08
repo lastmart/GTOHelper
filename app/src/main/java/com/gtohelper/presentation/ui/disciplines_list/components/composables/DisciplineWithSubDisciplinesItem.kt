@@ -115,21 +115,21 @@ fun DisciplineWithSubDisciplinesItemPreview() {
                 SubDiscipline(
                     imageResource = R.drawable.sub_discipline_sprinting_30m,
                     name = "Бег на 30 м",
-                    type = DisciplinePointType.SHORT_TIME
+                    type = DisciplinePointType.LONG_TIME
                 ),
                 SubDiscipline(
                     imageResource = R.drawable.sub_discipline_sprinting_60m,
                     name = "Бег на 60 м",
-                    type = DisciplinePointType.SHORT_TIME
+                    type = DisciplinePointType.LONG_TIME
                 ),
                 SubDiscipline(
                     imageResource = R.drawable.sub_discipline_sprinting_100m,
                     name = "Бег на 100 м",
-                    type = DisciplinePointType.SHORT_TIME
+                    type = DisciplinePointType.LONG_TIME
                 ),
             ),
             isExpanded = true,
-            type = DisciplinePointType.SHORT_TIME
+            type = DisciplinePointType.LONG_TIME
         ),
         onClick = {},
         onLongClick = { false },

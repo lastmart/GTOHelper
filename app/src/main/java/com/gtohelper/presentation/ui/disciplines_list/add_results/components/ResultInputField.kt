@@ -1,9 +1,7 @@
 package com.gtohelper.presentation.ui.disciplines_list.add_results.components
 
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
@@ -12,25 +10,33 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import com.gtohelper.domain.models.DisciplinePointType
+import com.gtohelper.domain.models.LongDuration
 import com.gtohelper.presentation.components.composables.buttons.AddButton
 import com.gtohelper.presentation.components.composables.input_fields.LongTimeInputField
-import com.gtohelper.presentation.components.transformations.VisibleHintTransformation
 
 @Preview
 @Composable
 fun Preview() {
-    val result by remember { mutableIntStateOf(3800) }
-    val number by remember { mutableIntStateOf(10) }
+    var number by remember { mutableIntStateOf(10) }
+    var value by remember { mutableIntStateOf(61_000) }
     ResultInputField(
-        result = result,
+        result = value,
         number = number,
-        disciplinePointType = DisciplinePointType.AMOUNT,
+        disciplinePointType = DisciplinePointType.LONG_TIME,
+        onNumberChanged = {
+            number = it
+        },
+        onResultChange = {
+            value = it
+        }
     )
 }
 
@@ -41,72 +47,61 @@ fun ResultInputField(
     result: Int,
     number: Int,
     disciplinePointType: DisciplinePointType,
-    onValueChange: (Int) -> Unit = {},
+    onNumberChanged: (Int) -> Unit = {},
+    onResultChange: (Int) -> Unit = {},
     onAddClicked: () -> Unit = {},
 ) {
     Row(
         modifier = modifier,
     ) {
         Card(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier
+                .weight(1f)
+                .align(Alignment.CenterVertically),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
             ) {
-//                AppTextField(
-//                    modifier = Modifier.weight(1f),
-//                    textStyle = TextStyle(textAlign = TextAlign.Center),
-//                    value = number.toString(),
-//                    onValueChange = {},
-//                )
-                val textStyle = TextStyle(fontSize = 25.sp)
+                val textStyle = TextStyle(fontSize = 25.sp, textAlign = TextAlign.Center)
                 BasicTextField(
                     modifier = Modifier
                         .weight(1f),
                     value = if (number == 0) "" else number.toString(),
                     onValueChange = { v ->
-                        if (v.length <= 2) {
-                            val number = v.filter { it.isDigit() }.toIntOrNull() ?: 0
-                            if (number in 0..23) {
-                                
+                        if (v.length <= 4) {
+                            val value = v.filter { it.isDigit() }.toIntOrNull() ?: 0
+                            if (value in 0..1000) {
+                                onNumberChanged(value)
                             }
                         }
                     },
                     textStyle = textStyle,
-                    visualTransformation = VisibleHintTransformation("00"),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 )
 
-                var hours by remember { mutableIntStateOf(10) }
-                var minutes by remember { mutableIntStateOf(10) }
-                var seconds by remember { mutableIntStateOf(12) }
-                LongTimeInputField(
-                    modifier = Modifier
-                        .weight(2f),
-                    seconds = seconds,
-                    minutes = minutes,
-                    hours = hours,
-                    onSecondsChanged = {
-                        seconds = it
-                    },
-                    onMinutesChanged = {
-                        minutes = it
-                    },
-                    onHoursChanged = {
-                        hours = it
+                when (disciplinePointType) {
+                    DisciplinePointType.SHORT_TIME -> {
+
                     }
-                )
 
-//                AppTextField(
-//                    modifier = Modifier
-//                        .weight(2f),
-//                    textStyle = TextStyle(textAlign = TextAlign.Center),
-//                    value = result.toString(),
-//                    onValueChange = {},
+                    DisciplinePointType.LONG_TIME -> {
+                        LongTimeInputField(
+                            modifier = Modifier
+                                .weight(2f),
+                            value = LongDuration.fromMillis(result),
+                            onDurationChanged = {
+                                onResultChange(it.toMillis())
+                            }
+                        )
+                    }
 
+                    DisciplinePointType.AMOUNT -> {
+
+                    }
+                }
             }
         }
 
-        AddButton()
+        AddButton(onClick = onAddClicked)
     }
 }

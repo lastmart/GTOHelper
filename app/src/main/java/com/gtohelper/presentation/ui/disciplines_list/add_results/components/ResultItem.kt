@@ -73,7 +73,7 @@ fun PreviewResultItem() {
             degree = 10,
         ),
         result = SportResult(
-            sportName = "Прыжки с крыши",
+            sportName = "asd",
             competitionId = 0,
             competitorId = 0,
             value = 100
@@ -83,7 +83,7 @@ fun PreviewResultItem() {
         verticalArrangement = Arrangement.spacedBy(10.dp)
     ) {
         ResultItem(
-            pointType = DisciplinePointType.SHORT_TIME,
+            pointType = DisciplinePointType.LONG_TIME,
             resultWithCompetitor = resultAndCompetitor,
         )
         ResultItem(

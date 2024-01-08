@@ -25,7 +25,7 @@ class SportResultRepositoryImpl(
     override suspend fun getBy(
         competitionId: Int,
         disciplineId: String,
-        competitorId: Int
+        competitorId: Int,
     ): SportResult? {
         return withContext(Dispatchers.IO) {
             dao.getBy(

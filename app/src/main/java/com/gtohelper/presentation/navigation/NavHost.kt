@@ -164,13 +164,13 @@ fun AppNavHost(navController: NavHostController) {
         ) {
             val viewModel = hiltViewModel<AddResultsViewModel>()
             val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
-            val disciplineId = it.arguments?.getString(disciplineIdArg)
+            val disciplineName = it.arguments?.getString(disciplineIdArg).toString()
 
             AddResultsRoute(
                 navController = navController,
                 viewModel = viewModel,
                 competitionId = competitionId,
-                disciplineId = disciplineId.toString(),
+                disciplineName = disciplineName,
             )
         }
 

@@ -16,29 +16,21 @@ class VisibleHintTransformation(
 
     override fun filter(text: AnnotatedString): TransformedText {
         val transformedText = buildAnnotatedString {
-
-            append(text)
             if (text.length < hint.length) {
                 withStyle(SpanStyle(Color.Gray)){
                     append(hint.drop(text.length))
                 }
             }
+            append(text)
         }
         return TransformedText(
-            offsetMapping = createOffsetMapping(hint.length),
+            offsetMapping = createOffsetMapping(text.length, hint.length),
             text = transformedText
         )
     }
-
-    private fun createOffsetMapping(suggestionLength: Int): OffsetMapping {
-        return object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int {
-                return offset
-            }
-
-            override fun transformedToOriginal(offset: Int): Int {
-                return if (offset <= suggestionLength) offset else offset - suggestionLength
-            }
+    private fun createOffsetMapping(textLength: Int, hintLength: Int): OffsetMapping =
+        object : OffsetMapping {
+            override fun originalToTransformed(offset: Int): Int = hintLength
+            override fun transformedToOriginal(offset: Int): Int = textLength
         }
-    }
 }

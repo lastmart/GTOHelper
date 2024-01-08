@@ -1,10 +1,11 @@
 package com.gtohelper.domain.repository
 
 import com.gtohelper.domain.models.Discipline
-import com.gtohelper.domain.models.SubDiscipline
 import kotlinx.coroutines.flow.Flow
 
 interface DisciplineRepository {
+
+    suspend fun getBy(name: String): Discipline?
 
     fun getDisciplines(): Flow<List<Discipline>>
 

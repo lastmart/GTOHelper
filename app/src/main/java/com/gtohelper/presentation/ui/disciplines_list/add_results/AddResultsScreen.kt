@@ -22,6 +22,9 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
@@ -32,6 +35,7 @@ import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
+import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultInputField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -42,7 +46,7 @@ fun AddResultsRoute(
     navController: NavController,
     viewModel: AddResultsViewModel,
     competitionId: Int,
-    disciplineId: String,
+    disciplineName: String,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -76,7 +80,11 @@ fun AddResultsScreen(
         ),
         topBar = {
             TopAppBar(
-                title = { uiState.discipline?.name?.let { Text(it) } },
+                title = {
+                    if (uiState is AddResultsUiState.Loaded) {
+                        Text(uiState.discipline.name)
+                    }
+                },
                 navigationIcon = {
                     IconButton(onClick = onBackClicked) {
                         Icon(
@@ -93,36 +101,45 @@ fun AddResultsScreen(
                 .padding(padding)
                 .fillMaxHeight(),
         ) {
-            AppSearchField(
-                modifier = Modifier.fillMaxWidth(),
-                value = searchQuery,
-                hint = "Поиск по номеру...",
-                onValueChange = onSearchQueryChanged,
-            )
 
-            Spacer(Modifier.height(MaterialTheme.spacing.medium))
+            when (uiState) {
+                AddResultsUiState.Loading -> {
+                    LoadingScreen()
+                }
 
-            LazyColumn(
-                modifier = Modifier.weight(1f),
-                verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
-            ) {
-                items(results) {
-                    ResultItem(
-                        pointType = DisciplinePointType.SHORT_TIME,
-                        resultWithCompetitor = it
+                is AddResultsUiState.Loaded -> {
+                    AppSearchField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = searchQuery,
+                        hint = "Поиск по номеру...",
+                        onValueChange = onSearchQueryChanged,
+                    )
+
+                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
+                    LazyColumn(
+                        modifier = Modifier.weight(1f),
+                        verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
+                    ) {
+                        items(results) {
+                            ResultItem(
+                                pointType = DisciplinePointType.LONG_TIME,
+                                resultWithCompetitor = it
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
+
+                    ResultInputField(
+                        result = uiState.result,
+                        number = uiState.number,
+                        disciplinePointType = uiState.discipline.type,
+                        onResultChange = { onEvent(AddResultsEvent.UpdateResult(it)) },
+                        onNumberChanged = { onEvent(AddResultsEvent.UpdateNumber(it)) },
+                        onAddClicked = { onEvent(AddResultsEvent.SaveResult) }
                     )
                 }
-            }
-
-            Spacer(Modifier.height(MaterialTheme.spacing.medium))
-
-            uiState.discipline?.let { discipline ->
-                ResultInputField(
-                    result = uiState.result,
-                    number = uiState.number,
-                    disciplinePointType = discipline.type,
-                    onValueChange = { onEvent(AddResultsEvent.UpdateResult(it)) }
-                )
             }
         }
     }
@@ -132,11 +149,23 @@ fun AddResultsScreen(
 @Preview
 @Composable
 fun PreviewAddResultsScreen() {
+    var state by remember {
+        mutableStateOf(
+            AddResultsUiState.Loaded(
+                Discipline("Прыжки с крыши", 0, listOf(), DisciplinePointType.LONG_TIME),
+                0, 0,
+            )
+        )
+    }
     AddResultsScreen(
-        uiState = AddResultsUiState(
-            Discipline("Прыжки с крыши", 0, listOf(), DisciplinePointType.AMOUNT),
-            0, 0,
-        ),
+        uiState = state,
+        onEvent = {
+            if (it is AddResultsEvent.UpdateResult) {
+                state = state.copy(result = it.value)
+            } else if (it is AddResultsEvent.UpdateNumber) {
+                state = state.copy(number = it.value)
+            }
+        },
         results = (1..20).map {
             SportResultAndCompetitor(
                 competitor = Competitor(
@@ -149,7 +178,7 @@ fun PreviewAddResultsScreen() {
                     degree = 10,
                 ),
                 result = SportResult(
-                    sportName = "Прыжки с крыши",
+                    sportName = "asd",
                     competitionId = 0,
                     competitorId = 0,
                     value = it * 10
