@@ -13,7 +13,7 @@ class CalculatingPointsTest {
     @Test
     fun TestValuesThatInTable(){
         val maleSevenDegree = Competitor(0, 1,1,"Майкл Фелпс",
-            Gender.MALE, "Балтимор", 12,
+            Gender.MALE, "Балтимор", 7,
         )
 
         assertEquals(84, calculatingPoints.getPoint(maleSevenDegree,
@@ -24,7 +24,7 @@ class CalculatingPointsTest {
             "Рывок гири 16 кг (количество раз)", 21.0))
 
         val femaleTwoDegree = Competitor(0,1,1,"Майкл Фелпс",
-            Gender.FEMALE, "Москва", 1,
+            Gender.FEMALE, "Москва", 2,
         )
 
         assertEquals(100, calculatingPoints.getPoint(femaleTwoDegree,
@@ -35,7 +35,7 @@ class CalculatingPointsTest {
             "Метание теннисного мяча в цель, дистанция 6 м (кол-во попаданий)", 3.0))
 
         val maleEighteenDegree = Competitor(0, 1,1,"Майкл Фелпс",
-            Gender.MALE, "Вашинтгон", 90,
+            Gender.MALE, "Вашинтгон", 18,
         )
 
         assertEquals(95, calculatingPoints.getPoint(maleEighteenDegree,
@@ -47,7 +47,7 @@ class CalculatingPointsTest {
     @Test
     fun TestValuesThatNotInTable(){
         val maleSevenDegree = Competitor(0, 1,1,"Майкл Фелпс",
-            Gender.MALE, "Балтимор", 12,
+            Gender.MALE, "Балтимор", 7,
         )
         assertEquals(86, calculatingPoints.getPoint(maleSevenDegree,
             "Бег на 60 м (с)", jsonParser.convertRunTime("7.01")))
@@ -64,7 +64,7 @@ class CalculatingPointsTest {
             "Бег на 3000 м (мин, с)", jsonParser.convertTime("16:50.10")))
 
         val femaleSeventeenDegree =  Competitor(0, 1,1,"Майкл Фелпс",
-            Gender.FEMALE, "Москва", 2,
+            Gender.FEMALE, "Москва", 17,
         )
 
         assertEquals(98, calculatingPoints.getPoint(femaleSeventeenDegree,
@@ -76,7 +76,7 @@ class CalculatingPointsTest {
             -13.00))
 
         val maleFourDegree = Competitor(0, 1,1,"Майкл Фелпс",
-            Gender.MALE, "Вашинтгон", 90,
+            Gender.MALE, "Вашинтгон", 4,
         )
 
         assertEquals(18, calculatingPoints.getPoint(maleFourDegree,
