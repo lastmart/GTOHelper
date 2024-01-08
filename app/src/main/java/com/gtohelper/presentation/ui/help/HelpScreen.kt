@@ -65,13 +65,14 @@ fun PreviewHelpScreen() {
 fun HelpScreen(
     onBackClicked: () -> Unit = {},
 ) {
+    val placeholder = Placeholder(
+        width = 30.sp,
+        height = 30.sp,
+        placeholderVerticalAlign = PlaceholderVerticalAlign.Center
+    )
 
     val resultsIcon = Pair("results_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = {
             Icon(
                 painter = painterResource(R.drawable.icon_pedestal),
@@ -81,11 +82,7 @@ fun HelpScreen(
     ))
 
     val tripleDotIcon = Pair("triple_dot_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = {
             Icon(
                 imageVector = Icons.Filled.MoreVert,
@@ -95,11 +92,7 @@ fun HelpScreen(
     ))
 
     val pencilIcon = Pair("pencil_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = {
             Icon(
                 imageVector = Icons.Filled.Edit,
@@ -109,11 +102,7 @@ fun HelpScreen(
     ))
 
     val tableIcon = Pair("table_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = {
             Icon(
                 painter = painterResource(R.drawable.icon_table),
@@ -123,32 +112,20 @@ fun HelpScreen(
     ))
     val checkIcon = Pair(
         "check_icon", InlineTextContent(
-            placeholder = Placeholder(
-                width = 1.7.em,
-                height = 23.sp,
-                placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-            ),
+            placeholder = placeholder,
             children = { CheckButton() },
         )
     )
 
     val plusIcon = Pair("plus_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = { AddButton() }
     ))
 
     val personIcon = Pair("person_icon", InlineTextContent(
-        placeholder = Placeholder(
-            width = 1.7.em,
-            height = 23.sp,
-            placeholderVerticalAlign = PlaceholderVerticalAlign.Center
-        ),
+        placeholder = placeholder,
         children = {
-            Icon(imageVector = Icons.Filled.Person, contentDescription = null)
+            Icon(painter = painterResource(R.drawable.icon_person), contentDescription = null)
         }
     ))
 
@@ -182,7 +159,6 @@ fun HelpScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-
             HeaderText(
                 modifier = Modifier.fillMaxWidth(),
                 text = "Подготовка соревнования",
