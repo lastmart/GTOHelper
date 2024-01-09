@@ -71,7 +71,7 @@ class AddCompetitorsFromTableViewModel @Inject constructor(
                 _uiState.update { AddCompetitorsFromTableUiState.Success }
 
             } catch (ex: Exception) {
-                _uiState.update { AddCompetitorsFromTableUiState.Failed(ex.message.toString()) }
+                _uiState.update { AddCompetitorsFromTableUiState.Failed("Формат таблицы неверен. Пожалуйста, проверьте, что выбранная таблица не содержит ошибок.") }
             }
 
             inputStream.close()
