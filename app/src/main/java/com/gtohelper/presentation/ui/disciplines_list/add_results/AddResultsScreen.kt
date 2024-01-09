@@ -124,6 +124,7 @@ fun AddResultsScreen(
                         modifier = Modifier.fillMaxWidth(),
                         text = uiState.discipline.name,
                         textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.headlineSmall,
                     )
                     Spacer(Modifier.height(MaterialTheme.spacing.medium))
                     

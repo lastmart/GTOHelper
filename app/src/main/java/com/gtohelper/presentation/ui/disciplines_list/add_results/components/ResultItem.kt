@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,16 +29,19 @@ import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ResultItem(
     pointType: DisciplinePointType,
     resultWithCompetitor: SportResultAndCompetitor,
+    onClick: () -> Unit = {},
 ) {
     Card(
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
-        )
+        ),
+        onClick = onClick,
     ) {
         Row(
             modifier = Modifier
