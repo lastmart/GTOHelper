@@ -125,13 +125,13 @@ class DisciplinesProvider {
         DisciplineEntity(
             name = "Челночный бег 3х10 м",
             imageResource = R.drawable.discipline_shuttle_run,
-            type = DisciplinePointType.LONG_TIME
+            type = DisciplinePointType.SHORT_TIME
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
                     name = "Челночный бег 3х10 м",
                     imageResource = R.drawable.discipline_shuttle_run,
-                    type = DisciplinePointType.LONG_TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },
