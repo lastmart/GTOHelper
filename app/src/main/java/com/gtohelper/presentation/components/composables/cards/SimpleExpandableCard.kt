@@ -1,5 +1,6 @@
 package com.gtohelper.presentation.components.composables.cards
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -93,7 +94,7 @@ fun ExpandableCard(
             expanded = isExpanded,
         )
 
-        if (isExpanded) {
+        AnimatedVisibility(visible = isExpanded) {
             content()
         }
     }
