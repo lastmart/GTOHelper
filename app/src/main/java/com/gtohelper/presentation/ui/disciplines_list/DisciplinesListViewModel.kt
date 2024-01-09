@@ -72,7 +72,7 @@ class DisciplinesListViewModel @Inject constructor(
 
     val competitionName: StateFlow<String> = competitionRepository
         .getFlowById(competitionId)
-        .map { it.name }
+        .map { it?.name ?: "" }
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed((5_000)),
