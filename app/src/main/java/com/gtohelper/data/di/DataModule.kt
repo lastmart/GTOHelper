@@ -164,13 +164,11 @@ object DataModule {
     @Provides
     @Singleton
     fun provideCompetitorResultsRepository(
-        sportResultDao: SportResultDao,
         competitorDao: CompetitorDao,
         @Named("json_string") jsonString: String,
         disciplineDao: DisciplineDao
     ): CompetitorResultsRepository {
         return CompetitorResultsRepositoryImpl(
-            sportResultDao = sportResultDao,
             competitorDao = competitorDao,
             subDisciplineDao = disciplineDao,
             jsonString = jsonString,

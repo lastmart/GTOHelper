@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
@@ -41,7 +42,7 @@ fun CompetitorItem(
         onClick = { onClick(competitor) },
     ) {
         Column(
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(10.dp),
         ) {
             Row {
                 Icon(
@@ -54,11 +55,15 @@ fun CompetitorItem(
                     modifier = Modifier.align(Alignment.CenterVertically),
                 ) {
                     Row {
-                        Text(competitor.number.toString())
+                        Text(
+                            text = competitor.number.toString(),
+                            fontSize = 14.sp,
+                        )
                         Spacer(Modifier.width(MaterialTheme.spacing.extraSmall))
                         Text(
                             text = competitor.name,
                             maxLines = 1,
+                            fontSize = 14.sp,
                             overflow = TextOverflow.Ellipsis,
                             fontWeight = FontWeight.Bold,
                         )
@@ -66,14 +71,19 @@ fun CompetitorItem(
                     Text(
                         text = stringResource(R.string.team_name, competitor.teamName),
                         maxLines = 1,
+                        fontSize = 14.sp,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    Text(stringResource(R.string.competitor_degree, competitor.degree))
                     Text(
-                        stringResource(
+                        text = stringResource(R.string.competitor_degree, competitor.degree),
+                        fontSize = 14.sp,
+                    )
+                    Text(
+                        text = stringResource(
                             R.string.competitor_gender,
                             if (competitor.gender == Gender.MALE) "М" else "Ж"
-                        )
+                        ),
+                        fontSize = 14.sp
                     )
                 }
             }

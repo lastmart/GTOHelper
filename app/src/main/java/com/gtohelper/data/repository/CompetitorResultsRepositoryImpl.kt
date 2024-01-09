@@ -2,7 +2,6 @@ package com.gtohelper.data.repository
 
 import com.gtohelper.data.database.competitor.CompetitorDao
 import com.gtohelper.data.database.discipline.DisciplineDao
-import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.data.mappers.toDomainModel
 import com.gtohelper.data.mappers.toDomainSubDiscipline
 import com.gtohelper.domain.PointsCalculator
@@ -13,14 +12,15 @@ import com.gtohelper.domain.models.ShortDuration
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.CompetitorResultsRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 import java.time.LocalTime
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
 class CompetitorResultsRepositoryImpl(
-    private val sportResultDao: SportResultDao,
     private val competitorDao: CompetitorDao,
     private val subDisciplineDao: DisciplineDao,
     private val jsonString: String
@@ -49,40 +49,30 @@ class CompetitorResultsRepositoryImpl(
     ): Int {
         val pointsCalculator = PointsCalculator()
 
-        val discipline = subDisciplineDao.getSubDisciplineById(sportResult.disciplineId)
+        return withContext(Dispatchers.IO) {
 
-        if (discipline == null) {
-            println("Discipline is null")
-            return 0
-        }
+            val discipline = subDisciplineDao.getSubDisciplineById(sportResult.disciplineId)
+                ?: return@withContext 0
 
-        return try {
 
-            val sportResultValue: Any =
-                convertIntToSportResult(discipline.toDomainSubDiscipline(), sportResult)
+            return@withContext try {
 
-            pointsCalculator.getPoint(
-                competitor = competitor,
-            //    sport = sportResult.sportName,
-                sport = discipline.name,
-                result = sportResultValue as Comparable<Any>,
-                jsonString = jsonString
-            ).also {
-                println("Success: result = $it")
+                val sportResultValue: Any = convertIntToSportResult(
+                    discipline = discipline.toDomainSubDiscipline(),
+                    sportResult = sportResult
+                )
+
+                pointsCalculator.getPoint(
+                    competitor = competitor,
+                    sport = discipline.name,
+                    result = sportResultValue as Comparable<Any>,
+                    jsonString = jsonString
+                )
+            } catch (e: Exception) {
+                return@withContext 0
             }
-
-        } catch (e: Exception) {
-            println("Error on sport $sportResult")
-
-            println("Error: $e")
-            e.printStackTrace()
-
-            return 0
-            // throw e
         }
     }
-
-
 }
 
 fun convertIntToSportResult(discipline: SubDiscipline, sportResult: SportResult): Any {
