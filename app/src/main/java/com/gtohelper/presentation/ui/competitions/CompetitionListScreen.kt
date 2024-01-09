@@ -8,9 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -98,8 +98,7 @@ fun CompetitionListScreen(
                 )
             }
         },
-    ) { padding ->
-
+    ) { padding->
 
         Column(modifier = Modifier.padding(padding)) {
             when (uiState) {
@@ -112,15 +111,17 @@ fun CompetitionListScreen(
                         onValueChange = onSearchQueryChanged,
                     )
                     Spacer(Modifier.height(10.dp))
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
+                    LazyVerticalStaggeredGrid(
+                        columns = StaggeredGridCells.Fixed(2),
+                        verticalItemSpacing = 4.dp,
                         horizontalArrangement = Arrangement.spacedBy(4.dp),
-                        verticalArrangement = Arrangement.spacedBy(4.dp),
-                    ) {
-                        items(uiState.competitions) {
-                            CompetitionItem(it, onClick = onItemClicked)
-                        }
-                    }
+                        content = {
+                            items(uiState.competitions) {
+                                CompetitionItem(it, onClick = onItemClicked)
+                            }
+                        },
+                        modifier = Modifier.fillMaxSize()
+                    )
                 }
             }
         }
@@ -133,8 +134,11 @@ fun PreviewLoaded() {
     CompetitionListScreen(
         searchQuery = "",
         uiState = CompetitionListUiState.Loaded(
-            competitions = (0..5).map {
-                Competition(1, "11 'Ы'", "Сдача нормативов")
+            competitions = (0..10).map {
+                Competition(1,
+                    name = (0..it).joinToString("") { "asd" },
+                    description = (0..it).joinToString("") { "asd" },
+                )
             }.toList()
         )
     )

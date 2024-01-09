@@ -15,12 +15,12 @@ interface SportResultDao {
     @Query(
         """
             SELECT * FROM sport_results
-            WHERE competitionId = :competitionId AND sportName=:disciplineId
+            WHERE competitionId = :competitionId AND disciplineId=:disciplineId
             """
     )
     fun getCompetitionSportResults(
         competitionId: Int,
-        disciplineId: String,
+        disciplineId: Int,
     ): Flow<List<SportResultEntity>>
 
     @Insert
@@ -40,19 +40,19 @@ interface SportResultDao {
     @Query(
         """SELECT * FROM sport_results WHERE 
         competitionId=:competitionId AND 
-        sportName=:disciplineId AND 
+        disciplineId=:disciplineId AND 
         competitorId=:competitorId"""
     )
     suspend fun getBy(
         competitionId: Int,
-        disciplineId: String,
+        disciplineId: Int,
         competitorId: Int
     ): SportResultEntity?
 
     @Transaction
-    @Query("SELECT * FROM sport_results WHERE competitionId=:competitionId AND sportName=:disciplineId")
+    @Query("SELECT * FROM sport_results WHERE competitionId=:competitionId AND disciplineId=:disciplineId")
     fun getResultsAndCompetitors(
         competitionId: Int,
-        disciplineId: String
+        disciplineId: Int
     ): Flow<List<SportResultAndCompetitorEntity>>
 }

@@ -17,5 +17,5 @@ import com.gtohelper.data.database.competition.CompetitionEntity
 )
 data class CompetitionSubDisciplineCrossRef(
     val competitionId: Int,
-    val subDisciplineId: Int
+    val subDisciplineId: Int,
 )

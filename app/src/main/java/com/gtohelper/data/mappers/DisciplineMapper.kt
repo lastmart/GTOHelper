@@ -16,13 +16,14 @@ fun DisciplineEntity.toDomainDiscipline(): Discipline {
 
 fun SubDisciplineEntity.toDomainSubDiscipline(): SubDiscipline {
     return SubDiscipline(
+        id = id,
         name = name,
         imageResource = imageResource,
-        type = type
+        type = type,
     )
 }
 
-fun Discipline.toSubDiscipline(): SubDiscipline{
+fun Discipline.toSubDiscipline(): SubDiscipline {
     return SubDiscipline(
         name = name,
         imageResource = imageResource,

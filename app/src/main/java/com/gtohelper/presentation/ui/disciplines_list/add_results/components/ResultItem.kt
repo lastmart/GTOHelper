@@ -85,7 +85,7 @@ fun PreviewResultItem() {
             degree = 10,
         ),
         result = SportResult(
-            sportName = "asd",
+            disciplineId = 0,
             competitionId = 0,
             competitorId = 0,
             value = 100

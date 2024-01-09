@@ -6,7 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface DisciplineRepository {
 
-    suspend fun getBy(name: String): Discipline?
+    suspend fun getBy(name: String): SubDiscipline?
+    suspend fun getBy(id: Int): SubDiscipline?
 
     fun getDisciplines(): Flow<List<Discipline>>
 

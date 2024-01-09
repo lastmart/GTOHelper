@@ -50,6 +50,7 @@ class DisciplinesListViewModel @Inject constructor(
                     disciplines.flatMap { discipline ->
                         discipline.subDisciplines.map { subDiscipline ->
                             SubDiscipline(
+                                id  = subDiscipline.id,
                                 name = subDiscipline.name,
                                 type = subDiscipline.type,
                                 imageResource = discipline.imageResource

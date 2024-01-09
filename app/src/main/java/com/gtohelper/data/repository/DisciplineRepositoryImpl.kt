@@ -4,7 +4,6 @@ import com.gtohelper.data.database.discipline.DisciplineDao
 import com.gtohelper.data.database.discipline.SubDisciplineEntity
 import com.gtohelper.data.database.relations.CompetitionSubDisciplineCrossRef
 import com.gtohelper.data.database.relations.CompetitionSubDisciplineDao
-import com.gtohelper.data.mappers.toDomainDiscipline
 import com.gtohelper.data.mappers.toDomainSubDiscipline
 import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.models.SubDiscipline
@@ -21,9 +20,15 @@ class DisciplineRepositoryImpl(
     private val disciplineDao: DisciplineDao,
     private val competitionSubDisciplineDao: CompetitionSubDisciplineDao
 ) : DisciplineRepository {
-    override suspend fun getBy(name: String): Discipline? {
-        return withContext(Dispatchers.IO) {
-            competitionSubDisciplineDao.getBy(name)?.toDomainDiscipline()
+    override suspend fun getBy(name: String): SubDiscipline? {
+        return withContext(Dispatchers.IO){
+            disciplineDao.getSubDisciplineByName(name)?.toDomainSubDiscipline()
+        }
+    }
+
+    override suspend fun getBy(id: Int): SubDiscipline? {
+        return withContext(Dispatchers.IO){
+            disciplineDao.getSubDisciplineById(id)?.toDomainSubDiscipline()
         }
     }
 

@@ -2,7 +2,7 @@ package com.gtohelper.presentation.di
 
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.SportResultRepository
-import com.gtohelper.domain.usecases.sport_results.GetResultsAndCompetitorsUseCase
+import com.gtohelper.domain.usecases.sport_results.GetResultsAndCompetitors
 import com.gtohelper.domain.usecases.sport_results.SaveSportResultUseCase
 import com.gtohelper.domain.usecases.sport_results.SportResultUseCases
 import dagger.Module
@@ -25,7 +25,7 @@ object AppModule {
                 sportResultRepository = sportResultRepository,
                 competitorRepository = competitorRepository
             ),
-            getResultsAndCompetitors = GetResultsAndCompetitorsUseCase(
+            getResultsAndCompetitors = GetResultsAndCompetitors(
                 sportResultRepository = sportResultRepository
             )
         )

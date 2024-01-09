@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -41,9 +40,9 @@ import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.usecases.sport_results.SaveSportResultResult
 import com.gtohelper.presentation.components.composables.buttons.AddButton
-import com.gtohelper.presentation.components.composables.input_fields.AppSearchField
 import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultInputField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultItem
@@ -186,7 +185,10 @@ fun PreviewAddResultsScreen() {
     var state by remember {
         mutableStateOf(
             AddResultsUiState.Loaded(
-                Discipline("Прыжки с крыши", 0, listOf(), DisciplinePointType.LONG_TIME),
+                SubDiscipline(0,
+                    "Прыжки с крыши",
+                    0,
+                    DisciplinePointType.LONG_TIME),
                 0, 0,
             )
         )
@@ -214,7 +216,7 @@ fun PreviewAddResultsScreen() {
                     degree = 10,
                 ),
                 result = SportResult(
-                    sportName = "asd",
+                    disciplineId = 0,
                     competitionId = 0,
                     competitorId = 0,
                     value = it * 10

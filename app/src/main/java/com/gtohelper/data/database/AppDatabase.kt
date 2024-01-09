@@ -16,7 +16,7 @@ import com.gtohelper.data.database.sport_result.SportResultDao
 import com.gtohelper.data.database.sport_result.SportResultEntity
 
 @Database(
-    version = 17,
+    version = 19,
     entities = [
         CompetitorEntity::class,
         SportResultEntity::class,

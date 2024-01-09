@@ -10,9 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarVisuals
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -28,7 +26,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.presentation.components.composables.buttons.AddButton
+import com.gtohelper.presentation.components.composables.buttons.CheckButton
 import com.gtohelper.presentation.components.composables.input_fields.AppTextField
+import com.gtohelper.presentation.components.composables.snackbars.ErrorSnackbarHost
 import com.gtohelper.presentation.components.forms.FormState
 import kotlinx.coroutines.launch
 
@@ -43,6 +43,7 @@ fun AddCompetitionRoute(
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
+
 
     LaunchedEffect(context) {
         viewModel.formState.collect { event ->
@@ -78,7 +79,7 @@ fun AddCompetitionScreen(
     snackbarHostState: SnackbarHostState,
 ) {
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        snackbarHost = { ErrorSnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -96,7 +97,7 @@ fun AddCompetitionScreen(
             )
         },
         floatingActionButton = {
-            AddButton(
+            CheckButton(
                 onClick = onAddButtonClicked, contentDescription = null
             )
         },
@@ -110,7 +111,7 @@ fun AddCompetitionScreen(
                 value = uiState.name,
                 label = "Название",
                 onValueChange = { onEvent(AddCompetitionEvent.UpdateName(it)) },
-                maxLength = 20,
+                maxLength = 50,
                 singleLine = true,
             )
 
@@ -119,11 +120,10 @@ fun AddCompetitionScreen(
                 value = uiState.description,
                 label = "Описание",
                 onValueChange = { onEvent(AddCompetitionEvent.UpdateDescription(it)) },
-                maxLength = 20,
+                maxLength = 200,
             )
         }
     }
-
 }
 
 @Preview

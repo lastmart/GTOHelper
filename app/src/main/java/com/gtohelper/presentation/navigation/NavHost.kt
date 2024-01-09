@@ -56,7 +56,7 @@ fun AppNavHost(
         remember { listOf(navArgument(competitorIdArg) { type = NavType.IntType }) }
 
     val disciplineIdArgument =
-        remember { listOf(navArgument(disciplineIdArg) { type = NavType.StringType }) }
+        remember { listOf(navArgument(disciplineIdArg) { type = NavType.IntType }) }
 
     NavHost(
         navController = navController,

@@ -10,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -43,7 +42,7 @@ fun CompetitionItem(
             Text(
                 text = competition.description,
                 fontSize = 20.sp,
-                maxLines = 1,
+                maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )
         }
@@ -53,5 +52,6 @@ fun CompetitionItem(
 @Preview
 @Composable
 fun CompetitionItemPreview() {
-    CompetitionItem(Competition(1, "11 'Ы'", "Сдача нормативов"))
+    CompetitionItem(Competition(1, "ааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааааа",
+        "Без описания"))
 }
