@@ -6,7 +6,11 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.gtohelper.data.database.discipline.DisciplineDao
+import com.gtohelper.data.database.relations.SubDisciplineWithCompetitorsWithResults
+import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.SubDiscipline
+import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,6 +26,8 @@ import javax.inject.Inject
 class DisciplinesListViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository,
     private val deleteCompetitionByIdUseCase: DeleteCompetitionByIdUseCase,
+    private val competitorRepository: CompetitorRepository,
+    private val disciplinesDao: DisciplineDao,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -31,6 +37,9 @@ class DisciplinesListViewModel @Inject constructor(
         private set
 
     var isDeleteCompetitionDialogShown by mutableStateOf(false)
+        private set
+
+    var isSnackBarShown by mutableStateOf(false)
         private set
 
     val uiState: StateFlow<DisciplinesListUIState> =
@@ -55,6 +64,14 @@ class DisciplinesListViewModel @Inject constructor(
                 initialValue = DisciplinesListUIState()
             )
 
+    suspend fun getCompetitors(): List<Competitor> {
+        return competitorRepository.getCompetitionAllCompetitors(competitionId)
+    }
+
+    suspend fun getDisciplinesWithCompetitorsWithResults(): List<SubDisciplineWithCompetitorsWithResults> {
+        return disciplinesDao.getDisciplineWithCompetitorsWithResults()
+    }
+
     fun onSubDisciplineLongPressed(subDiscipline: SubDiscipline) {
         subDisciplineToDelete = subDiscipline
         isDeleteSubDisciplineDialogShown = true
@@ -62,6 +79,14 @@ class DisciplinesListViewModel @Inject constructor(
 
     fun onDismissDeleteSubDisciplineDialog() {
         isDeleteSubDisciplineDialogShown = false
+    }
+
+    fun onTableSaved() {
+        isSnackBarShown = true
+    }
+
+    fun onSnackBarDismiss() {
+        isSnackBarShown = false
     }
 
     fun deleteSubDiscipline() {

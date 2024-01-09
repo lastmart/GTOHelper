@@ -24,13 +24,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -42,6 +47,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gtohelper.R
+import com.gtohelper.data.mappers.toDomainModel
+import com.gtohelper.data.mappers.toDomainSubDiscipline
+import com.gtohelper.data.repository.convertIntToSportResult
+import com.gtohelper.domain.WriteFinalExcelTable
+import com.gtohelper.domain.mapNormDisciplineToOfficialDisciplines
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.presentation.components.composables.buttons.AddButton
@@ -49,6 +59,8 @@ import com.gtohelper.presentation.components.composables.dialogs.AppAlertDialogR
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.theme.spacing
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @RequiresApi(Build.VERSION_CODES.R) // TODO
 
@@ -61,91 +73,170 @@ fun DisciplineListRoute(
 ) {
 
     val context = LocalContext.current
+    val uiState by viewModel.uiState.collectAsState()
+
+    val scope = rememberCoroutineScope()
+
+    val snackBarHostState = remember { SnackbarHostState() }
 
     val launcher = rememberLauncherForActivityResult(
         contract = CreateDocument("application/vnd.ms-excel"),
         onResult = {
-            try {
-                val fileInputStream = context.assets.open("таблица1.xlsx")
+            if (it == null) return@rememberLauncherForActivityResult
 
-                val size = fileInputStream.available()
-                val buffer = ByteArray(size)
+            scope.launch(Dispatchers.IO) {
 
-                fileInputStream.read(buffer)
-                fileInputStream.close()
+                val competitors = viewModel.getCompetitors()
 
-                val outputStream = context.contentResolver.openOutputStream(it!!)
+                val disciplinesWithCompetitorsWithResults = viewModel
+                    .getDisciplinesWithCompetitorsWithResults()
+                    .filter { subDisciplineWithCompetitorsWithResults ->
+                        subDisciplineWithCompetitorsWithResults.competitorsWithResults.isNotEmpty()
+                    }
+                    .map { subDisciplineWithCompetitorsWithResults ->
 
-                outputStream!!.write(buffer)
+                        val competitionSelectedSubDisciplines =
+                            subDisciplineWithCompetitorsWithResults.competitorsWithResults.filter {
+                                it.competitor.competitionId == competitionId
+                            }
+
+                        if (competitionSelectedSubDisciplines.isEmpty()) {
+                            return@map null
+                        }
+
+                        return@map subDisciplineWithCompetitorsWithResults.copy(
+                            competitorsWithResults = competitionSelectedSubDisciplines
+                        )
+
+                    }.filterNotNull()
+
+                var currentDiscipline: SubDiscipline? = null
+
+                val sportResultsMap = disciplinesWithCompetitorsWithResults.associateBy(
+                    keySelector = {
+                        currentDiscipline = it.disciplineEntity.toDomainSubDiscipline()
+                        mapNormDisciplineToOfficialDisciplines[it.disciplineEntity.name]!!
+                    },
+                    valueTransform = {
+                        return@associateBy it.competitorsWithResults.associateBy(
+                            keySelector = {
+                                it.competitor.toDomainModel()
+                            },
+                            valueTransform = {
+                                convertIntToSportResult(
+                                    currentDiscipline!!, it.sportResult.toDomainModel()
+                                )
+                            }
+                        )
+                    }
+                )
+
+                val outputStream = context.contentResolver.openOutputStream(it)
+
+                val finalWriter = WriteFinalExcelTable(context = context)
+
+                finalWriter.createFinalTable(
+                    nameTable = competitionName,
+                    fileOutputStream = outputStream!!,
+                    listCompetitor = competitors,
+                    sportResults = sportResultsMap
+                )
+
                 outputStream.close()
-            } catch (e: Exception) {
-                println("Error: $e")
-                e.printStackTrace()
+
+                viewModel.onTableSaved()
             }
+
         }
     )
 
-    val uiState by viewModel.uiState.collectAsState()
-    DisciplinesListScreen(
-        uiState = uiState,
-        competitionName = competitionName,
-        onBackClicked = { navController.navigateUp() },
-        onItemClicked = {
-            navController.navigate(
-                Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
-            )
-        },
-        onAddButtonClicked = {
-            navController.navigate(
-                Screen.AddDisciplineScreen.withArgs(competitionId.toString())
-            )
-        },
-        onItemLongClicked = {
-            viewModel.onSubDisciplineLongPressed(it)
-            true
-        },
-        onDownloadClicked = {
-            launcher.launch("результаты_${competitionName}.xls")
-        },
-        onResultsClicked = {
-            navController.navigate(
-                Screen.CompetitorsResultsListScreen.withArgs(competitionId.toString())
-            )
-        },
-        onDescriptionClicked = {},
-        onDeleteClicked = {
-            viewModel.onDeleteCompetitionPressed()
-        },
-        onCompetitorsClicked = {
-            navController.navigate(
-                Screen.CompetitorsListScreen.withArgs(competitionId.toString())
+
+    Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackBarHostState,
+                modifier = Modifier.padding(10.dp)
             )
         }
-    )
+    ) { padding ->
 
-    if (viewModel.isDeleteSubDisciplineDialogShown) {
-        AppAlertDialogRoute(
-            title = "Удалить дисциплину",
-            description = "Вы действительно хотите удалить\nэту дисциплину?",
-            onOKClicked = {
-                viewModel.onDismissDeleteSubDisciplineDialog()
-                viewModel.deleteSubDiscipline()
+        DisciplinesListScreen(
+            uiState = uiState,
+            competitionName = competitionName,
+            modifier = Modifier.padding(padding),
+            onBackClicked = { navController.navigateUp() },
+            onItemClicked = {
+                navController.navigate(
+                    Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
+                )
             },
-            onCancelClicked = { viewModel.onDismissDeleteSubDisciplineDialog() }
+            onAddButtonClicked = {
+                navController.navigate(
+                    Screen.AddDisciplineScreen.withArgs(competitionId.toString())
+                )
+            },
+            onItemLongClicked = {
+                viewModel.onSubDisciplineLongPressed(it)
+                true
+            },
+            onDownloadClicked = {
+                launcher.launch("результаты_${competitionName}.xls")
+            },
+            onResultsClicked = {
+                navController.navigate(
+                    Screen.CompetitorsResultsListScreen.withArgs(competitionId.toString())
+                )
+            },
+            onDescriptionClicked = {},
+            onDeleteClicked = {
+                viewModel.onDeleteCompetitionPressed()
+            },
+            onCompetitorsClicked = {
+                navController.navigate(
+                    Screen.CompetitorsListScreen.withArgs(competitionId.toString())
+                )
+            }
         )
-    }
 
-    if (viewModel.isDeleteCompetitionDialogShown) {
-        AppAlertDialogRoute(
-            title = "Удалить соревнование",
-            description = "Вы действительно хотите удалить\nэто соревнование?",
-            onOKClicked = {
-                viewModel.onDismissDeleteCompetitionDialog()
-                viewModel.deleteCompetition()
-                navController.navigateUp()
-            },
-            onCancelClicked = { viewModel.onDismissDeleteCompetitionDialog() }
-        )
+        if (viewModel.isDeleteSubDisciplineDialogShown) {
+            AppAlertDialogRoute(
+                title = "Удалить дисциплину",
+                description = "Вы действительно хотите удалить\nэту дисциплину?",
+                onOKClicked = {
+                    viewModel.onDismissDeleteSubDisciplineDialog()
+                    viewModel.deleteSubDiscipline()
+                },
+                onCancelClicked = { viewModel.onDismissDeleteSubDisciplineDialog() }
+            )
+        }
+
+        if (viewModel.isDeleteCompetitionDialogShown) {
+            AppAlertDialogRoute(
+                title = "Удалить соревнование",
+                description = "Вы действительно хотите удалить\nэто соревнование?",
+                onOKClicked = {
+                    viewModel.onDismissDeleteCompetitionDialog()
+                    viewModel.deleteCompetition()
+                    navController.navigateUp()
+                },
+                onCancelClicked = { viewModel.onDismissDeleteCompetitionDialog() }
+            )
+        }
+
+        if (viewModel.isSnackBarShown) {
+            println("Show snackbar....")
+
+            LaunchedEffect(context) {
+                scope.launch {
+                    snackBarHostState.showSnackbar(
+                        message = "Таблица успешно сохранена",
+                        duration = SnackbarDuration.Short
+                    )
+                }
+                viewModel.onSnackBarDismiss()
+            }
+
+        }
     }
 }
 
@@ -154,6 +245,7 @@ fun DisciplineListRoute(
 fun DisciplinesListScreen(
     competitionName: String,
     uiState: DisciplinesListUIState,
+    modifier: Modifier = Modifier,
     onBackClicked: () -> Unit,
     onItemClicked: (SubDiscipline) -> Unit,
     onItemLongClicked: (SubDiscipline) -> Boolean,
@@ -259,7 +351,7 @@ fun DisciplinesListScreen(
             )
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
+        Column(modifier = modifier.padding(padding)) {
             Text(
                 modifier = Modifier.padding(horizontal = 15.dp),
                 text = competitionName,

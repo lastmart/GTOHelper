@@ -1,17 +1,16 @@
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.io.File
 import java.lang.reflect.Type
 import java.time.LocalTime
 import java.time.format.DateTimeFormatterBuilder
 import java.time.temporal.ChronoField
 
 class JsonParser {
-    fun getDictionaryWithStandards(): MutableMap<String, MutableMap<Int, MutableMap<String, MutableMap<Any, Int>>>> {
+    fun getDictionaryWithStandards(
+        jsonString: String
+    ): MutableMap<String, MutableMap<Int, MutableMap<String, MutableMap<Any, Int>>>> {
         val dictionaryWithStandards: MutableMap<String, MutableMap<Int, MutableMap<String, MutableMap<Any, Int>>>> =
             HashMap()
-        val jsonFile = File("C:\\Users\\Xoka74\\AndroidStudioProjects\\GTOHelper\\app\\src\\main\\java\\com\\gtohelper\\domain\\dictionaryWithStandards.json")
-        val jsonString = jsonFile.readText()
 
         val type: Type = object : TypeToken<Map<String, Map<Int, Map<String, Map<String, Int>>>>>() {}.type
         val gson = Gson()

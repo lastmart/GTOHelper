@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 interface CompetitorDao {
 
     @Query("SELECT * FROM competitors_table WHERE competitionId=:competitionIid")
+    fun getCompetitionAllCompetitors(competitionIid: Int): List<CompetitorEntity> // TODO suspend
+
+    @Query("SELECT * FROM competitors_table WHERE competitionId=:competitionIid")
     fun getCompetitionCompetitors(competitionIid: Int): Flow<List<CompetitorEntity>>
 
     @Query("SELECT COUNT(*) FROM competitors_table WHERE competitionId=:competitionId")

@@ -7,11 +7,13 @@ import com.gtohelper.data.database.relations.CompetitionSubDisciplineDao
 import com.gtohelper.data.mappers.toDomainDiscipline
 import com.gtohelper.data.mappers.toDomainSubDiscipline
 import com.gtohelper.domain.models.Discipline
+import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.DisciplineRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.filterNotNull
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 
@@ -20,8 +22,15 @@ class DisciplineRepositoryImpl(
     private val competitionSubDisciplineDao: CompetitionSubDisciplineDao
 ) : DisciplineRepository {
     override suspend fun getBy(name: String): Discipline? {
-        return withContext(Dispatchers.IO){
+        return withContext(Dispatchers.IO) {
             competitionSubDisciplineDao.getBy(name)?.toDomainDiscipline()
+        }
+    }
+
+    override suspend fun getAllSelectedSubDisciplines(competitionId: Int): List<SubDiscipline> {
+        return withContext(Dispatchers.IO) {
+            getSelectedSubDisciplines(competitionId).firstOrNull()
+                ?.map { it.toDomainSubDiscipline() } ?: listOf()
         }
     }
 

@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase.CONFLICT_REPLACE
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.gtohelper.R
 import com.gtohelper.data.database.AppDatabase
 import com.gtohelper.data.database.Converters
 import com.gtohelper.data.database.competition.CompetitionDao
@@ -29,6 +30,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 import javax.inject.Singleton
 
 
@@ -68,7 +70,10 @@ object DataModule {
                                 put("parentName", discipline.name)
                                 put("name", subDiscipline.name)
                                 put("imageResource", subDiscipline.imageResource)
-                                put("type", typeConverter.fromDisciplinePointType(subDiscipline.type))
+                                put(
+                                    "type",
+                                    typeConverter.fromDisciplinePointType(subDiscipline.type)
+                                )
                             }
 
                             db.insert(
@@ -142,15 +147,33 @@ object DataModule {
         return SportResultRepositoryImpl(dao)
     }
 
+
+    @Provides
+    @Named("json_string")
+    @Singleton
+    fun provideJsonString(
+        @ApplicationContext context: Context
+    ): String {
+        return context
+            .resources
+            .openRawResource(R.raw.dictionary_with_standards)
+            .bufferedReader()
+            .use { it.readText() }
+    }
+
     @Provides
     @Singleton
     fun provideCompetitorResultsRepository(
         sportResultDao: SportResultDao,
         competitorDao: CompetitorDao,
+        @Named("json_string") jsonString: String,
+        disciplineDao: DisciplineDao
     ): CompetitorResultsRepository {
         return CompetitorResultsRepositoryImpl(
             sportResultDao = sportResultDao,
-            competitorDao = competitorDao
+            competitorDao = competitorDao,
+            subDisciplineDao = disciplineDao,
+            jsonString = jsonString,
         )
     }
 

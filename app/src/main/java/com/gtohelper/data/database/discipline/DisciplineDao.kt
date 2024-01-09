@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
 import com.gtohelper.data.database.relations.DisciplineWithSubDisciplines
+import com.gtohelper.data.database.relations.SubDisciplineWithCompetitorsWithResults
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -27,4 +28,8 @@ interface DisciplineDao {
 
     @Query("SELECT * FROM sub_disciplines_table WHERE name = :name")
     suspend fun getSubDisciplineByName(name: String): SubDisciplineEntity?
+
+    @Transaction
+    @Query("SELECT * FROM sub_disciplines_table")
+    suspend fun getDisciplineWithCompetitorsWithResults(): List<SubDisciplineWithCompetitorsWithResults>
 }

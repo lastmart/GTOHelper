@@ -15,17 +15,17 @@ class DisciplinesProvider {
                 SubDisciplineEntity(
                     name = "Бег на 30 м",
                     imageResource = R.drawable.sub_discipline_sprinting_30m,
-                    type = DisciplinePointType.LONG_TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 60 м",
                     imageResource = R.drawable.sub_discipline_sprinting_60m,
-                    type = DisciplinePointType.LONG_TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
                 SubDisciplineEntity(
                     name = "Бег на 100 м",
                     imageResource = R.drawable.sub_discipline_sprinting_100m,
-                    type = DisciplinePointType.LONG_TIME,
+                    type = DisciplinePointType.SHORT_TIME,
                 ),
             )
         },

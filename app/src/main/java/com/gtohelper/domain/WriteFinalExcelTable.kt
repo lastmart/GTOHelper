@@ -1,5 +1,7 @@
 package com.gtohelper.domain
 
+import android.content.Context
+import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
 import org.apache.poi.ss.usermodel.FillPatternType
@@ -9,7 +11,7 @@ import org.apache.poi.ss.usermodel.VerticalAlignment
 import org.apache.poi.ss.util.CellRangeAddress
 import org.apache.poi.xssf.usermodel.XSSFSheet
 import org.apache.poi.xssf.usermodel.XSSFWorkbook
-import java.io.FileOutputStream
+import java.io.OutputStream
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
@@ -61,11 +63,24 @@ fun main() {
 //    WriteFinalExcelTable().createFinalTable(filePath, "Соревнования по ГТО", listCompetitor, res)
 }
 
-class WriteFinalExcelTable {
+class WriteFinalExcelTable(
+    context: Context? = null
+) {
+    private val jsonString = context
+        ?.resources
+        ?.openRawResource(R.raw.dictionary_with_standards)
+        ?.bufferedReader()
+        ?.use { it.readText() } ?: ""
+
+    private val pointsCalculator = PointsCalculator()
+
     fun createFinalTable(
-        nameTable: String, listCompetitor: List<Competitor>,
-        sportResults: Map<String, Map<Competitor, Any>>
+        nameTable: String,
+        fileOutputStream: OutputStream,
+        listCompetitor: List<Competitor>, // Список участников из бд
+        sportResults: Map<String, Map<Competitor, Any>> // Вид спорта -> Competitor -> Результат(double/LOcalTime)
     ) {
+
         val workbook = XSSFWorkbook()
         val sheet = workbook.createSheet("Результаты")
         val dictSportColumn: MutableMap<String, Int> = mutableMapOf()
@@ -75,49 +90,89 @@ class WriteFinalExcelTable {
             listCompetitor
         )
 
-
-        addCellName(workbook, sheet, nameTable, sportResults, dictSportColumn)
-        addCompetitorResult(
-            workbook, sheet, sortedDictCompetitorForSumPoints, dictCompetitorSportResPoint,
-            dictSportColumn
+        addCellName(
+            workbook = workbook,
+            sheet = sheet,
+            nameTable = nameTable,
+            sportResults = sportResults,
+            dictSportColumn = dictSportColumn
         )
 
-        val fileOut = FileOutputStream("$nameTable.xlsx")
-        workbook.write(fileOut)
-        fileOut.close()
+        addCompetitorResult(
+            workBook = workbook,
+            sheet = sheet,
+            sortedCompetitorForSumPoint = sortedDictCompetitorForSumPoints,
+            dictCompetitorSportResPoint = dictCompetitorSportResPoint,
+            dictSportColumn = dictSportColumn
+        )
+
+        workbook.write(fileOutputStream)
     }
 
     private fun getTwoDictionary(
-        sportResults: Map<String, Map<Competitor, Any>>,
+        sportToCompetitorToResults: Map<String, Map<Competitor, Any>>,
         listCompetitor: List<Competitor>
-    ):
-            Pair<MutableMap<Competitor, MutableMap<String, MutableMap<Any, Int>>>,
-                    Map<Competitor, Double>> {
-        val dictCompetitorSportResPoint:
-                MutableMap<Competitor, MutableMap<String, MutableMap<Any, Int>>> = mutableMapOf()
 
-        val competitorSummaPoint: MutableMap<Competitor, Double> = mutableMapOf()
+    ): Pair<MutableMap<Competitor, MutableMap<String, MutableMap<Any, Int>>>,
+            Map<Competitor, Double>> {
+
+        val dictCompetitorSportResPoint: MutableMap<Competitor, MutableMap<String, MutableMap<Any, Int>>> =
+            mutableMapOf()
+
+        val competitorTotalPoints: MutableMap<Competitor, Double> = mutableMapOf()
+
         for (competitor in listCompetitor) {
-            var summaPoints = 0
-            for (sport in sportResults.keys) {
-                if (competitor in sportResults[sport]!!.keys) {
-                    val res = sportResults[sport]!![competitor]
-                    val point =
-                        PointsCalculator().getPoint(competitor, sport, res as Comparable<Any>)
-                    if (competitor !in dictCompetitorSportResPoint) {
-                        dictCompetitorSportResPoint[competitor] =
-                            mutableMapOf(sport to mutableMapOf(res to point))
-                    } else {
-                        dictCompetitorSportResPoint[competitor]!![sport] =
-                            mutableMapOf(res to point)
-                    }
-                    summaPoints += point
+
+            var totalPoints = 0
+
+            for (sport in sportToCompetitorToResults.keys) {
+
+                val competitorsToResults = sportToCompetitorToResults[sport] ?: continue
+                if (competitor !in competitorsToResults.keys) continue
+                val competitorResults = competitorsToResults[competitor] ?: continue
+
+                val point = when (competitorResults) {
+                    is Double -> pointsCalculator.getPoint(
+                        competitor = competitor,
+                        sport = sport,
+                        result = competitorResults,
+                        jsonString = jsonString
+                    )
+
+                    is LocalTime -> pointsCalculator.getPoint(
+                        competitor = competitor,
+                        sport = sport,
+                        result = competitorResults,
+                        jsonString = jsonString
+                    )
+
+                    else -> 0
                 }
+
+                if (competitor in dictCompetitorSportResPoint) {
+
+                    dictCompetitorSportResPoint[competitor]!![sport] = mutableMapOf(
+                        competitorResults to point
+                    )
+                } else {
+                    dictCompetitorSportResPoint[competitor] = mutableMapOf(
+                        sport to mutableMapOf(competitorResults to point)
+                    )
+                }
+
+                totalPoints += point
             }
-            competitorSummaPoint[competitor] = summaPoints.toDouble()
+
+            competitorTotalPoints[competitor] = totalPoints.toDouble()
         }
-        val sortedCompetitorSumPoints =
-            competitorSummaPoint.toList().sortedByDescending { (_, value) -> value }.toMap()
+
+        val sortedCompetitorSumPoints = competitorTotalPoints
+            .toList()
+            .sortedByDescending { (_, value) ->
+                value
+            }
+            .toMap()
+
         return Pair(dictCompetitorSportResPoint, sortedCompetitorSumPoints)
     }
 
@@ -146,6 +201,7 @@ class WriteFinalExcelTable {
         var rowCompetitor = 4
 
         for (competitor in sortedCompetitorForSumPoint.keys) {
+
             val cellId = sheet.createRow(rowCompetitor).createCell(0)
             cellId.cellStyle = style
             cellId.setCellValue(competitor.number.toDouble())
@@ -153,7 +209,7 @@ class WriteFinalExcelTable {
             val cellName = sheet.getRow(rowCompetitor).createCell(1)
             cellName.cellStyle = style
             cellName.setCellValue(competitor.name)
-            sheet.autoSizeColumn(1)
+            //        sheet.autoSizeColumn(1)
 
             val cellGender = sheet.getRow(rowCompetitor).createCell(2)
             cellGender.cellStyle = style
@@ -166,29 +222,43 @@ class WriteFinalExcelTable {
             val cellNameTeam = sheet.getRow(rowCompetitor).createCell(4)
             cellNameTeam.cellStyle = style
             cellNameTeam.setCellValue(competitor.teamName)
-            sheet.autoSizeColumn(4)
-            for (sport in dictCompetitorSportResPoint[competitor]!!.keys) {
-                val res = dictCompetitorSportResPoint[competitor]!![sport]!!.keys.toList()[0]
-                val point = dictCompetitorSportResPoint[competitor]!![sport]!![res]!!.toDouble()
+            //         sheet.autoSizeColumn(4)
+            val competitorToSportToResultToPoints =
+                dictCompetitorSportResPoint[competitor]
+
+            if (competitorToSportToResultToPoints == null) {
+                rowCompetitor += 1
+                continue
+            }
+
+            for (sport in competitorToSportToResultToPoints.keys) {
+
+                val resultToPoints = competitorToSportToResultToPoints[sport] ?: continue
+
+                val result = resultToPoints.keys.toList()[0]
+
+                val point = resultToPoints[result]?.toDouble() ?: continue
 
                 val cellRes = sheet.getRow(rowCompetitor).createCell(dictSportColumn[sport]!!)
                 cellRes.cellStyle = style
 
-                if (res is LocalTime) {
+                if (result is LocalTime) {
                     if (sport == "Бег на 30 м (с)" || sport == "Челночный бег 3х10 м (с)"
                         || sport == "Бег на 60 м (с)" || sport == "Бег на 100 м (с)"
                     ) {
                         val formatter = DateTimeFormatter.ofPattern("ss.SS")
-                        cellRes.setCellValue(res.format(formatter).toDouble())
+                        cellRes.setCellValue(result.format(formatter).toDouble())
                     } else {
                         val formatter = DateTimeFormatter.ofPattern("mm:ss.SS")
-                        cellRes.setCellValue(res.format(formatter).toString())
+                        cellRes.setCellValue(result.format(formatter).toString())
                     }
-                } else if (res is Double) {
-                    cellRes.setCellValue(res)
+                } else if (result is Double) {
+                    cellRes.setCellValue(result)
                 }
 
-                val cellPoint = sheet.getRow(rowCompetitor).createCell(dictSportColumn[sport]!! + 1)
+                val cellPoint =
+                    sheet.getRow(rowCompetitor).createCell(dictSportColumn[sport]!! + 1)
+
                 cellPoint.cellStyle = stylePoint
                 cellPoint.setCellValue(point)
 
@@ -199,12 +269,14 @@ class WriteFinalExcelTable {
 
             rowCompetitor += 1
         }
-
     }
 
     private fun addCellName(
-        workbook: XSSFWorkbook, sheet: XSSFSheet, nameTable: String,
-        sportResults: Map<String, Map<Competitor, Any>>, dictSportColumn: MutableMap<String, Int>
+        workbook: XSSFWorkbook,
+        sheet: XSSFSheet,
+        nameTable: String,
+        sportResults: Map<String, Map<Competitor, Any>>,
+        dictSportColumn: MutableMap<String, Int>
     ) {
         // Add cell: id, name competitor, degree, name team, sports, summa point, place
 
@@ -215,7 +287,7 @@ class WriteFinalExcelTable {
         val cellId = sheet.createRow(1).createCell(0)
         cellId.cellStyle = style
         cellId.setCellValue("№ участника")
-        sheet.autoSizeColumn(0)
+        //    sheet.autoSizeColumn(0)
         sheet.addMergedRegion(CellRangeAddress(1, 3, 0, 0))
 
         val cellNameCompetitor = sheet.getRow(1).createCell(1)
@@ -239,15 +311,20 @@ class WriteFinalExcelTable {
         sheet.addMergedRegion(CellRangeAddress(1, 3, 4, 4))
 
         style.wrapText = true
+
         val columnFirstSport = 5
         for (numSport in 0 until sportResults.keys.size) {
-            dictSportColumn[sportResults.keys.toList()[numSport]] = columnFirstSport + numSport * 2
+
+            dictSportColumn[sportResults.keys.toList()[numSport]] =
+                columnFirstSport + numSport * 2
             val sportCell = sheet.getRow(1).createCell(columnFirstSport + numSport * 2)
             sportCell.cellStyle = style
             sportCell.setCellValue(sportResults.keys.toList()[numSport])
 
-            sheet.autoSizeColumn(columnFirstSport + numSport * 2)
-            val widthColumn = (sheet.getColumnWidth(columnFirstSport + numSport * 2) / 2.0).toInt()
+            //        sheet.autoSizeColumn(columnFirstSport + numSport * 2)
+
+            val widthColumn = (sheet.getColumnWidth(columnFirstSport + numSport * 2) / 2.0)
+                .toInt()
 
             sheet.addMergedRegion(
                 CellRangeAddress(
@@ -258,12 +335,14 @@ class WriteFinalExcelTable {
 
             sheet.setColumnWidth(columnFirstSport + numSport * 2, widthColumn)
             sheet.setColumnWidth(columnFirstSport + numSport * 2 + 1, widthColumn)
+
             var resWidth = 0
+
             if (numSport == 0) {
                 val cellRes = sheet.createRow(3).createCell(columnFirstSport)
                 cellRes.cellStyle = style
                 cellRes.setCellValue("Результат")
-                sheet.autoSizeColumn(columnFirstSport)
+                //        sheet.autoSizeColumn(columnFirstSport)
                 resWidth = sheet.getColumnWidth(columnFirstSport)
                 val cellPoint = sheet.getRow(3).createCell(columnFirstSport + 1)
                 cellPoint.cellStyle = style
@@ -272,7 +351,7 @@ class WriteFinalExcelTable {
                 val cellRes = sheet.getRow(3).createCell(columnFirstSport + numSport * 2)
                 cellRes.cellStyle = style
                 cellRes.setCellValue("Результат")
-                sheet.autoSizeColumn(columnFirstSport + numSport * 2)
+                //        sheet.autoSizeColumn(columnFirstSport + numSport * 2)
                 resWidth = sheet.getColumnWidth(columnFirstSport + numSport * 2)
                 val cellPoint = sheet.getRow(3).createCell(columnFirstSport + numSport * 2 + 1)
                 cellPoint.cellStyle = style
@@ -287,13 +366,13 @@ class WriteFinalExcelTable {
         val cellSumPoint = sheet.getRow(1).createCell(columnBeforeSport)
         cellSumPoint.cellStyle = style
         cellSumPoint.setCellValue("Сумма")
+
         sheet.addMergedRegion(
             CellRangeAddress(
                 1, 3, columnBeforeSport,
                 columnBeforeSport
             )
         )
-
 
         val cellNameCompetition = sheet.createRow(0).createCell(0)
         cellNameCompetition.cellStyle = style

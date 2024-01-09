@@ -14,6 +14,13 @@ import kotlinx.coroutines.withContext
 class CompetitorRepositoryImpl(
     private val dao: CompetitorDao,
 ) : CompetitorRepository {
+
+    override suspend fun getCompetitionAllCompetitors(competitionId: Int): List<Competitor> {
+        return dao.getCompetitionAllCompetitors(competitionId).map {
+            it.toDomainModel()
+        }
+    }
+
     override fun getCompetitionCompetitors(competitionId: Int): Flow<List<Competitor>> {
         return dao.getCompetitionCompetitors(competitionId).map { list ->
             list.map { it.toDomainModel() }

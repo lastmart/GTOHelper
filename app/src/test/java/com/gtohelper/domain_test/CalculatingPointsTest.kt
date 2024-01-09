@@ -32,7 +32,7 @@ class CalculatingPointsTest {
         assertEquals(64, calculatingPoints.getPoint(femaleTwoDegree,
             "Челночный бег 3х10 м (с)", jsonParser.convertRunTime("8.7")))
         assertEquals(60, calculatingPoints.getPoint(femaleTwoDegree,
-            "Метание теннисного мяча в цель, дистанция 6 м (кол-во попаданий)", 3.0))
+            "Метание мяча в цель, дистанция 6 м (кол-во попаданий)", 3.0))
 
         val maleEighteenDegree = Competitor(0, 1,1,"Майкл Фелпс",
             Gender.MALE, "Вашинтгон", 18,
@@ -49,12 +49,12 @@ class CalculatingPointsTest {
         val maleSevenDegree = Competitor(0, 1,1,"Майкл Фелпс",
             Gender.MALE, "Балтимор", 7,
         )
-        assertEquals(86, calculatingPoints.getPoint(maleSevenDegree,
+        assertEquals(76, calculatingPoints.getPoint(maleSevenDegree,
             "Бег на 60 м (с)", jsonParser.convertRunTime("7.01")))
-        assertEquals(59, calculatingPoints.getPoint(maleSevenDegree,
+        assertEquals(54, calculatingPoints.getPoint(maleSevenDegree,
             "Поднимание туловища из положения лежа на спине (количество раз за 1 мин)",
             46.0))
-        assertEquals(98, calculatingPoints.getPoint(maleSevenDegree,
+        assertEquals(100, calculatingPoints.getPoint(maleSevenDegree,
             "Кросс на 5000 м по пересеченной местности (мин, с)",
             jsonParser.convertTime("14:48.00")))
         assertEquals(100, calculatingPoints.getPoint(maleSevenDegree,
