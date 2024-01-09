@@ -2,8 +2,15 @@ package com.gtohelper.presentation.navigation
 
 import android.os.Build
 import androidx.annotation.RequiresApi
+import androidx.compose.animation.AnimatedContentTransitionScope
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.EaseOut
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.window.DialogProperties
@@ -68,6 +75,9 @@ fun AppNavHost(
     val sportResultIdArgument =
         remember { listOf(navArgument(sportResultIdArg) { type = NavType.IntType }) }
 
+    val transitionEnterDuration = 100
+    val transitionExitDuration = 100
+
     NavHost(
         navController = navController,
         startDestination = Screen.CompetitionsScreen.route,
@@ -78,14 +88,58 @@ fun AppNavHost(
     ) {
 
         composable(
-            route = Screen.CompetitionsScreen.route
+            route = Screen.CompetitionsScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<CompetitionListViewModel>()
             CompetitionListRoute(navController, viewModel)
         }
 
         composable(
-            route = Screen.AddCompetitionScreen.route
+            route = Screen.AddCompetitionScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<AddCompetitionViewModel>()
             AddCompetitionRoute(navController, viewModel)
@@ -94,6 +148,28 @@ fun AppNavHost(
         composable(
             route = Screen.EditCompetitionScreen.withRouteArgs(competitionIdArg),
             arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<EditCompetitionViewModel>()
             EditCompetitionRoute(navController, viewModel)
@@ -101,7 +177,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.CompetitorsListScreen.withRouteArgs(competitionIdArg),
-            arguments = competitionIdArgument
+            arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<CompetitorsListViewModel>()
             val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
@@ -110,7 +208,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.AddCompetitorScreen.withRouteArgs(competitionIdArg),
-            arguments = competitionIdArgument
+            arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<AddCompetitorViewModel>()
             AddCompetitorRoute(navController, viewModel)
@@ -118,7 +238,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.AddCompetitorFromTableScreen.withRouteArgs(competitionIdArg),
-            arguments = competitionIdArgument
+            arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<AddCompetitorsFromTableViewModel>()
             AddCompetitorsFromTableRoute(navController, viewModel)
@@ -129,7 +271,29 @@ fun AppNavHost(
                 competitionIdArg,
                 competitionNameArg
             ),
-            arguments = competitionIdArgument + competitionNameArgument
+            arguments = competitionIdArgument + competitionNameArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<DisciplinesListViewModel>()
             val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
@@ -145,7 +309,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.AddDisciplineScreen.withRouteArgs(competitionIdArg),
-            arguments = competitionIdArgument
+            arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<AddDisciplineViewModel>()
             AddDisciplineRoute(
@@ -157,6 +343,28 @@ fun AppNavHost(
         composable(
             route = Screen.EditCompetitorScreen.withRouteArgs(competitorIdArg),
             arguments = competitorIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<EditCompetitorViewModel>()
             EditCompetitorRoute(
@@ -167,7 +375,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.CompetitorsResultsListScreen.withRouteArgs(competitionIdArg),
-            arguments = competitionIdArgument
+            arguments = competitionIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<CompetitorsResultsViewModel>()
             CompetitorsResultsRoute(
@@ -177,7 +407,11 @@ fun AppNavHost(
         }
 
         dialog(
-            route = Screen.EditResultScreen.withRouteArgs(competitionIdArg, disciplineIdArg, sportResultIdArg),
+            route = Screen.EditResultScreen.withRouteArgs(
+                competitionIdArg,
+                disciplineIdArg,
+                sportResultIdArg
+            ),
             arguments = competitionIdArgument + disciplineIdArgument + sportResultIdArgument,
             dialogProperties = DialogProperties(
                 dismissOnBackPress = true,
@@ -190,7 +424,29 @@ fun AppNavHost(
 
         composable(
             route = Screen.AddResultsScreen.withRouteArgs(competitionIdArg, disciplineIdArg),
-            arguments = competitionIdArgument + disciplineIdArgument
+            arguments = competitionIdArgument + disciplineIdArgument,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             val viewModel = hiltViewModel<AddResultsViewModel>()
             val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
@@ -205,7 +461,29 @@ fun AppNavHost(
         }
 
         composable(
-            route = Screen.HelpScreen.route
+            route = Screen.HelpScreen.route,
+            enterTransition = {
+                fadeIn(
+                    animationSpec = tween(
+                        durationMillis = transitionEnterDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideIntoContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.Start,
+                    animationSpec = tween(transitionEnterDuration)
+                )
+            },
+            popExitTransition = {
+                fadeOut(
+                    animationSpec = tween(
+                        durationMillis = transitionExitDuration,
+                        easing = LinearEasing
+                    )
+                ) + slideOutOfContainer(
+                    towards = AnimatedContentTransitionScope.SlideDirection.End,
+                    animationSpec = tween(transitionExitDuration, easing = EaseOut)
+                )
+            }
         ) {
             HelpRoute(
                 navController = navController,
