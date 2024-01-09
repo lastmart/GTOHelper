@@ -1,5 +1,7 @@
 package com.gtohelper.presentation.ui.disciplines_list.add_results.components
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -12,12 +14,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -29,19 +31,27 @@ import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ResultItem(
     pointType: DisciplinePointType,
     resultWithCompetitor: SportResultAndCompetitor,
     onClick: (SportResultAndCompetitor) -> Unit = {},
+    onLongClick: (SportResultAndCompetitor) -> Unit = {},
 ) {
+    val shape = CardDefaults.shape
     Card(
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
-        onClick = { onClick(resultWithCompetitor) },
+        shape = shape,
+        modifier = Modifier
+            .clip(shape)
+            .combinedClickable(
+            onClick = { onClick(resultWithCompetitor) },
+            onLongClick = { onLongClick(resultWithCompetitor) },
+        )
     ) {
         Row(
             modifier = Modifier
