@@ -37,14 +37,23 @@ fun CompetitorsResultsRoute(
     viewModel: CompetitorsResultsViewModel,
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val searchQuery by viewModel.searchQuery.collectAsState()
 
-    CompetitorsResultsScreen(uiState = uiState, onBackClicked = { navController.navigateUp() })
+    CompetitorsResultsScreen(
+        uiState = uiState,
+        onBackClicked = { navController.navigateUp() },
+        onSearchQueryChanged = { viewModel.onSearchQueryChange(it) },
+        searchQuery = searchQuery
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CompetitorsResultsScreen(
-    uiState: CompetitorsResultsUIState, onBackClicked: () -> Unit = {}
+    uiState: CompetitorsResultsUIState,
+    onBackClicked: () -> Unit = {},
+    onSearchQueryChanged: (String) -> Unit = {},
+    searchQuery: String = ""
 ) {
     Scaffold(
         topBar = {
@@ -72,6 +81,8 @@ fun CompetitorsResultsScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 15.dp),
                 hint = "Поиск результатов...",
+                value = searchQuery,
+                onValueChange = onSearchQueryChanged
             )
 
             Spacer(modifier = Modifier.height(15.dp))

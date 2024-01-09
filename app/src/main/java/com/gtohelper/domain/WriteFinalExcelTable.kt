@@ -197,7 +197,8 @@ class WriteFinalExcelTable(
         styleSumPoint.fillPattern = FillPatternType.SOLID_FOREGROUND
         styleSumPoint.alignment = HorizontalAlignment.CENTER
 
-        val lastColumnSport = dictSportColumn.values.max()
+        val lastColumnSport = dictSportColumn.values.maxOrNull() ?: return
+
         var rowCompetitor = 4
 
         for (competitor in sortedCompetitorForSumPoint.keys) {

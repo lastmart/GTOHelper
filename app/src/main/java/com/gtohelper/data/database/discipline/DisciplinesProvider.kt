@@ -36,22 +36,22 @@ class DisciplinesProvider {
         ).apply {
             subDisciplines = listOf(
                 SubDisciplineEntity(
-                    name = "Бег на 1 км",
+                    name = "Бег на 1000 м",
                     imageResource = R.drawable.sub_discipline_long_distance_running_1km,
                     type = DisciplinePointType.LONG_TIME,
                 ),
                 SubDisciplineEntity(
-                    name = "Бег на 1.5 км",
+                    name = "Бег на 1500 м",
                     imageResource = R.drawable.sub_discipline_long_distance_running_1dot5km,
                     type = DisciplinePointType.LONG_TIME,
                 ),
                 SubDisciplineEntity(
-                    name = "Бег на 2 км",
+                    name = "Бег на 2000 м",
                     imageResource = R.drawable.sub_discipline_long_distance_running_2km,
                     type = DisciplinePointType.LONG_TIME,
                 ),
                 SubDisciplineEntity(
-                    name = "Бег на 3 км",
+                    name = "Бег на 3000 м",
                     imageResource = R.drawable.sub_discipline_long_distance_running_3km,
                     type = DisciplinePointType.LONG_TIME,
                 ),
