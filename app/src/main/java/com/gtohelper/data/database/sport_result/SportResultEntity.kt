@@ -5,6 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.gtohelper.data.database.competitor.CompetitorEntity
 import com.gtohelper.data.database.relations.CompetitionSubDisciplineCrossRef
+import java.time.LocalDateTime
 
 @Entity(
     tableName = "sport_results",
@@ -30,4 +31,5 @@ data class SportResultEntity(
     val disciplineId: Int,
     val competitorId: Int,
     val value: Int,
+    val timeStamp: LocalDateTime,
 )

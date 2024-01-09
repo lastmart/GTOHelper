@@ -16,6 +16,8 @@ import com.gtohelper.presentation.ui.competitions.CompetitionListRoute
 import com.gtohelper.presentation.ui.competitions.CompetitionListViewModel
 import com.gtohelper.presentation.ui.competitions.add_competition.AddCompetitionRoute
 import com.gtohelper.presentation.ui.competitions.add_competition.AddCompetitionViewModel
+import com.gtohelper.presentation.ui.competitions.edit_competition.EditCompetitionRoute
+import com.gtohelper.presentation.ui.competitions.edit_competition.EditCompetitionViewModel
 import com.gtohelper.presentation.ui.competitors_list.CompetitorListRoute
 import com.gtohelper.presentation.ui.competitors_list.CompetitorsListViewModel
 import com.gtohelper.presentation.ui.competitors_list.add_competitor.AddCompetitorRoute
@@ -79,6 +81,14 @@ fun AppNavHost(
         ) {
             val viewModel = hiltViewModel<AddCompetitionViewModel>()
             AddCompetitionRoute(navController, viewModel)
+        }
+
+        composable(
+            route = Screen.EditCompetitionScreen.withRouteArgs(competitionIdArg),
+            arguments = competitionIdArgument,
+        ) {
+            val viewModel = hiltViewModel<EditCompetitionViewModel>()
+            EditCompetitionRoute(navController, viewModel)
         }
 
         composable(

@@ -1,5 +1,6 @@
-package com.gtohelper.presentation.ui.competitions.add_competition
+package com.gtohelper.presentation.ui.competitions.edit_competition
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gtohelper.domain.models.Competition
@@ -16,17 +17,38 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
-class AddCompetitionViewModel @Inject constructor(
-    private val competitionRepository: CompetitionRepository,
+class EditCompetitionViewModel @Inject constructor(
+    private val repository: CompetitionRepository,
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
+
+    private val competitionId: Int  = savedStateHandle["competition_id"] ?: 0
 
     private val _uiState = MutableStateFlow(CompetitionFormState())
     val uiState = _uiState.asStateFlow()
 
     private val formStateChannel = Channel<FormState>()
     val formState = formStateChannel.receiveAsFlow()
+
+    private var initialCompetition: Competition? = null
+
+    init {
+        viewModelScope.launch {
+            val competition = repository.getById(competitionId)
+            initialCompetition = competition
+
+            if (competition != null){
+                _uiState.update {
+                    it.copy(
+                        name=competition.name,
+                        description = competition.description
+                    )
+                }
+            }
+        }
+    }
+
 
     fun onEvent(event: CompetitionFormEvent) {
         when (event) {
@@ -46,13 +68,14 @@ class AddCompetitionViewModel @Inject constructor(
     }
 
     private fun submit() {
+
         viewModelScope.launch {
             val state = _uiState.value
             val validationError = validateCompetition()
             if (validationError == null) {
-                val competition = Competition(0, state.name, state.description)
+                val competition = Competition(competitionId, state.name, state.description)
                 try {
-                    competitionRepository.create(competition)
+                    repository.update(competition)
                     formStateChannel.send(FormState.FormSubmittedState)
                 } catch (e: Exception) {
                     formStateChannel.send(FormState.FormSubmissionFailedState(e.message.toString()))

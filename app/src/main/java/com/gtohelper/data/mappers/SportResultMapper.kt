@@ -11,6 +11,7 @@ fun SportResult.toEntity(): SportResultEntity {
         value = value,
         competitorId = competitorId,
         competitionId = competitionId,
+        timeStamp = timeStamp,
     )
 }
 
@@ -21,5 +22,6 @@ fun SportResultEntity.toDomainModel(): SportResult {
         competitorId = competitorId,
         value = value,
         competitionId = competitionId,
+        timeStamp = timeStamp,
     )
 }

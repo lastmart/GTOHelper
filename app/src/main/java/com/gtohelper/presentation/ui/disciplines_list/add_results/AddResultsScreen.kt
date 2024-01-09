@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,11 +32,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavController
 import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
-import com.gtohelper.domain.models.Discipline
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
@@ -119,23 +120,21 @@ fun AddResultsScreen(
                 AddResultsUiState.Loading -> LoadingScreen(Modifier.fillMaxSize())
                 is AddResultsUiState.Loaded -> {
 
+                    Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = uiState.discipline.name,
+                        textAlign = TextAlign.Center,
+                    )
+                    Spacer(Modifier.height(MaterialTheme.spacing.medium))
 
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                     ) {
                         item {
-                            Text(uiState.discipline.name)
-//                            AppSearchField(
-//                                modifier = Modifier.fillMaxWidth(),
-//                                value = searchQuery,
-//                                hint = "Поиск по номеру...",
-//                                onValueChange = onSearchQueryChanged,
-//                            )
 
-                            Spacer(Modifier.height(MaterialTheme.spacing.medium))
                         }
-                        items(results) {
+                        items(results.sortedBy { it.result.timeStamp }) {
                             ResultItem(
                                 pointType = uiState.discipline.type,
                                 resultWithCompetitor = it,
@@ -185,10 +184,12 @@ fun PreviewAddResultsScreen() {
     var state by remember {
         mutableStateOf(
             AddResultsUiState.Loaded(
-                SubDiscipline(0,
+                SubDiscipline(
+                    0,
                     "Прыжки с крыши",
                     0,
-                    DisciplinePointType.LONG_TIME),
+                    DisciplinePointType.LONG_TIME
+                ),
                 0, 0,
             )
         )

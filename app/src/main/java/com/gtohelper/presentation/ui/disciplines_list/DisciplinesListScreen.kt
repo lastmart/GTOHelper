@@ -185,7 +185,11 @@ fun DisciplineListRoute(
                     Screen.CompetitorsResultsListScreen.withArgs(competitionId.toString())
                 )
             },
-            onDescriptionClicked = {},
+            onDescriptionClicked = {
+                navController.navigate(
+                    Screen.EditCompetitionScreen.withArgs(competitionId.toString())
+                )
+            },
             onDeleteClicked = {
                 viewModel.onDeleteCompetitionPressed()
             },
