@@ -1,4 +1,4 @@
-package com.gtohelper.domain.usecases.sport_results
+package com.gtohelper.domain.usecases.sport_result
 
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.repository.CompetitorRepository

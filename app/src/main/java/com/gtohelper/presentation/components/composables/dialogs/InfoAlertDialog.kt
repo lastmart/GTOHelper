@@ -29,8 +29,8 @@ import com.gtohelper.R
 @Composable
 fun PreviewInfoAlertDialog(){
     InfoAlertDialog(
-        title = "При импортировании",
-        description = "номера встретились несколько раз. Пожалуйста, проверьте правильность внесенных данных") {
+        title = "",
+        description = "Номера встретились несколько раз. Пожалуйста, проверьте правильность внесенных данных") {
     }
 }
 

@@ -60,7 +60,7 @@ fun ShortTimeInputField(
         modifier = modifier,
         horizontalArrangement = Arrangement.Center
     ) {
-        BasicTextField(
+            BasicTextField(
             modifier = Modifier
                 .width(IntrinsicSize.Min)
                 .onPreviewKeyEvent {

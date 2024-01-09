@@ -10,6 +10,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.gtohelper.presentation.ui.competitions.CompetitionListRoute
@@ -34,6 +35,8 @@ import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDiscipli
 import com.gtohelper.presentation.ui.disciplines_list.add_discipline.AddDisciplineViewModel
 import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsRoute
 import com.gtohelper.presentation.ui.disciplines_list.add_results.AddResultsViewModel
+import com.gtohelper.presentation.ui.disciplines_list.add_results.edit_result.EditResultDialogRoute
+import com.gtohelper.presentation.ui.disciplines_list.add_results.edit_result.EditResultViewModel
 import com.gtohelper.presentation.ui.help.HelpRoute
 
 
@@ -47,6 +50,7 @@ fun AppNavHost(
     val competitionNameArg = "competition_name"
     val competitorIdArg = "competitor_id"
     val disciplineIdArg = "discipline_id"
+    val sportResultIdArg = "sport_result_id"
 
     val competitionIdArgument =
         remember { listOf(navArgument(competitionIdArg) { type = NavType.IntType }) }
@@ -59,6 +63,9 @@ fun AppNavHost(
 
     val disciplineIdArgument =
         remember { listOf(navArgument(disciplineIdArg) { type = NavType.IntType }) }
+
+    val sportResultIdArgument =
+        remember { listOf(navArgument(sportResultIdArg) { type = NavType.IntType }) }
 
     NavHost(
         navController = navController,
@@ -168,15 +175,27 @@ fun AppNavHost(
             )
         }
 
+        dialog(
+            route = Screen.EditResultScreen.withRouteArgs(competitionIdArg, disciplineIdArg, sportResultIdArg),
+            arguments = competitionIdArgument + disciplineIdArgument + sportResultIdArgument
+        ) {
+            val editResultViewModel = hiltViewModel<EditResultViewModel>()
+            EditResultDialogRoute(navController, editResultViewModel)
+        }
+
         composable(
             route = Screen.AddResultsScreen.withRouteArgs(competitionIdArg, disciplineIdArg),
             arguments = competitionIdArgument + disciplineIdArgument
         ) {
             val viewModel = hiltViewModel<AddResultsViewModel>()
+            val competitionId = it.arguments?.getInt(competitionIdArg) ?: 0
+            val disciplineId = it.arguments?.getInt(disciplineIdArg) ?: 0
 
             AddResultsRoute(
                 navController = navController,
                 viewModel = viewModel,
+                competitionId = competitionId,
+                disciplineId = disciplineId,
             )
         }
 

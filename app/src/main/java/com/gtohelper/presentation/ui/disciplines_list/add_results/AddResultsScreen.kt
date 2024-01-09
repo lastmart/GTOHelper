@@ -42,9 +42,10 @@ import com.gtohelper.domain.models.Gender
 import com.gtohelper.domain.models.SportResult
 import com.gtohelper.domain.models.SportResultAndCompetitor
 import com.gtohelper.domain.models.SubDiscipline
-import com.gtohelper.domain.usecases.sport_results.SaveSportResultResult
+import com.gtohelper.domain.usecases.sport_result.SaveSportResultResult
 import com.gtohelper.presentation.components.composables.buttons.AddButton
 import com.gtohelper.presentation.components.composables.placeholder_screens.LoadingScreen
+import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultInputField
 import com.gtohelper.presentation.ui.disciplines_list.add_results.components.ResultItem
 import com.gtohelper.presentation.ui.theme.spacing
@@ -54,6 +55,8 @@ import com.gtohelper.presentation.ui.theme.spacing
 fun AddResultsRoute(
     navController: NavController,
     viewModel: AddResultsViewModel,
+    competitionId: Int,
+    disciplineId: Int,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val searchQuery by viewModel.searchQuery.collectAsState()
@@ -66,6 +69,13 @@ fun AddResultsRoute(
         onEvent = viewModel::onEvent,
         onBackClicked = navController::navigateUp,
         onSearchQueryChanged = { viewModel.onEvent(AddResultsEvent.SearchResult(it)) },
+        onItemClicked = {
+            navController.navigate(
+                Screen.EditResultScreen.withArgs(
+                    competitionId.toString(), disciplineId.toString(), it.result.id.toString()
+                )
+            )
+        },
         error = when (viewModel.saveResultState) {
             SaveSportResultResult.CompetitorDoesNotExist ->
                 stringResource(R.string.competitor_does_not_exist)
@@ -88,6 +98,7 @@ fun AddResultsScreen(
     onSearchQueryChanged: (String) -> Unit = {},
     onEvent: (AddResultsEvent) -> Unit = {},
     onBackClicked: () -> Unit = {},
+    onItemClicked: (SportResultAndCompetitor) -> Unit = {},
     error: String? = null,
 ) {
 
@@ -127,7 +138,7 @@ fun AddResultsScreen(
                         style = MaterialTheme.typography.headlineSmall,
                     )
                     Spacer(Modifier.height(MaterialTheme.spacing.medium))
-                    
+
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
@@ -136,6 +147,7 @@ fun AddResultsScreen(
                             ResultItem(
                                 pointType = uiState.discipline.type,
                                 resultWithCompetitor = it,
+                                onClick = onItemClicked
                             )
                         }
                     }

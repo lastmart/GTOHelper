@@ -34,14 +34,14 @@ import com.gtohelper.domain.models.SportResultAndCompetitor
 fun ResultItem(
     pointType: DisciplinePointType,
     resultWithCompetitor: SportResultAndCompetitor,
-    onClick: () -> Unit = {},
+    onClick: (SportResultAndCompetitor) -> Unit = {},
 ) {
     Card(
         colors = CardDefaults.cardColors(
             contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
             containerColor = MaterialTheme.colorScheme.tertiaryContainer
         ),
-        onClick = onClick,
+        onClick = { onClick(resultWithCompetitor) },
     ) {
         Row(
             modifier = Modifier

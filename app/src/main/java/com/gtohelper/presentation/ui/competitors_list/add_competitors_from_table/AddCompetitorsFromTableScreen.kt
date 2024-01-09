@@ -124,8 +124,8 @@ fun AddCompetitorsFromTableScreen(
 
                 AddCompetitorsFromTableUiState.Success -> {
                     InfoAlertDialog(
-                        title = "Успех!",
-                        description = "Участники успешно добавлены",
+                        title = "Успех",
+                        description = "Все участники успешно добавлены",
                         onOKClicked = onSuccessOkClicked,
                     )
                 }

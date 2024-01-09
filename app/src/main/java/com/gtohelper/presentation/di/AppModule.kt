@@ -2,9 +2,11 @@ package com.gtohelper.presentation.di
 
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.SportResultRepository
-import com.gtohelper.domain.usecases.sport_results.GetResultsAndCompetitors
-import com.gtohelper.domain.usecases.sport_results.SaveSportResultUseCase
-import com.gtohelper.domain.usecases.sport_results.SportResultUseCases
+import com.gtohelper.domain.usecases.sport_result.DeleteSportResultUseCase
+import com.gtohelper.domain.usecases.sport_result.EditSportResultUseCase
+import com.gtohelper.domain.usecases.sport_result.GetResultsAndCompetitors
+import com.gtohelper.domain.usecases.sport_result.SaveSportResultUseCase
+import com.gtohelper.domain.usecases.sport_result.SportResultUseCases
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -25,9 +27,16 @@ object AppModule {
                 sportResultRepository = sportResultRepository,
                 competitorRepository = competitorRepository
             ),
+            deleteSportResult = DeleteSportResultUseCase(
+                sportResultRepository = sportResultRepository,
+            ),
+            editSportResult = EditSportResultUseCase(
+                sportResultRepository = sportResultRepository,
+                competitorRepository = competitorRepository
+            ),
             getResultsAndCompetitors = GetResultsAndCompetitors(
                 sportResultRepository = sportResultRepository
-            )
+            ),
         )
     }
 }
