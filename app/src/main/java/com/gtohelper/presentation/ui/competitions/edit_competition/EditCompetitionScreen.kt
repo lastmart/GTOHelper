@@ -1,4 +1,4 @@
-package com.gtohelper.presentation.ui.competitions.add_competition
+package com.gtohelper.presentation.ui.competitions.edit_competition
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -32,16 +32,15 @@ import kotlinx.coroutines.launch
 
 
 @Composable
-fun AddCompetitionRoute(
+fun EditCompetitionRoute(
     navController: NavController,
-    viewModel: AddCompetitionViewModel,
+    viewModel: EditCompetitionViewModel,
 ) {
 
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
-
 
     LaunchedEffect(context) {
         viewModel.formState.collect { event ->
@@ -57,7 +56,7 @@ fun AddCompetitionRoute(
         }
     }
 
-    AddCompetitionScreen(
+    EditCompetitionScreen(
         uiState = uiState,
         onEvent = viewModel::onEvent,
         onAddButtonClicked = { viewModel.onEvent(CompetitionFormEvent.SubmitForm) },
@@ -69,7 +68,7 @@ fun AddCompetitionRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddCompetitionScreen(
+fun EditCompetitionScreen(
     uiState: CompetitionFormState,
     onEvent: (CompetitionFormEvent) -> Unit = {},
     onAddButtonClicked: () -> Unit = {},
@@ -81,7 +80,7 @@ fun AddCompetitionScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(stringResource(R.string.new_competition))
+                    Text(stringResource(R.string.edit))
                 },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
@@ -110,9 +109,9 @@ fun AddCompetitionScreen(
 
 @Preview
 @Composable
-fun PreviewAddCompetitionScreen() {
+fun PreviewEditCompetitionScreen() {
     val snackbarHostState = remember { SnackbarHostState() }
-    AddCompetitionScreen(
+    EditCompetitionScreen(
         snackbarHostState = snackbarHostState,
         uiState = CompetitionFormState(),
         onEvent = {},

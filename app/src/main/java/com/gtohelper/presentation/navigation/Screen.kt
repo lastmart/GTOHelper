@@ -4,6 +4,7 @@ sealed class Screen(val route: String) {
 
     data object CompetitionsScreen : Screen("competitions")
     data object AddCompetitionScreen : Screen("add_competition")
+    data object EditCompetitionScreen: Screen("edit_competition")
     data object CompetitorsListScreen : Screen("competitors")
     data object AddCompetitorScreen : Screen("add_competitor")
     data object AddCompetitorFromTableScreen : Screen("add_competitor_from_table")

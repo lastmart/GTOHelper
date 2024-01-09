@@ -7,7 +7,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 object AppTextFieldDefaults {
-
     @Composable
     fun colors(): TextFieldColors = TextFieldDefaults.colors(
         focusedContainerColor = MaterialTheme.colorScheme.tertiaryContainer,
