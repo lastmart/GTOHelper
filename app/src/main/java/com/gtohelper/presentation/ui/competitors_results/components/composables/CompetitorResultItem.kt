@@ -56,6 +56,10 @@ fun CompetitorResultItem(
                 contentDescription = null
             )
 
+            Spacer(
+                modifier = Modifier.width(5.dp)
+            )
+
             Column(
                 modifier = Modifier.weight(1f),
             ) {
