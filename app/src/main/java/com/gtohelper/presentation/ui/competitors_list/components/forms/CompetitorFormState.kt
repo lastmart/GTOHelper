@@ -9,7 +9,7 @@ data class CompetitorFormState(
     val teamNameError: String? = null,
     val number: Int? = null,
     val numberError: String? = null,
-    val degree: Int = 1,
+    val degree: Int = 2,
     val degreeError: String? = null,
     val gender: Gender = Gender.MALE,
 )
