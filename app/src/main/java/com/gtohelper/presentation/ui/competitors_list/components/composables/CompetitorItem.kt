@@ -57,7 +57,7 @@ fun CompetitorItem(
                         Text(competitor.number.toString())
                         Spacer(Modifier.width(MaterialTheme.spacing.extraSmall))
                         Text(
-                            text = competitor.id.toString() + "/" + competitor.name,
+                            text = competitor.name,
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             fontWeight = FontWeight.Bold,

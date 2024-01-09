@@ -126,14 +126,11 @@ fun AddResultsScreen(
                         textAlign = TextAlign.Center,
                     )
                     Spacer(Modifier.height(MaterialTheme.spacing.medium))
-
+                    
                     LazyColumn(
                         modifier = Modifier.weight(1f),
                         verticalArrangement = Arrangement.spacedBy(MaterialTheme.spacing.small),
                     ) {
-                        item {
-
-                        }
                         items(results.sortedBy { it.result.timeStamp }) {
                             ResultItem(
                                 pointType = uiState.discipline.type,
@@ -205,7 +202,7 @@ fun PreviewAddResultsScreen() {
             }
         },
         error = "Участник с таким номером не существует в соревновании",
-        results = (1..20).map {
+        results = (1..4).map {
             SportResultAndCompetitor(
                 competitor = Competitor(
                     id = 0,
