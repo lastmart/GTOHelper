@@ -18,7 +18,7 @@ interface CompetitionDao {
     suspend fun getById(id: Int) : CompetitionEntity?
 
     @Query("SELECT * FROM competitions_table WHERE id=:id")
-    fun getFlowById(id: Int): Flow<CompetitionEntity>
+    fun getFlowById(id: Int): Flow<CompetitionEntity?>
 
     @Insert
     suspend fun create(competition: CompetitionEntity)
