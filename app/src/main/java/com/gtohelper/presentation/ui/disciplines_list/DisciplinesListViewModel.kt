@@ -10,14 +10,18 @@ import com.gtohelper.data.database.discipline.DisciplineDao
 import com.gtohelper.data.database.relations.SubDisciplineWithCompetitorsWithResults
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.SubDiscipline
+import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -28,6 +32,7 @@ class DisciplinesListViewModel @Inject constructor(
     private val deleteCompetitionByIdUseCase: DeleteCompetitionByIdUseCase,
     private val competitorRepository: CompetitorRepository,
     private val disciplinesDao: DisciplineDao,
+    private val competitionRepository: CompetitionRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -50,7 +55,7 @@ class DisciplinesListViewModel @Inject constructor(
                     disciplines.flatMap { discipline ->
                         discipline.subDisciplines.map { subDiscipline ->
                             SubDiscipline(
-                                id  = subDiscipline.id,
+                                id = subDiscipline.id,
                                 name = subDiscipline.name,
                                 type = subDiscipline.type,
                                 imageResource = discipline.imageResource
@@ -64,6 +69,15 @@ class DisciplinesListViewModel @Inject constructor(
                 started = SharingStarted.WhileSubscribed(5_000),
                 initialValue = DisciplinesListUIState()
             )
+
+    val competitionName: StateFlow<String> = competitionRepository
+        .getFlowById(competitionId)
+        .map { it.name }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed((5_000)),
+            initialValue = ""
+        )
 
     suspend fun getCompetitors(): List<Competitor> {
         return competitorRepository.getCompetitionAllCompetitors(competitionId)

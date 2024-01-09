@@ -17,6 +17,12 @@ class CompetitionRepositoryImpl(
         return dao.getAll().map { it.map { list -> list.toDomainModel() } }
     }
 
+    override fun getFlowById(id: Int): Flow<Competition> {
+        return dao.getFlowById(id).map {
+            it.toDomainModel()
+        }
+    }
+
     override suspend fun getById(id: Int): Competition? {
         return withContext(Dispatchers.IO) {
             dao.getById(id)?.toDomainModel()
