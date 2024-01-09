@@ -147,7 +147,7 @@ fun AddResultsScreen(
                             ResultItem(
                                 pointType = uiState.discipline.type,
                                 resultWithCompetitor = it,
-                                onClick = onItemClicked
+                                onLongClick = onItemClicked
                             )
                         }
                     }

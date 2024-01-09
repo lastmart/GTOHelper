@@ -6,6 +6,7 @@ import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -177,7 +178,11 @@ fun AppNavHost(
 
         dialog(
             route = Screen.EditResultScreen.withRouteArgs(competitionIdArg, disciplineIdArg, sportResultIdArg),
-            arguments = competitionIdArgument + disciplineIdArgument + sportResultIdArgument
+            arguments = competitionIdArgument + disciplineIdArgument + sportResultIdArgument,
+            dialogProperties = DialogProperties(
+                dismissOnBackPress = true,
+                dismissOnClickOutside = true
+            )
         ) {
             val editResultViewModel = hiltViewModel<EditResultViewModel>()
             EditResultDialogRoute(navController, editResultViewModel)
