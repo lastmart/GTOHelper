@@ -13,8 +13,8 @@ data class SubDisciplineWithCompetitorsWithResults(
 
     @Relation(
         entity = SportResultEntity::class,
-        parentColumn = "name",
-        entityColumn = "sportName"
+        parentColumn = "id",
+        entityColumn = "disciplineId"
     )
     val competitorsWithResults: List<SportResultAndCompetitorEntity>
 )

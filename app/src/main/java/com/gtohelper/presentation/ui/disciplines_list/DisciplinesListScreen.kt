@@ -62,8 +62,6 @@ import com.gtohelper.presentation.ui.theme.spacing
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-@RequiresApi(Build.VERSION_CODES.R) // TODO
-
 @Composable
 fun DisciplineListRoute(
     navController: NavController,
@@ -167,7 +165,7 @@ fun DisciplineListRoute(
             onBackClicked = { navController.navigateUp() },
             onItemClicked = {
                 navController.navigate(
-                    Screen.AddResultsScreen.withArgs(competitionId.toString(), it.name)
+                    Screen.AddResultsScreen.withArgs(competitionId.toString(), it.id.toString())
                 )
             },
             onAddButtonClicked = {

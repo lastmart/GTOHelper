@@ -49,21 +49,22 @@ class CompetitorResultsRepositoryImpl(
     ): Int {
         val pointsCalculator = PointsCalculator()
 
-        val discipline = subDisciplineDao.getSubDisciplineByName(sportResult.sportName)
+        val discipline = subDisciplineDao.getSubDisciplineById(sportResult.disciplineId)
 
         if (discipline == null) {
             println("Discipline is null")
-            return -1
+            return 0
         }
 
         return try {
 
-            val sportResultValue: Any? =
+            val sportResultValue: Any =
                 convertIntToSportResult(discipline.toDomainSubDiscipline(), sportResult)
 
             pointsCalculator.getPoint(
                 competitor = competitor,
-                sport = sportResult.sportName,
+            //    sport = sportResult.sportName,
+                sport = discipline.name,
                 result = sportResultValue as Comparable<Any>,
                 jsonString = jsonString
             ).also {
@@ -76,7 +77,7 @@ class CompetitorResultsRepositoryImpl(
             println("Error: $e")
             e.printStackTrace()
 
-            return -1
+            return 0
             // throw e
         }
     }
