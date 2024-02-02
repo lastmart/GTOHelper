@@ -1,9 +1,8 @@
 package com.gtohelper.domain
 
-import android.content.Context
-import com.gtohelper.R
 import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.Gender
+import com.gtohelper.domain.points_calculator.PointsCalculator
 import org.apache.poi.ss.usermodel.FillPatternType
 import org.apache.poi.ss.usermodel.HorizontalAlignment
 import org.apache.poi.ss.usermodel.IndexedColors
@@ -63,16 +62,9 @@ fun main() {
 //    WriteFinalExcelTable().createFinalTable(filePath, "Соревнования по ГТО", listCompetitor, res)
 }
 
-class WriteFinalExcelTable(
-    context: Context? = null
+class FinalExcelTableWriter(
+    private val pointsCalculator: PointsCalculator
 ) {
-    private val jsonString = context
-        ?.resources
-        ?.openRawResource(R.raw.dictionary_with_standards)
-        ?.bufferedReader()
-        ?.use { it.readText() } ?: ""
-
-    private val pointsCalculator = PointsCalculator()
 
     fun createFinalTable(
         nameTable: String,
@@ -132,18 +124,16 @@ class WriteFinalExcelTable(
                 val competitorResults = competitorsToResults[competitor] ?: continue
 
                 val point = when (competitorResults) {
-                    is Double -> pointsCalculator.getPoint(
+                    is Double -> pointsCalculator.getPoints(
                         competitor = competitor,
                         sport = sport,
                         result = competitorResults,
-                        jsonString = jsonString
                     )
 
-                    is LocalTime -> pointsCalculator.getPoint(
+                    is LocalTime -> pointsCalculator.getPoints(
                         competitor = competitor,
                         sport = sport,
                         result = competitorResults,
-                        jsonString = jsonString
                     )
 
                     else -> 0

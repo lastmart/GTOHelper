@@ -2,13 +2,6 @@ package com.gtohelper.presentation.ui.disciplines_list
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts.CreateDocument
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.togetherWith
-import androidx.compose.animation.with
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -53,11 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gtohelper.R
-import com.gtohelper.data.mappers.toDomainModel
-import com.gtohelper.data.mappers.toDomainSubDiscipline
-import com.gtohelper.data.repository.convertIntToSportResult
-import com.gtohelper.domain.WriteFinalExcelTable
-import com.gtohelper.domain.mapNormDisciplineToOfficialDisciplines
 import com.gtohelper.domain.models.DisciplinePointType
 import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.presentation.components.composables.buttons.AddButton
@@ -65,7 +53,6 @@ import com.gtohelper.presentation.components.composables.dialogs.AppAlertDialogR
 import com.gtohelper.presentation.navigation.Screen
 import com.gtohelper.presentation.ui.disciplines_list.components.composables.SubDisciplineCardItem
 import com.gtohelper.presentation.ui.theme.spacing
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @Composable
@@ -92,69 +79,13 @@ fun DisciplineListRoute(
         onResult = {
             if (it == null) return@rememberLauncherForActivityResult
 
-            scope.launch(Dispatchers.IO) {
+            val outputStream = context.contentResolver.openOutputStream(it)
+                ?: return@rememberLauncherForActivityResult
 
-                val competitors = viewModel.getCompetitors()
-
-                val disciplinesWithCompetitorsWithResults = viewModel
-                    .getDisciplinesWithCompetitorsWithResults()
-                    .filter { subDisciplineWithCompetitorsWithResults ->
-                        subDisciplineWithCompetitorsWithResults.competitorsWithResults.isNotEmpty()
-                    }
-                    .map { subDisciplineWithCompetitorsWithResults ->
-
-                        val competitionSelectedSubDisciplines =
-                            subDisciplineWithCompetitorsWithResults.competitorsWithResults.filter {
-                                it.competitor.competitionId == competitionId
-                            }
-
-                        if (competitionSelectedSubDisciplines.isEmpty()) {
-                            return@map null
-                        }
-
-                        return@map subDisciplineWithCompetitorsWithResults.copy(
-                            competitorsWithResults = competitionSelectedSubDisciplines
-                        )
-
-                    }.filterNotNull()
-
-                var currentDiscipline: SubDiscipline? = null
-
-                val sportResultsMap = disciplinesWithCompetitorsWithResults.associateBy(
-                    keySelector = {
-                        currentDiscipline = it.disciplineEntity.toDomainSubDiscipline()
-                        mapNormDisciplineToOfficialDisciplines[it.disciplineEntity.name]!!
-                    },
-                    valueTransform = {
-                        return@associateBy it.competitorsWithResults.associateBy(
-                            keySelector = {
-                                it.competitor.toDomainModel()
-                            },
-                            valueTransform = {
-                                convertIntToSportResult(
-                                    currentDiscipline!!, it.sportResult.toDomainModel()
-                                )
-                            }
-                        )
-                    }
-                )
-
-                val outputStream = context.contentResolver.openOutputStream(it)
-
-                val finalWriter = WriteFinalExcelTable(context = context)
-
-                finalWriter.createFinalTable(
-                    nameTable = actualCompetitionName,
-                    fileOutputStream = outputStream!!,
-                    listCompetitor = competitors,
-                    sportResults = sportResultsMap
-                )
-
-                outputStream.close()
-
-                viewModel.onTableSaved()
-            }
-
+            viewModel.downloadResultTable(
+                competitionName = actualCompetitionName,
+                outputStream = outputStream
+            )
         }
     )
 

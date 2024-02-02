@@ -6,33 +6,27 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.gtohelper.data.database.discipline.DisciplineDao
-import com.gtohelper.data.database.relations.SubDisciplineWithCompetitorsWithResults
-import com.gtohelper.domain.models.Competitor
 import com.gtohelper.domain.models.SubDiscipline
 import com.gtohelper.domain.repository.CompetitionRepository
-import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.DisciplineRepository
 import com.gtohelper.domain.usecases.DeleteCompetitionByIdUseCase
+import com.gtohelper.domain.usecases.DownloadResultTableUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.OutputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class DisciplinesListViewModel @Inject constructor(
     private val disciplineRepository: DisciplineRepository,
     private val deleteCompetitionByIdUseCase: DeleteCompetitionByIdUseCase,
-    private val competitorRepository: CompetitorRepository,
-    private val disciplinesDao: DisciplineDao,
     private val competitionRepository: CompetitionRepository,
+    private val downloadResultTableUseCase: DownloadResultTableUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -79,14 +73,6 @@ class DisciplinesListViewModel @Inject constructor(
             initialValue = ""
         )
 
-    suspend fun getCompetitors(): List<Competitor> {
-        return competitorRepository.getCompetitionAllCompetitors(competitionId)
-    }
-
-    suspend fun getDisciplinesWithCompetitorsWithResults(): List<SubDisciplineWithCompetitorsWithResults> {
-        return disciplinesDao.getDisciplineWithCompetitorsWithResults()
-    }
-
     fun onSubDisciplineLongPressed(subDiscipline: SubDiscipline) {
         subDisciplineToDelete = subDiscipline
         isDeleteSubDisciplineDialogShown = true
@@ -96,7 +82,25 @@ class DisciplinesListViewModel @Inject constructor(
         isDeleteSubDisciplineDialogShown = false
     }
 
-    fun onTableSaved() {
+    fun downloadResultTable(
+        competitionName: String,
+        outputStream: OutputStream
+    ) {
+        viewModelScope.launch {
+
+            launch(Dispatchers.IO) {
+                downloadResultTableUseCase(
+                    competitionName = competitionName,
+                    competitionId = competitionId,
+                    outputStream = outputStream,
+                )
+            }.join()
+
+            onTableDownloaded()
+        }
+    }
+
+    fun onTableDownloaded() {
         isSnackBarShown = true
     }
 

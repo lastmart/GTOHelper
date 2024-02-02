@@ -20,6 +20,9 @@ import com.gtohelper.data.repository.CompetitorRepositoryImpl
 import com.gtohelper.data.repository.CompetitorResultsRepositoryImpl
 import com.gtohelper.data.repository.DisciplineRepositoryImpl
 import com.gtohelper.data.repository.SportResultRepositoryImpl
+import com.gtohelper.domain.FinalExcelTableWriter
+import com.gtohelper.domain.points_calculator.PointsCalculatorImpl
+import com.gtohelper.domain.points_calculator.PointsCalculator
 import com.gtohelper.domain.repository.CompetitionRepository
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.CompetitorResultsRepository
@@ -149,9 +152,9 @@ object DataModule {
 
 
     @Provides
-    @Named("json_string")
+    @Named("norm_json")
     @Singleton
-    fun provideJsonString(
+    fun provideNormJson(
         @ApplicationContext context: Context
     ): String {
         return context
@@ -163,18 +166,36 @@ object DataModule {
 
     @Provides
     @Singleton
+    fun providePointsCalculator(
+        @Named("norm_json")
+        normJson: String,
+    ): PointsCalculator {
+        return PointsCalculatorImpl(
+            normJson = normJson
+        )
+    }
+
+    @Provides
+    @Singleton
+    fun provideFinalExcelTableWriter(
+        pointsCalculator: PointsCalculator
+    ): FinalExcelTableWriter {
+        return FinalExcelTableWriter(pointsCalculator)
+    }
+
+    @Provides
+    @Singleton
     fun provideCompetitorResultsRepository(
         competitorDao: CompetitorDao,
-        @Named("json_string") jsonString: String,
-        disciplineDao: DisciplineDao
+        disciplineDao: DisciplineDao,
+        pointsCalculator: PointsCalculator
     ): CompetitorResultsRepository {
         return CompetitorResultsRepositoryImpl(
             competitorDao = competitorDao,
             subDisciplineDao = disciplineDao,
-            jsonString = jsonString,
+            pointsCalculator = pointsCalculator
         )
     }
-
 
     @Provides
     @Singleton

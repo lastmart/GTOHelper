@@ -1,11 +1,13 @@
-package com.gtohelper.domain
+package com.gtohelper.domain.points_calculator
 
 import JsonParser
 import com.gtohelper.domain.models.Competitor
 import java.time.LocalTime
 import java.util.SortedMap
 
-class PointsCalculator {
+class PointsCalculatorImpl(
+    private val normJson: String
+) : PointsCalculator {
 
     // TODO убрать?
     /*fun getPointForStringResult(competitor: Competitor, sport:String, resultString:String):Int{
@@ -16,22 +18,15 @@ class PointsCalculator {
         return getPoint(competitor, sport, resultString.toDouble())
     }*/
 
-    companion object {
-        private lateinit var jsonString: String
-
-        private val dictionaryWithStandards by lazy {
-            JsonParser().getDictionaryWithStandards(jsonString)
-        }
+    private val dictionaryWithStandards by lazy {
+        JsonParser().getDictionaryWithStandards(normJson)
     }
 
-
-    fun <T : Comparable<T>> getPoint(
+    override fun <T : Comparable<T>> getPoints(
         competitor: Competitor,
         sport: String,
         result: T,
-        jsonString: String
     ): Int {
-        Companion.jsonString = jsonString
 
         if (!(result is Double || result is LocalTime)) {
             throw Exception("Only Double and LocalTime")

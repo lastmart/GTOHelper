@@ -1,7 +1,10 @@
 package com.gtohelper.presentation.di
 
+import com.gtohelper.data.database.discipline.DisciplineDao
+import com.gtohelper.domain.FinalExcelTableWriter
 import com.gtohelper.domain.repository.CompetitorRepository
 import com.gtohelper.domain.repository.SportResultRepository
+import com.gtohelper.domain.usecases.DownloadResultTableUseCase
 import com.gtohelper.domain.usecases.sport_result.DeleteSportResultUseCase
 import com.gtohelper.domain.usecases.sport_result.EditSportResultUseCase
 import com.gtohelper.domain.usecases.sport_result.GetResultsAndCompetitors
@@ -37,6 +40,19 @@ object AppModule {
             getResultsAndCompetitors = GetResultsAndCompetitors(
                 sportResultRepository = sportResultRepository
             ),
+        )
+    }
+
+    @Provides
+    fun provideDownloadResultTableUseCase(
+        competitorRepository: CompetitorRepository,
+        disciplineDao: DisciplineDao,
+        finalExcelTableWriter: FinalExcelTableWriter
+    ): DownloadResultTableUseCase {
+        return DownloadResultTableUseCase(
+            competitorRepository = competitorRepository,
+            disciplineDao = disciplineDao,
+            finalExcelTableWriter = finalExcelTableWriter
         )
     }
 }
